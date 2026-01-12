@@ -1,3 +1,11 @@
+---
+name: Bug
+about: Fix the bug
+title: '[Bug]'
+labels: 'bug'
+assignees: ''
+---
+
 ### Preconditions
 Actions to be done before the start of the bug reproducing
 
