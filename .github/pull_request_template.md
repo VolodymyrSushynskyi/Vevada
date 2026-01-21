@@ -1,8 +1,11 @@
-## Related Issue
-[Issue ticket](https://github.com/users/VolodymyrSushynskyi/projects/4)
+## Related Issue(s)
+
+Closes #[issue number]
 
 ## Summary
+
 Briefly describe what this PR changes.
 
 ## Comments
+
 Add any explanations if needed.
