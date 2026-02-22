@@ -47,7 +47,7 @@ public class AuthController : BaseApiController
 
     [Authorize]
     [HttpGet]
-    public IActionResult Test()
+    public IActionResult TestAuthentication()
     {
         return Ok("Authenticated access successful!");
     }

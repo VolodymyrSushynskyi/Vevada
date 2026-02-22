@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Vevada.Data.Constants;
 using Vevada.Data.Entities;
 
 namespace Vevada.Data.Configurations;

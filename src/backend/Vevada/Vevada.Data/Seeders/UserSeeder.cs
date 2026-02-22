@@ -1,10 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using System.Data;
 using Vevada.Data.Constants;
 using Vevada.Data.Entities;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Vevada.Data.Seeders;
 
@@ -37,6 +34,7 @@ public class UserSeeder : ISeeder
 
         if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
         {
+            // TODO: Log a warning that super admin credentials are not set in configuration
             return 0;
         }
 

@@ -27,7 +27,7 @@ public class RegisterClientCommandValidator : AbstractValidator<RegisterClientCo
             .Matches("[a-z]")
                 .WithMessage(ValidationMessageBuilder.MustContain(Password, "a lowercase letter"))
             .Matches("[A-Z]")
-                .WithMessage(ValidationMessageBuilder.MustContain(Password, "a uppercase letter"))
+                .WithMessage(ValidationMessageBuilder.MustContain(Password, "an uppercase letter"))
             .Matches("[0-9]")
                 .WithMessage(ValidationMessageBuilder.MustContain(Password, "a digit"));
 

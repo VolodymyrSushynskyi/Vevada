@@ -15,6 +15,8 @@ public class AuthService : IAuthService
     private readonly ITokenService _tokenService;
     private readonly VevadaDbContext _context;
 
+    const int RefreshTokenValidityDays = 7;
+
     public AuthService(
         UserManager<User> userManager,
         ITokenService tokenService,
@@ -38,7 +40,7 @@ public class AuthService : IAuthService
         var rawRefreshToken = _tokenService.GenerateRefreshToken();
 
         user.RefreshTokenHash = TokenService.ComputeHash(rawRefreshToken);
-        user.RefreshTokenExpiryTime = DateTimeOffset.UtcNow.AddDays(7);
+        user.RefreshTokenExpiryTime = DateTimeOffset.UtcNow.AddDays(RefreshTokenValidityDays);
 
         await _userManager.UpdateAsync(user);
 
@@ -49,7 +51,7 @@ public class AuthService : IAuthService
             AccessToken = accessToken,
             RefreshToken = rawRefreshToken,
             Email = user.Email!,
-            Role = roles.FirstOrDefault() ?? AppRoles.Client.Name!,
+            Role = roles.FirstOrDefault() ?? AppRoles.Client.Name!, // TODO: Handle multiple roles properly if needed
         };
     }
 
@@ -103,7 +105,7 @@ public class AuthService : IAuthService
             var rawRefreshToken = _tokenService.GenerateRefreshToken();
 
             user.RefreshTokenHash = TokenService.ComputeHash(rawRefreshToken);
-            user.RefreshTokenExpiryTime = DateTimeOffset.UtcNow.AddDays(7);
+            user.RefreshTokenExpiryTime = DateTimeOffset.UtcNow.AddDays(RefreshTokenValidityDays);
 
             await _userManager.UpdateAsync(user);
 
@@ -117,7 +119,7 @@ public class AuthService : IAuthService
                 Role = AppRoles.Client.Name!,
             };
         }
-        catch (Exception)
+        catch (Exception) // TODO: Catch more specific exceptions if possible (e.g. DbUpdateException for database errors)
         {
             await transaction.RollbackAsync();
             throw;

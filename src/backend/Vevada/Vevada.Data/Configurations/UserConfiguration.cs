@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Vevada.Data.Constants;
 using Vevada.Data.Entities;
 
 namespace Vevada.Data.Configurations;
@@ -11,6 +10,13 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 
     public void Configure(EntityTypeBuilder<User> builder)
     {
+        builder.Property(u => u.Email)
+            .IsRequired()
+            .HasMaxLength(255);
+
+        builder.HasIndex(u => u.Email)
+           .IsUnique();
+
         builder.Property(u => u.RefreshTokenHash)
             .HasMaxLength(RefreshTokenHashMaxLength);
 
