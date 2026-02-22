@@ -5,6 +5,10 @@ VisualStudioVersion = 17.14.36518.9 d17.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vevada.Api", "Vevada.Api\Vevada.Api.csproj", "{B91BC6B0-06A8-4D0E-9D3B-8E9DAB7C0069}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vevada.Business", "Vevada.Business\Vevada.Business.csproj", "{2AE90913-4AF1-4127-A068-6BD2571F67A6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vevada.Data", "Vevada.Data\Vevada.Data.csproj", "{11730495-DD06-423B-845E-768F22DDCE96}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{B91BC6B0-06A8-4D0E-9D3B-8E9DAB7C0069}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B91BC6B0-06A8-4D0E-9D3B-8E9DAB7C0069}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B91BC6B0-06A8-4D0E-9D3B-8E9DAB7C0069}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2AE90913-4AF1-4127-A068-6BD2571F67A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2AE90913-4AF1-4127-A068-6BD2571F67A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2AE90913-4AF1-4127-A068-6BD2571F67A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2AE90913-4AF1-4127-A068-6BD2571F67A6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{11730495-DD06-423B-845E-768F22DDCE96}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11730495-DD06-423B-845E-768F22DDCE96}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11730495-DD06-423B-845E-768F22DDCE96}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11730495-DD06-423B-845E-768F22DDCE96}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
