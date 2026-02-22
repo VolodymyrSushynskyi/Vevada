@@ -17,10 +17,5 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.Property(u => u.IsAdminUser)
             .HasDefaultValue(false)
             .IsRequired();
-
-        builder.HasOne(u => u.ClientDetails)
-            .WithOne(cd => cd.User)
-            .HasForeignKey<ClientDetails>(cd => cd.UserId)
-            .OnDelete(DeleteBehavior.Cascade);
     }
 }

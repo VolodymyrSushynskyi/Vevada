@@ -9,7 +9,8 @@ public static class ApiServicesExtensions
     public static void AddAuth(this IServiceCollection services, IConfiguration configuration)
     {
         var jwtSettings = configuration.GetSection("JwtSettings");
-        var key = Encoding.ASCII.GetBytes(jwtSettings["Key"]!);
+        var key = Encoding.ASCII.GetBytes(jwtSettings["Key"] ?? 
+            throw new InvalidOperationException("Missing Key in jwt settings"));
 
         services.AddAuthentication(options =>
         {

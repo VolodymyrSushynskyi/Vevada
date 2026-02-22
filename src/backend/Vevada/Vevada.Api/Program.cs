@@ -41,10 +41,13 @@ public static class Program
 
         var app = builder.Build();
 
-        using (var scope = app.Services.CreateScope())
+        if (app.Environment.IsDevelopment())
         {
-            await DataServicesExtensions.MigrateDatabaseAsync(scope);
-            await DataServicesExtensions.SeedDatabaseAsync(scope);
+            using (var scope = app.Services.CreateScope())
+            {
+                await DataServicesExtensions.MigrateDatabaseAsync(scope);
+                await DataServicesExtensions.SeedDatabaseAsync(scope);
+            }
         }
 
         // Configure the HTTP request pipeline.

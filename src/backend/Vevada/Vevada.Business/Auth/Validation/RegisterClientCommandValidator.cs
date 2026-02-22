@@ -35,8 +35,8 @@ public class RegisterClientCommandValidator : AbstractValidator<RegisterClientCo
             .NotEmpty()
             .MinimumLength(RegisterClientCommandValidationRules.MinFirstNameLength)
                 .WithMessage(ValidationMessageBuilder.MinLength(FirstName, RegisterClientCommandValidationRules.MinFirstNameLength))
-            .MaximumLength(RegisterClientCommandValidationRules.MaxLastNameLength)
-                .WithMessage(ValidationMessageBuilder.MaxLength(FirstName, RegisterClientCommandValidationRules.MaxLastNameLength));
+            .MaximumLength(RegisterClientCommandValidationRules.MaxFirstNameLength)
+                .WithMessage(ValidationMessageBuilder.MaxLength(FirstName, RegisterClientCommandValidationRules.MaxFirstNameLength));
 
         RuleFor(x => x.LastName)
             .NotEmpty()

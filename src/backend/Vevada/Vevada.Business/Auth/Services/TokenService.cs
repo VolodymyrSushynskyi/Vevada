@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
+using System.Globalization;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
@@ -35,6 +36,12 @@ public class TokenService : ITokenService
             throw new InvalidOperationException(missingConfigMessage("Audience"));
         var expireMinutesStr = jwtSettings["ExpireMinutes"] ??
             throw new InvalidOperationException(missingConfigMessage("ExpireMinutes"));
+        var expireMinutesParsed = double.TryParse(expireMinutesStr, CultureInfo.InvariantCulture, out var expireMinutes);
+
+        if (!expireMinutesParsed)
+        {
+            throw new InvalidOperationException("ExpireMinutes in jwt configuration is not a valid number");
+        }
 
         var roles = await _userManager.GetRolesAsync(user);
 
@@ -54,7 +61,7 @@ public class TokenService : ITokenService
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             Subject = new ClaimsIdentity(claims),
-            Expires = DateTime.UtcNow.AddMinutes(double.Parse(expireMinutesStr)),
+            Expires = DateTime.UtcNow.AddMinutes(expireMinutes),
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
             Issuer = issuer,
             Audience = audience

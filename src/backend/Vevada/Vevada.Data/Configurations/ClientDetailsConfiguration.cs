@@ -20,7 +20,8 @@ public class ClientDetailsConfiguration : IEntityTypeConfiguration<ClientDetails
         builder
             .HasOne(cd => cd.User)
             .WithOne(u => u.ClientDetails)
-            .HasForeignKey<ClientDetails>(cd => cd.UserId);
+            .HasForeignKey<ClientDetails>(cd => cd.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
 
         builder
             .Property(cd => cd.FirstName)

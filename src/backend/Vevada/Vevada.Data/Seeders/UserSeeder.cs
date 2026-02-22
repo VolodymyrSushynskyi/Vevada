@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using System.Data;
 using Vevada.Data.Constants;
 using Vevada.Data.Entities;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Vevada.Data.Seeders;
 
@@ -56,15 +58,16 @@ public class UserSeeder : ISeeder
         if (!createUserResult.Succeeded)
         {
             // TODO: Log the errors in result.Errors for debugging
-            return 0;
+            throw new InvalidOperationException($"Failed to seed super admin");
         }
 
         var addRoleResult = await _userManager.AddToRoleAsync(adminUser, AppRoles.SuperAdmin.Name!);
 
         if (!addRoleResult.Succeeded)
         {
+
             // TODO: Log the errors in result.Errors for debugging
-            return 0;
+            throw new InvalidOperationException($"Failed to assign super admin role");
         }
 
         return 1;

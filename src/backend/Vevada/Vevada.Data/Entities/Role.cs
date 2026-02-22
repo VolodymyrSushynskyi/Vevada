@@ -3,4 +3,5 @@ using Vevada.Data.Entities.Base;
 
 namespace Vevada.Data.Entities;
 
-public class Role : IdentityRole<int>, IEntity;
+public class Role : IdentityRole<int>, IEntity
+{ }
