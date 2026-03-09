@@ -4,12 +4,12 @@ using Vevada.Business.Common;
 
 namespace Vevada.Business.Auth.Validation;
 
-public class LoginCommandValidator : AbstractValidator<LoginClientCommand>
+public class LoginClientCommandValidator : AbstractValidator<LoginClientCommand>
 {
     const string Email = "Email";
     const string Password = "Password";
 
-    public LoginCommandValidator()
+    public LoginClientCommandValidator()
     {
         RuleFor(x => x.Email)
             .NotEmpty().WithMessage(ValidationMessageBuilder.IsRequired(Email))

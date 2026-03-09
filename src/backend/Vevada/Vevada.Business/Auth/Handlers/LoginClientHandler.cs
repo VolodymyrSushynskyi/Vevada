@@ -21,7 +21,7 @@ public class LoginClientHandler : IRequestHandler<LoginClientCommand, HandlerRes
     {
         try
         {
-            var permittedRoles = await _authService.GetUserPermissions(request.Email, AppRoles.Client.Name!);
+            var permittedRoles = await _authService.GetPermittedRoles(request.Email, AppRoles.Client.Name!);
 
             if (!permittedRoles.Any())
             {

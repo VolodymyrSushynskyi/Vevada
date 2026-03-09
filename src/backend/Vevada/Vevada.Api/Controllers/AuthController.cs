@@ -41,7 +41,7 @@ public class AuthController : BaseApiController
             return Unauthorized();
         }
 
-        var command = new LogoutCommand(userId);
+        var command = new LogoutCommand { UserId = userId };
         return HandleResult(await Mediator.Send(command));
     }
 

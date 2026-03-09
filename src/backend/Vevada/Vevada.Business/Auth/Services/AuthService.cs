@@ -42,7 +42,12 @@ public class AuthService : IAuthService
         user.RefreshTokenHash = TokenService.ComputeHash(rawRefreshToken);
         user.RefreshTokenExpiryTime = DateTimeOffset.UtcNow.AddDays(RefreshTokenValidityDays);
 
-        await _userManager.UpdateAsync(user);
+        var updateResult = await _userManager.UpdateAsync(user);
+        if (!updateResult.Succeeded)
+        {
+            var errorDescription = string.Join("; ", updateResult.Errors.Select(e => e.Description));
+            throw new AuthException($"Failed to persist refresh token {errorDescription}");
+        }
 
         var roles = await _userManager.GetRolesAsync(user);
 
@@ -107,7 +112,12 @@ public class AuthService : IAuthService
             user.RefreshTokenHash = TokenService.ComputeHash(rawRefreshToken);
             user.RefreshTokenExpiryTime = DateTimeOffset.UtcNow.AddDays(RefreshTokenValidityDays);
 
-            await _userManager.UpdateAsync(user);
+            var updateResult = await _userManager.UpdateAsync(user);
+            if (!updateResult.Succeeded)
+            {
+                var errors = string.Join(", ", updateResult.Errors.Select(e => e.Description));
+                throw new AuthException($"Failed to persist refresh token data: {errors}");
+            }
 
             await transaction.CommitAsync();
 
@@ -142,7 +152,7 @@ public class AuthService : IAuthService
         return result.Succeeded;
     }
 
-    public async Task<IEnumerable<string>> GetUserPermissions(string email, params string[] roles)
+    public async Task<IEnumerable<string>> GetPermittedRoles(string email, params string[] roles)
     {
         var user = await _userManager.FindByEmailAsync(email);
         if (user == null)

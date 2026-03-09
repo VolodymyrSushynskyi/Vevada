@@ -29,7 +29,7 @@ public class LoginAdminHandler : IRequestHandler<LoginAdminCommand, HandlerResul
                 AppRoles.Analyst,
                 AppRoles.SuperAdmin
             };
-            var permittedRoles = await _authService.GetUserPermissions(request.Email, adminRoles.Select(r => r.Name!).ToArray());
+            var permittedRoles = await _authService.GetPermittedRoles(request.Email, adminRoles.Select(r => r.Name!).ToArray());
 
             if (!permittedRoles.Any())
             {
