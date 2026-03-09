@@ -480,6 +480,7 @@ FodyWeavers.xsd
 # Benchmark Results
 
 # .NET Core
+**/appsettings.Development.json
 
 # ASP.NET Scaffolding
 
