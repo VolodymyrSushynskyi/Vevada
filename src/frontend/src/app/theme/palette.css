@@ -1,0 +1,26 @@
+:root {
+  /* Green */
+  --green-50: #006B56;
+  --green-100: #08594A;
+  --green-200: #004437;
+
+  /* Grey */
+  --grey-50: #F2F2F2;
+  --grey-100: #E1E1E1;
+  --grey-200: #C9C9C9;
+  --grey-300: #9B9B9B;
+  --grey-400: #656565;
+  --grey-500: #575757;
+  --grey-600: #393939;
+  --grey-700: #252525;
+
+  /* Pink */
+  --pink-50: #FFF4E6;
+  --pink-100: #F8D7DA;
+
+  /* White */
+  --white: #FFFFFF;
+
+  /* Black */
+  --black: #000000;
+}

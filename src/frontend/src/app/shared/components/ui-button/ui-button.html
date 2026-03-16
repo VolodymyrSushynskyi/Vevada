@@ -1,0 +1,18 @@
+<button 
+  [type]="type"
+  [disabled]="disabled"
+  [ngClass]="['custom-btn', variant]">
+  
+  <div class="icon-slot">
+    <ng-content select="[icon-left]"></ng-content>
+  </div>
+
+  <div class="text-slot">
+    <ng-content></ng-content>
+  </div>
+
+  <div class="icon-slot">
+    <ng-content select="[icon-right]"></ng-content>
+  </div>
+
+</button>

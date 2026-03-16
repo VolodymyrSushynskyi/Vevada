@@ -1,0 +1,25 @@
+<button 
+  type="button"
+  [disabled]="disabled"
+  [ngClass]="['icon-btn', size, color]"
+  (click)="handleClick($event)">
+  
+  @if (!isToggle) {
+    <div class="icon-wrapper">
+      <ng-content></ng-content>
+    </div>
+  } 
+  
+  @else {
+    @if (!toggled) {
+      <div class="icon-wrapper">
+        <ng-content select="[icon-off]"></ng-content>
+      </div>
+    } @else {
+      <div class="icon-wrapper">
+        <ng-content select="[icon-on]"></ng-content>
+      </div>
+    }
+  }
+
+</button>

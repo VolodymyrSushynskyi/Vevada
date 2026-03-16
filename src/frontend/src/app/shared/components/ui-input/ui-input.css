@@ -1,0 +1,80 @@
+.input-wrapper {
+  position: relative;
+  width: 100%;
+  display: flex;
+}
+
+.custom-input {
+  width: 100%;
+  padding: 16px 48px 16px 20px;
+  font-family: inherit;
+  font-size: 16px;
+  color: var(--grey-400);
+  background-color: transparent;
+  border: 2px solid var(--grey-200); 
+  border-radius: 20px; 
+  outline: none;
+  transition: all 0.2s ease-in-out;
+}
+
+.input-label {
+  position: absolute;
+  left: 16px; 
+  top: 50%;
+  transform: translateY(-50%); 
+  color: var(--grey-300);
+  font-size: 16px;
+  pointer-events: none; 
+  transition: all 0.2s ease-in-out;
+  padding: 0 4px; 
+  background-color: var(--white); 
+}
+
+
+.input-wrapper.focused .input-label,
+.input-wrapper.has-value .input-label {
+  top: 0;
+  font-size: 14px;
+  color: var(--grey-300); 
+}
+
+.input-wrapper.focused .custom-input {
+  border-color: var(--green-200);
+  color: var(--grey-700);
+}
+
+.input-wrapper.focused .input-label {
+  color: var(--green-200);
+  font-weight: bold;
+}
+
+.input-wrapper:not(.disabled):not(.focused):hover .custom-input {
+  border-color: var(--grey-300); 
+  color: var(--grey-600);
+}
+
+.input-wrapper:not(.disabled):not(.focused):hover .input-label {
+  color: var(--grey-500); 
+  font-weight: bold;
+}
+
+.input-wrapper.disabled .custom-input {
+  border-color: var(--grey-200);
+  color: var(--grey-300);
+  cursor: not-allowed;
+}
+
+.input-wrapper.disabled .input-label {
+  color: var(--grey-300);
+}
+
+.suffix-slot {
+  position: absolute;
+  right: 24px; 
+  top: 50%;
+  transform: translateY(-50%); 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1; 
+}

@@ -1,0 +1,22 @@
+<div class="input-wrapper" 
+     [class.focused]="isFocused" 
+     [class.has-value]="value.length > 0"
+     [class.disabled]="isDisabled">
+  
+  <label class="input-label">{{ label }}</label>
+  
+  <input
+    class="custom-input"
+    [type]="type"
+    [disabled]="isDisabled"
+    [value]="value"
+    (focus)="handleFocus()"
+    (blur)="handleBlur()"
+    (input)="handleInput($event)"
+  />
+
+  <div class="suffix-slot">
+    <ng-content select="[input-suffix]"></ng-content>
+  </div>
+
+</div>

@@ -1,0 +1,73 @@
+.custom-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px; 
+  padding: 15px 20px;
+  border-radius: 34px; 
+  font-size: 18px;
+  font-weight: 500;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: all 0.2s ease-in-out;
+  width: max-content;
+}
+
+.icon-slot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.icon-slot:empty {
+  display: none;
+}
+
+::ng-deep .icon-slot svg {
+  width: 20px;
+  height: 20px;
+  fill: currentColor; 
+}
+
+/* --- PRIMARY --- */
+.custom-btn.primary {
+  background-color: var(--green-50);
+  color: var(--white);
+  border-color: transparent;
+}
+.custom-btn.primary:hover:not(:disabled) {
+  background-color: var(--green-100);
+}
+.custom-btn.primary:active:not(:disabled) {
+  background-color: var(--green-200);
+}
+
+.custom-btn.primary:disabled {
+  background-color: var(--grey-200);
+  color: var(--grey-500);
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* --- SECONDARY --- */
+.custom-btn.secondary {
+  background-color: var(--white);
+  color: var(--grey-500);
+  border-color: var(--grey-200);
+}
+.custom-btn.secondary:hover:not(:disabled) {
+  background-color: var(--grey-50);
+}
+.custom-btn.secondary:active:not(:disabled) {
+  background-color: var(--grey-50);
+  color: var(--grey-600);
+  border-color: var(--grey-400);
+}
+
+/* --- DISABLED --- */
+.custom-btn.secondary:disabled {
+  background-color: var(--white);
+  color: var(--grey-200);
+  border-color: var(--grey-200);
+  opacity: 0.4;
+  cursor: not-allowed;
+}
