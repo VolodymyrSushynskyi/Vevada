@@ -8,20 +8,20 @@ namespace Vevada.Business;
 
 public static class BusinessServicesExtensions
 {
-    public static void ConfigurePipeline(this IServiceCollection services)
+    public static IServiceCollection AddBusinessLogic(this IServiceCollection services)
     {
+        // MediatR & Validation Pipeline
         services.AddValidatorsFromAssembly(typeof(AssemblyReference).Assembly);
-
         services.AddMediatR(cfg =>
         {
             cfg.RegisterServicesFromAssembly(typeof(AssemblyReference).Assembly);
             cfg.AddOpenBehavior(typeof(ValidationBehavior<,>));
         });
-    }
 
-    public static void AddServices(this IServiceCollection services)
-    {
+        // Services
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<ITokenService, TokenService>();
+
+        return services;
     }
 }

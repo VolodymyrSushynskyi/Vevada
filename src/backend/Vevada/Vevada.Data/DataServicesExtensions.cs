@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Vevada.Data.Constants;
 using Vevada.Data.Entities;
 using Vevada.Data.Seeders;
 
@@ -8,32 +10,50 @@ namespace Vevada.Data;
 
 public static class DataServicesExtensions
 {
-    public static void AddDbContext(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddDataInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddDbContext<VevadaDbContext>(options =>
         {
             options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"));
         });
-    }
 
-    public static void AddSeeders(this IServiceCollection services)
-    {
+        // Moved from Program.cs!
+        services.AddIdentityCore<User>()
+            .AddRoles<Role>()
+            .AddEntityFrameworkStores<VevadaDbContext>();
+
+        // Seeders
         services.AddScoped<ISeeder, RoleSeeder>();
         services.AddScoped<ISeeder, UserSeeder>();
+
+        return services;
     }
 
-    public static async Task MigrateDatabaseAsync(IServiceScope serviceScope)
+    public static async Task InitializeDatabaseAsync(this IServiceProvider serviceProvider)
     {
-        var dbContext = serviceScope.ServiceProvider.GetRequiredService<VevadaDbContext>();
-        await dbContext.Database.MigrateAsync();
-    }
+        using var scope = serviceProvider.CreateScope();
 
-    public static async Task SeedDatabaseAsync(IServiceScope serviceScope)
-    {
-        var seeders = serviceScope.ServiceProvider.GetServices<ISeeder>().OrderBy(s => s.Order);
-        foreach (var seeder in seeders)
+        var logger = scope.ServiceProvider.GetRequiredService<ILogger<VevadaDbContext>>();
+
+        try
         {
-            await seeder.SeedAsync();
+            logger.LogApplyingMigrations();
+
+            var dbContext = scope.ServiceProvider.GetRequiredService<VevadaDbContext>();
+            await dbContext.Database.MigrateAsync();
+
+            logger.LogMigrationsSuccess();
+
+            var seeders = scope.ServiceProvider.GetServices<ISeeder>().OrderBy(s => s.Order);
+            foreach (var seeder in seeders)
+            {
+                await seeder.SeedAsync();
+            }
+        }
+        catch (Exception ex)
+        {
+            logger.LogDatabaseInitializationFailed(ex);
+            throw;
         }
     }
 }

@@ -18,8 +18,4 @@
     <ProjectReference Include="..\Vevada.Data\Vevada.Data.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Auth\Mapping\" />
-  </ItemGroup>
-
 </Project>

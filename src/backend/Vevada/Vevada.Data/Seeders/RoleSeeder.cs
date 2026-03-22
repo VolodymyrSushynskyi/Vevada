@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
 using Vevada.Data.Constants;
 using Vevada.Data.Entities;
 
@@ -10,14 +11,18 @@ public class RoleSeeder : ISeeder
     public int Order => ExecutionOrder;
 
     private readonly RoleManager<Role> _roleManager;
+    private readonly ILogger<RoleSeeder> _logger;
 
-    public RoleSeeder(RoleManager<Role> roleManager)
+    public RoleSeeder(RoleManager<Role> roleManager, ILogger<RoleSeeder> logger)
     {
         _roleManager = roleManager;
+        _logger = logger;
     }
 
     public async Task<int> SeedAsync()
     {
+        _logger.LogSeedingStarted(nameof(RoleSeeder));
+
         int seededCount = 0;
 
         foreach (var role in AppRoles.All)
@@ -37,6 +42,8 @@ public class RoleSeeder : ISeeder
                 }
             }
         }
+
+        _logger.LogSeedingCompleted(nameof(RoleSeeder), seededCount);
 
         return seededCount;
     }
