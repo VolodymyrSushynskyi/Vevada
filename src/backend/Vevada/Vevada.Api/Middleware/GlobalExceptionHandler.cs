@@ -40,7 +40,7 @@ public class GlobalExceptionHandler : IExceptionHandler
 
             httpContext.Response.StatusCode = validationProblemDetails.Status.Value;
             httpContext.Response.ContentType = "application/problem+json";
-            await httpContext.Response.WriteAsJsonAsync(validationProblemDetails, cancellationToken);
+            await httpContext.Response.WriteAsJsonAsync(validationProblemDetails, CancellationToken.None);
 
             return true;
         }
@@ -48,19 +48,6 @@ public class GlobalExceptionHandler : IExceptionHandler
         if (exception is OperationCanceledException)
         {
             _logger.LogInformation("Request was canceled by the client.");
-
-            var canceledProblemDetails = new ProblemDetails
-            {
-                Status = 499,
-                Title = "Request Canceled",
-                Detail = "The request was canceled.",
-                Instance = httpContext.Request.Path
-            };
-
-            httpContext.Response.StatusCode = canceledProblemDetails.Status.Value;
-            httpContext.Response.ContentType = "application/problem+json";
-            await httpContext.Response.WriteAsJsonAsync(canceledProblemDetails, cancellationToken);
-
             return true;
         }
 
@@ -79,7 +66,7 @@ public class GlobalExceptionHandler : IExceptionHandler
 
         httpContext.Response.StatusCode = problemDetails.Status.Value;
         httpContext.Response.ContentType = "application/problem+json";
-        await httpContext.Response.WriteAsJsonAsync(problemDetails, cancellationToken);
+        await httpContext.Response.WriteAsJsonAsync(problemDetails, CancellationToken.None);
 
         return true;
     }
