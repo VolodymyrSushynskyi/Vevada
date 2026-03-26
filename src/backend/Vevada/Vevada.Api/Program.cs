@@ -12,10 +12,6 @@ public static class Program
             .WriteTo.Console()
             .CreateBootstrapLogger();
 
-        Log.Logger = new LoggerConfiguration()
-            .WriteTo.Console()
-            .CreateBootstrapLogger();
-
         try
         {
             Log.Information("Starting Vevada API...");
@@ -55,6 +51,8 @@ public static class Program
         catch (Exception ex)
         {
             Log.Fatal(ex, "Application terminated unexpectedly");
+            Environment.ExitCode = 1;
+            throw;
         }
         finally
         {

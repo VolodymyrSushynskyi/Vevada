@@ -95,7 +95,6 @@ public class AuthService : IAuthService
             {
                 var errors = string.Join(", ", createResult.Errors.Select(e => e.Description));
                 _logger.LogRegistrationFailed(userEmail, $"Identity validation failed: {errors}");
-
                 throw new AuthException(errors);
             }
 
@@ -170,7 +169,7 @@ public class AuthService : IAuthService
         var user = await _userManager.FindByEmailAsync(email);
         if (user == null)
         {
-            _logger.LogWarning("Attempted getting the roles of non-existent Email: {email}", email);
+            _logger.LogWarning("Attempted getting the roles of non-existent Email: {Email}", email);
             throw new AuthException(AuthMessages.UserNotFound);
         }
 

@@ -7,9 +7,6 @@ public static partial class AuthLogs
     [LoggerMessage(Level = LogLevel.Warning, Message = "Login failed for {Email}: {Reason}")]
     public static partial void LogLoginFailed(this ILogger logger, string email, string reason);
 
-    [LoggerMessage(Level = LogLevel.Error, Message = "Database update failed while saving refresh token for user {UserId}. Errors: {Errors}")]
-    public static partial void LogRefreshTokenSaveFailed(this ILogger logger, string userId, string errors);
-
     [LoggerMessage(Level = LogLevel.Warning, Message = "Registration failed for {Email}: {Reason}")]
     public static partial void LogRegistrationFailed(this ILogger logger, string email, string reason);
 

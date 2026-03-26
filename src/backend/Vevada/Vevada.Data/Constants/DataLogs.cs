@@ -13,7 +13,7 @@ public static partial class DataLogs
     [LoggerMessage(Level = LogLevel.Information, Message = "{SeederName} seeder started...")]
     public static partial void LogSeedingStarted(this ILogger logger, string seederName);
 
-    [LoggerMessage(Level = LogLevel.Information, Message = "{SeederName} seeder completed. Updated {itemsUpdated} items.")]
+    [LoggerMessage(Level = LogLevel.Information, Message = "{SeederName} seeder completed. Updated {ItemsUpdated} items.")]
     public static partial void LogSeedingCompleted(this ILogger logger, string seederName, int itemsUpdated);
 
     [LoggerMessage(Level = LogLevel.Critical, Message = "Database initialization failed during startup.")]

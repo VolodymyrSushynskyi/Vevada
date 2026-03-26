@@ -16,7 +16,7 @@ public static class ApiServicesExtensions
         services.Configure<JwtSettings>(configuration.GetSection(JwtSettings.SectionName));
 
         var jwtSettings = configuration.GetSection(JwtSettings.SectionName).Get<JwtSettings>()
-            ?? throw new InvalidOperationException("JwtSettings section is missing from appsettings.json.");
+            ?? throw new InvalidOperationException("JwtSettings section is missing from configuration.");
 
         var key = Encoding.ASCII.GetBytes(jwtSettings.Key);
 
@@ -38,6 +38,8 @@ public static class ApiServicesExtensions
                 IssuerSigningKey = new SymmetricSecurityKey(key)
             };
         });
+
+        services.AddAuthorization();
 
         services.AddSwaggerGen(c =>
         {
