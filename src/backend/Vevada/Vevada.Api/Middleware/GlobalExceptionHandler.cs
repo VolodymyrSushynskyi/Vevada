@@ -40,7 +40,7 @@ public class GlobalExceptionHandler : IExceptionHandler
 
             httpContext.Response.StatusCode = validationProblemDetails.Status.Value;
             httpContext.Response.ContentType = "application/problem+json";
-            await httpContext.Response.WriteAsJsonAsync(validationProblemDetails, CancellationToken.None);
+            await httpContext.Response.WriteAsJsonAsync(validationProblemDetails, cancellationToken);
 
             return true;
         }
@@ -66,7 +66,7 @@ public class GlobalExceptionHandler : IExceptionHandler
 
         httpContext.Response.StatusCode = problemDetails.Status.Value;
         httpContext.Response.ContentType = "application/problem+json";
-        await httpContext.Response.WriteAsJsonAsync(problemDetails, CancellationToken.None);
+        await httpContext.Response.WriteAsJsonAsync(problemDetails, cancellationToken);
 
         return true;
     }
