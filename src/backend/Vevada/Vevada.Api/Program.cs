@@ -33,6 +33,8 @@ public static class Program
                 await app.Services.InitializeDatabaseAsync();
             }
 
+            app.UseExceptionHandler();
+
             app.UseSerilogRequestLogging();
 
             if (app.Environment.IsDevelopment())
