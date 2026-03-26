@@ -1,9 +1,6 @@
-
-using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Models;
+using Serilog;
 using Vevada.Business;
 using Vevada.Data;
-using Vevada.Data.Entities;
 
 namespace Vevada.Api;
 
@@ -11,60 +8,55 @@ public static class Program
 {
     public static async Task Main(string[] args)
     {
-        var builder = WebApplication.CreateBuilder(args);
+        Log.Logger = new LoggerConfiguration()
+            .WriteTo.Console()
+            .CreateBootstrapLogger();
 
-        // Add services to the container.
-        builder.Services.AddDbContext(builder.Configuration);
-        builder.Services.AddIdentityCore<User>()
-            .AddRoles<Role>()
-            .AddEntityFrameworkStores<VevadaDbContext>();
-        builder.Services.AddSeeders();
-
-        builder.Services.ConfigurePipeline();
-        builder.Services.AddServices();
-
-        builder.Services.AddAuth(builder.Configuration);
-        builder.Services.AddControllers();
-        builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen(c => {
-            c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-            {
-                Name = "Authorization",
-                Type = SecuritySchemeType.Http,
-                Scheme = "Bearer",
-                BearerFormat = "JWT",
-                In = ParameterLocation.Header,
-                Description = "Enter your JWT token"
-            });
-        });
-
-
-        var app = builder.Build();
-
-        if (app.Environment.IsDevelopment())
+        try
         {
-            using (var scope = app.Services.CreateScope())
+            Log.Information("Starting Vevada API...");
+            var builder = WebApplication.CreateBuilder(args);
+
+            builder.Host.UseSerilog((context, services, configuration) => configuration
+                .ReadFrom.Configuration(context.Configuration)
+                .ReadFrom.Services(services)
+                .Enrich.FromLogContext());
+
+            builder.Services.AddDataInfrastructure(builder.Configuration);
+            builder.Services.AddBusinessLogic();
+            builder.Services.AddPresentation(builder.Configuration);
+
+            var app = builder.Build();
+
+            if (app.Environment.IsDevelopment())
             {
-                await DataServicesExtensions.MigrateDatabaseAsync(scope);
-                await DataServicesExtensions.SeedDatabaseAsync(scope);
+                await app.Services.InitializeDatabaseAsync();
             }
-        }
 
-        // Configure the HTTP request pipeline.
-        if (app.Environment.IsDevelopment())
+            app.UseSerilogRequestLogging();
+
+            if (app.Environment.IsDevelopment())
+            {
+                app.UseSwagger();
+                app.UseSwaggerUI();
+            }
+
+            app.UseHttpsRedirection();
+            app.UseAuthentication();
+            app.UseAuthorization();
+            app.MapControllers();
+
+            await app.RunAsync();
+        }
+        catch (Exception ex)
         {
-            app.UseSwagger();
-            app.UseSwaggerUI();
+            Log.Fatal(ex, "Application terminated unexpectedly");
+            Environment.ExitCode = 1;
+            throw;
         }
-
-        app.UseHttpsRedirection();
-
-        app.UseAuthentication();
-        app.UseAuthorization();
-
-
-        app.MapControllers();
-
-        await app.RunAsync();
+        finally
+        {
+            Log.CloseAndFlush();
+        }
     }
 }

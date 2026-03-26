@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Vevada.Data.Constants;
 using Vevada.Data.Entities;
 
@@ -13,16 +14,24 @@ public class UserSeeder : ISeeder
 
     private readonly UserManager<User> _userManager;
     private readonly IConfiguration _configuration;
+    private readonly ILogger<UserSeeder> _logger;
 
-    public UserSeeder(UserManager<User> userManager, IConfiguration configuration)
+    public UserSeeder(UserManager<User> userManager, IConfiguration configuration, ILogger<UserSeeder> logger)
     {
         _userManager = userManager;
         _configuration = configuration;
+        _logger = logger;
     }
 
     public async Task<int> SeedAsync()
     {
-        return await SeedSuperAdmin();
+        _logger.LogSeedingStarted(nameof(UserSeeder));
+
+        var count = await SeedSuperAdmin();
+
+        _logger.LogSeedingCompleted(nameof(UserSeeder), count);
+
+        return count;
     }
 
     private async Task<int> SeedSuperAdmin()
@@ -34,7 +43,7 @@ public class UserSeeder : ISeeder
 
         if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
         {
-            // TODO: Log a warning that super admin credentials are not set in configuration
+            _logger.LogWarning("SuperAdmin credentials are not set in configuration. Skipping SuperAdmin seeding.");
             return 0;
         }
 
@@ -55,20 +64,18 @@ public class UserSeeder : ISeeder
 
         if (!createUserResult.Succeeded)
         {
-            // TODO: Log the errors in result.Errors for debugging
-            throw new InvalidOperationException($"Failed to seed super admin");
+            var errors = string.Join(", ", createUserResult.Errors.Select(e => e.Description));
+            throw new InvalidOperationException($"Failed to seed super admin: {errors}");
         }
 
         var addRoleResult = await _userManager.AddToRoleAsync(adminUser, AppRoles.SuperAdmin.Name!);
 
         if (!addRoleResult.Succeeded)
         {
-
-            // TODO: Log the errors in result.Errors for debugging
-            throw new InvalidOperationException($"Failed to assign super admin role");
+            var errors = string.Join(", ", addRoleResult.Errors.Select(e => e.Description));
+            throw new InvalidOperationException($"Failed to assign super admin role: {errors}");
         }
 
         return 1;
     }
 }
-

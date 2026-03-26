@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
+using Vevada.Business.Auth.Constants;
 using Vevada.Business.Auth.DTOs;
 using Vevada.Business.Auth.Exceptions;
 using Vevada.Business.Auth.Interfaces;
@@ -14,17 +16,20 @@ public class AuthService : IAuthService
     private readonly UserManager<User> _userManager;
     private readonly ITokenService _tokenService;
     private readonly VevadaDbContext _context;
+    private readonly ILogger<AuthService> _logger;
 
     const int RefreshTokenValidityDays = 7;
 
     public AuthService(
         UserManager<User> userManager,
         ITokenService tokenService,
-        VevadaDbContext context)
+        VevadaDbContext context,
+        ILogger<AuthService> logger)
     {
         _userManager = userManager;
         _tokenService = tokenService;
         _context = context;
+        _logger = logger;
     }
 
     public async Task<AuthResponseDto> LoginAsync(string email, string password)
@@ -33,7 +38,9 @@ public class AuthService : IAuthService
 
         if (user == null || !await _userManager.CheckPasswordAsync(user, password))
         {
-            throw new AuthException("Invalid email or password");
+            _logger.LogLoginFailed(email, "Invalid credentials");
+
+            throw new AuthException(AuthMessages.InvalidCredentials);
         }
 
         var accessToken = await _tokenService.GenerateAccessTokenAsync(user);
@@ -46,7 +53,7 @@ public class AuthService : IAuthService
         if (!updateResult.Succeeded)
         {
             var errorDescription = string.Join("; ", updateResult.Errors.Select(e => e.Description));
-            throw new AuthException($"Failed to persist refresh token {errorDescription}");
+            throw new InvalidOperationException($"{AuthMessages.TokenGenerationFailed}: {errorDescription}");
         }
 
         var roles = await _userManager.GetRolesAsync(user);
@@ -62,12 +69,13 @@ public class AuthService : IAuthService
 
     public async Task<AuthResponseDto> RegisterClientAsync(RegisterClientModel model)
     {
-        var userEmail = model.Email ?? throw new AuthException(nameof(model.Email));
+        var userEmail = model.Email ?? throw new AuthException(AuthMessages.EmailRequired);
 
         var existingUser = await _userManager.FindByEmailAsync(userEmail);
         if (existingUser != null)
         {
-            throw new AuthException("User with this email already exists");
+            _logger.LogRegistrationFailed(userEmail, "Email already exists in the database.");
+            throw new AuthException(AuthMessages.EmailTaken);
         }
 
         using var transaction = await _context.Database.BeginTransactionAsync();
@@ -86,13 +94,15 @@ public class AuthService : IAuthService
             if (!createResult.Succeeded)
             {
                 var errors = string.Join(", ", createResult.Errors.Select(e => e.Description));
-                throw new AuthException($"User creation failed: {errors}");
+                _logger.LogRegistrationFailed(userEmail, $"Identity validation failed: {errors}");
+                throw new AuthException(errors);
             }
 
             var roleResult = await _userManager.AddToRoleAsync(user, AppRoles.Client.Name!);
             if (!roleResult.Succeeded)
             {
-                throw new AuthException("Failed to assign client role");
+                _logger.LogRegistrationFailed(userEmail, "Failed to attach role to new user.");
+                throw new AuthException(AuthMessages.RoleAssignmentFailed);
             }
 
             var clientDetails = new ClientDetails
@@ -116,7 +126,7 @@ public class AuthService : IAuthService
             if (!updateResult.Succeeded)
             {
                 var errors = string.Join(", ", updateResult.Errors.Select(e => e.Description));
-                throw new AuthException($"Failed to persist refresh token data: {errors}");
+                throw new InvalidOperationException($"{AuthMessages.TokenGenerationFailed}: {errors}");
             }
 
             await transaction.CommitAsync();
@@ -129,8 +139,9 @@ public class AuthService : IAuthService
                 Role = AppRoles.Client.Name!,
             };
         }
-        catch (Exception) // TODO: Catch more specific exceptions if possible (e.g. DbUpdateException for database errors)
+        catch (Exception ex)
         {
+            _logger.LogRegistrationTransactionFailed(ex, userEmail);
             await transaction.RollbackAsync();
             throw;
         }
@@ -142,7 +153,8 @@ public class AuthService : IAuthService
 
         if (user == null)
         {
-            throw new AuthException("User not found");
+            _logger.LogWarning("Logout attempted for non-existent UserId: {UserId}", userId);
+            throw new AuthException(AuthMessages.UserNotFound);
         }
 
         user.RefreshTokenHash = null;
@@ -157,7 +169,8 @@ public class AuthService : IAuthService
         var user = await _userManager.FindByEmailAsync(email);
         if (user == null)
         {
-            throw new AuthException("User not found");
+            _logger.LogWarning("Attempted getting the roles of non-existent Email: {Email}", email);
+            throw new AuthException(AuthMessages.UserNotFound);
         }
 
         var userRoles = await _userManager.GetRolesAsync(user);
