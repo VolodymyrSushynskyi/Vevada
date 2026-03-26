@@ -14,5 +14,5 @@ public static partial class AuthLogs
     public static partial void LogRegistrationTransactionFailed(this ILogger logger, Exception ex, string email);
 
     [LoggerMessage(Level = LogLevel.Warning, Message = "Unauthorized access attempt for email {Email}. User lacks required roles.")]
-    public static partial void LoginAccessDenied(this ILogger logger, string email);
+    public static partial void LogLoginAccessDenied(this ILogger logger, string email);
 }

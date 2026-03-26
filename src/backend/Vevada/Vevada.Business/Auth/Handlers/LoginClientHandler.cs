@@ -29,7 +29,7 @@ public class LoginClientHandler : IRequestHandler<LoginClientCommand, HandlerRes
 
             if (!permittedRoles.Any())
             {
-                _logger.LoginAccessDenied(request.Email);
+                _logger.LogLoginAccessDenied(request.Email);
                 return HandlerResult<AuthResponseDto>.Failure(AuthMessages.InvalidCredentials);
             }
 

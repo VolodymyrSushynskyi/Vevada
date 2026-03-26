@@ -38,7 +38,7 @@ public class AuthService : IAuthService
 
         if (user == null || !await _userManager.CheckPasswordAsync(user, password))
         {
-            _logger.LogLoginFailed(email, user == null ? "User not found" : "Invalid password hash");
+            _logger.LogLoginFailed(email, "Invalid credentials");
 
             throw new AuthException(AuthMessages.InvalidCredentials);
         }

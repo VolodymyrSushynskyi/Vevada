@@ -37,7 +37,7 @@ public class LoginAdminHandler : IRequestHandler<LoginAdminCommand, HandlerResul
 
             if (!permittedRoles.Any())
             {
-                _logger.LoginAccessDenied(request.Email);
+                _logger.LogLoginAccessDenied(request.Email);
                 return HandlerResult<AuthResponseDto>.Failure(AuthMessages.InvalidCredentials);
             }
 
