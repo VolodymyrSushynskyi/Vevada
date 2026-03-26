@@ -2,6 +2,7 @@
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
+using Vevada.Api.Middleware;
 using Vevada.Business.Auth.Models;
 
 namespace Vevada.Api;
@@ -12,6 +13,9 @@ public static class ApiServicesExtensions
     {
         services.AddControllers();
         services.AddEndpointsApiExplorer();
+
+        services.AddExceptionHandler<GlobalExceptionHandler>();
+        services.AddProblemDetails();
 
         services.Configure<JwtSettings>(configuration.GetSection(JwtSettings.SectionName));
 
