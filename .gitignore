@@ -4,34 +4,46 @@
 ### Angular ###
 ## Angular ##
 # compiled output
-dist/
-tmp/
+dist/              
+tmp/     
+out-tsc/
+bazel-out/          
 app/**/*.js
 app/**/*.js.map
 
 # dependencies
-node_modules/
-bower_components/
+node_modules/      
+bower_components/  
+yarn-error.log
 
 # IDEs and editors
 .idea/
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
 
 # misc
 .sass-cache/
-connect.lock/
-coverage/
-libpeerconnection.log/
+connect.lock/     
+coverage/         
+libpeerconnection.log/  
 npm-debug.log
 testem.log
-typings/
-.angular/
+typings/          
+.angular/    
+__screenshots__/     
 
 # e2e
 e2e/*.js
 e2e/*.map
 
 # System Files
-.DS_Store/
+.DS_Store   
+Thumbs.db     
 
 ### Csharp ###
 ## Ignore Visual Studio temporary files, build results, and
@@ -409,11 +421,13 @@ MigrationBackup/
 FodyWeavers.xsd
 
 # VS Code files for those working on multiple tools
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
+.vscode/
+!**/.vscode/settings.json
+!**/.vscode/tasks.json
+!**/.vscode/launch.json
+!**/.vscode/extensions.json
+!**/.vscode/mcp.json
+.history/
 *.code-workspace
 
 # Local History for Visual Studio Code

@@ -17,12 +17,10 @@ public static class DataServicesExtensions
             options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"));
         });
 
-        // Moved from Program.cs!
         services.AddIdentityCore<User>()
             .AddRoles<Role>()
             .AddEntityFrameworkStores<VevadaDbContext>();
 
-        // Seeders
         services.AddScoped<ISeeder, RoleSeeder>();
         services.AddScoped<ISeeder, UserSeeder>();
 
