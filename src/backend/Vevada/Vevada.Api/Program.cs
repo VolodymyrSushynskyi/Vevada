@@ -49,6 +49,7 @@ public static class Program
             app.MapControllers();
 
             await app.RunAsync();
+            Log.Information("Vevada API started successfully");
         }
         catch (Exception ex)
         {
