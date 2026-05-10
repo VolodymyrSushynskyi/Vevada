@@ -25,6 +25,8 @@ public static class BusinessServicesExtensions
         services.AddScoped<ITokenService, TokenService>();
         services.AddScoped<IImageProcessingService, ImageProcessingService>();
 
+        services.AddHostedService<OrphanedImageCleanupService>();
+
         return services;
     }
 }
