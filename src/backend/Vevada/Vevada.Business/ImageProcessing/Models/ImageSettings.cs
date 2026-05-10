@@ -11,4 +11,5 @@ public class ImageSettings
     public int WebpQuality { get; set; } = 80;
     public int MaxFileSizeMb { get; set; } = 5;
     public string[] AllowedContentTypes { get; set; } = { "image/jpeg", "image/png", "image/webp" };
+    public int OrphanedImageCutoffHours { get; set; } = 24;
 }

@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Vevada.Business.ImageProcessing.Interfaces;
 using Vevada.Business.ImageProcessing.Models;
 using Vevada.Data;
 
@@ -49,7 +50,7 @@ public class OrphanedImageCleanupService : BackgroundService
 
                 if (!stoppingToken.IsCancellationRequested)
                 {
-                    await CleanupOrphanedFilesAsync(stoppingToken);
+                    await PerformFullCleanupCycleAsync(stoppingToken);
                 }
             }
             catch (TaskCanceledException)
@@ -64,57 +65,104 @@ public class OrphanedImageCleanupService : BackgroundService
             }
         }
     }
-     
-    private async Task CleanupOrphanedFilesAsync(CancellationToken cancellationToken)
+
+    private async Task PerformFullCleanupCycleAsync(CancellationToken cancellationToken)
     {
-        _logger.LogInformation("Starting cleanup for orphaned image files...");
+        _logger.LogInformation("Starting cleanup cycle.");
+
+        using var scope = _serviceProvider.CreateScope();
+        var dbContext = scope.ServiceProvider.GetRequiredService<VevadaDbContext>();
+        var imageService = scope.ServiceProvider.GetRequiredService<IImageProcessingService>();
+
+        await CleanupOrphanedFilesAsync(dbContext, cancellationToken);
+
+        await CleanupAbandonedRecordsAsync(dbContext, imageService, cancellationToken);
+
+        _logger.LogInformation("Cleanup cycle complete.");
+    }
+
+    private async Task CleanupOrphanedFilesAsync(VevadaDbContext dbContext, CancellationToken cancellationToken)
+    {
+        _logger.LogInformation("Scanning for orphaned physical files...");
 
         if (!Directory.Exists(_settings.StoragePath))
         { 
             return;
         }
 
-        using var scope = _serviceProvider.CreateScope();
-        var dbContext = scope.ServiceProvider.GetRequiredService<VevadaDbContext>();
-
-        var cutoffTime = DateTime.UtcNow.AddHours(-24);
+        var cutoffTime = DateTime.UtcNow.AddHours(-_settings.OrphanedImageCutoffHours);
         var files = Directory.GetFiles(_settings.StoragePath, "*.webp")
             .Select(path => new FileInfo(path))
             .Where(f => f.CreationTimeUtc < cutoffTime)
             .ToList();
 
         if (!files.Any())
-        {
+        { 
             return;
         }
 
-        var fileGuids = files
-            .Select(f => f.Name.Substring(0, 36))
-            .Distinct()
-            .ToList();
+        var fileGuids = files.Select(f => f.Name.Substring(0, 36)).Distinct().ToList();
 
         var validGuidsInDb = await dbContext.ImageAssets
             .Where(x => fileGuids.Contains(x.Id.ToString()))
             .Select(x => x.Id.ToString())
             .ToListAsync(cancellationToken);
 
-        var orphanedFiles = files
-            .Where(f => !validGuidsInDb.Contains(f.Name.Substring(0, 36)))
-            .ToList();
+        var orphanedFiles = files.Where(f => !validGuidsInDb.Contains(f.Name.Substring(0, 36))).ToList();
 
         foreach (var file in orphanedFiles)
         {
             try
             {
                 file.Delete();
-                _logger.LogInformation("Deleted orphaned image file: {FileName}", file.Name);
+                _logger.LogInformation("Deleted orphaned file: {FileName}", file.Name);
             }
             catch (Exception ex)
             {
                 _logger.LogWarning(ex, "Failed to delete file: {FileName}", file.Name);
             }
         }
+    }
 
-        _logger.LogInformation("Cleanup complete. Deleted {Count} orphaned files.", orphanedFiles.Count);
+    private async Task CleanupAbandonedRecordsAsync(
+        VevadaDbContext dbContext,
+        IImageProcessingService imageService,
+        CancellationToken cancellationToken)
+    {
+        _logger.LogInformation("Scanning for abandoned records...");
+
+        var cutoffTime = DateTime.UtcNow.AddHours(-_settings.OrphanedImageCutoffHours);
+
+        var oldImages = await dbContext.ImageAssets
+            .Where(img => img.CreatedAt < cutoffTime)
+            .ToListAsync(cancellationToken);
+
+        int deletedCount = 0;
+
+        foreach (var image in oldImages)
+        {
+            try
+            {
+                dbContext.ImageAssets.Remove(image);
+
+                await dbContext.SaveChangesAsync(cancellationToken);
+
+                imageService.DeleteImageFile(image.Id);
+                deletedCount++;
+
+                _logger.LogInformation("Deleted abandoned record and its files for Image: {ImageId}", image.Id);
+            }
+            catch (DbUpdateException)
+            {
+                dbContext.Entry(image).State = EntityState.Unchanged;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning(ex, "Failed to process database cleanup for Image: {ImageId}", image.Id);
+                dbContext.Entry(image).State = EntityState.Unchanged;
+            }
+        }
+
+        _logger.LogInformation("Database cleanup complete. Removed {Count} abandoned records.", deletedCount);
     }
 }

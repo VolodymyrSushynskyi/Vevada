@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats.Webp;
 using SixLabors.ImageSharp.Processing;
@@ -10,12 +11,15 @@ namespace Vevada.Business.ImageProcessing.Services;
 public class ImageProcessingService : IImageProcessingService
 {
     private readonly ImageSettings _settings;
+    private readonly ILogger<ImageProcessingService> _logger;
+
     private const string ThumbSuffix = "-thumb.webp";
     private const string FullSuffix = "-full.webp";
 
-    public ImageProcessingService(IOptions<ImageSettings> options)
+    public ImageProcessingService(IOptions<ImageSettings> options, ILogger<ImageProcessingService> logger)
     {
         _settings = options.Value;
+        _logger = logger;
 
         if (!Directory.Exists(_settings.StoragePath))
         {
@@ -53,5 +57,33 @@ public class ImageProcessingService : IImageProcessingService
         }
 
         return (originalWidth, originalHeight);
+    }
+
+    public void DeleteImageFile(Guid imageId)
+    {
+        var thumbPath = Path.Combine(_settings.StoragePath, $"{imageId}{ThumbSuffix}");
+        var fullPath = Path.Combine(_settings.StoragePath, $"{imageId}{FullSuffix}");
+
+        DeleteFileSafely(thumbPath);
+        DeleteFileSafely(fullPath);
+    }
+
+    private void DeleteFileSafely(string filePath)
+    {
+        try
+        {
+            if (File.Exists(filePath))
+            {
+                File.Delete(filePath);
+            }
+        }
+        catch (UnauthorizedAccessException ex)
+        {
+            _logger.LogWarning(ex, "Permission denied while trying to delete file: {FilePath}", filePath);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex, "An unexpected error occurred while deleting file: {FilePath}", filePath);
+        }
     }
 }
