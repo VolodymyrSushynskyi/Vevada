@@ -4,6 +4,7 @@ using Microsoft.OpenApi.Models;
 using System.Text;
 using Vevada.Api.Middleware;
 using Vevada.Business.Auth.Models;
+using Vevada.Business.ImageProcessing.Models;
 
 namespace Vevada.Api;
 
@@ -18,6 +19,7 @@ public static class ApiServicesExtensions
         services.AddProblemDetails();
 
         services.Configure<JwtSettings>(configuration.GetSection(JwtSettings.SectionName));
+        services.Configure<ImageSettings>(configuration.GetSection(ImageSettings.SectionName));
 
         var jwtSettings = configuration.GetSection(JwtSettings.SectionName).Get<JwtSettings>()
             ?? throw new InvalidOperationException("JwtSettings section is missing from configuration.");
