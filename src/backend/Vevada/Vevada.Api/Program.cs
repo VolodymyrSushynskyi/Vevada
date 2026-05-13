@@ -51,6 +51,10 @@ public static class Program
 
             await app.RunAsync();
         }
+        catch (HostAbortedException)
+        {
+            // The EF Core tools throw this exception intentionally to stop the web server from actually starting
+        }
         catch (Exception ex)
         {
             Log.Fatal(ex, "Application terminated unexpectedly");
