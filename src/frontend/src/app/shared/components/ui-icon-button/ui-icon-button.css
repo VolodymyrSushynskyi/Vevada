@@ -20,9 +20,6 @@
   cursor: not-allowed;
 }
 
-/* ==============================
-   2. ФОРМА
-============================== */
 .icon-btn.circle {
   border-radius: 50%;
 }
@@ -31,11 +28,6 @@
   border-radius: 20px;
 }
 
-/* ==============================
-   3. СТИЛИ И ЦВЕТА 
-============================== */
-
-/* --- GHOST GREY --- */
 .ghost.grey {
   color: var(--grey-500);
 }
@@ -49,7 +41,6 @@
   color: var(--grey-200);
 }
 
-/* --- GHOST WHITE--- */
 .ghost.white {
   color: var(--white);
 }
@@ -63,7 +54,6 @@
   color: var(--grey-200);
 }
 
-/* --- OUTLINED GREY --- */
 .outlined.grey {
   color: var(--grey-500);
   background-color: transparent;
@@ -83,7 +73,6 @@
   opacity: 40%;
 }
 
-/* --- FILLED GREEN --- */
 .filled.green {
   background-color: var(--green-50, #0d7054);
   color: #ffffff;
@@ -100,7 +89,6 @@
   opacity: 40%;
 }
 
-/* --- FILLED PINK --- */
 .filled.pink {
   background-color: var(--pink-100);
   color: var(--grey-600);

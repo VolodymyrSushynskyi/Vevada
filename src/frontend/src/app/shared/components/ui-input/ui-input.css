@@ -2,7 +2,7 @@
   width: 100%;
 }
 
-/* 1. Скругление углов (форма "таблетки") */
+/* Rounded corner */
 ::ng-deep .input-container .mdc-notched-outline__leading {
   border-top-left-radius: 20px !important;
   border-bottom-left-radius: 20px !important;
@@ -24,14 +24,14 @@
   border-right: none !important;
 }
 
-/* 2. Изменение цвета рамки при активном состоянии (фокусе) на твой фирменный цвет */
+/* Change the border color when active */
 ::ng-deep .input-container.mat-focused .mdc-notched-outline__leading,
 ::ng-deep .input-container.mat-focused .mdc-notched-outline__notch,
 ::ng-deep .input-container.mat-focused .mdc-notched-outline__trailing {
   border-color: var(--green-200) !important;
 }
 
-/* 3. Изменение цвета текста плавающего лейбла при фокусе */
+/* Change floating label text color on focus */
 ::ng-deep .input-container.mat-focused .mdc-floating-label {
   color: var(--green-200) !important;
 }
