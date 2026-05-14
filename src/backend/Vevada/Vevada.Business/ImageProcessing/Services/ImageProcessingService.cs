@@ -3,6 +3,8 @@ using Microsoft.Extensions.Options;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats.Webp;
 using SixLabors.ImageSharp.Processing;
+using Vevada.Business.ImageProcessing.Constants;
+using Vevada.Business.ImageProcessing.Exceptions;
 using Vevada.Business.ImageProcessing.Interfaces;
 using Vevada.Business.ImageProcessing.Models;
 
@@ -29,34 +31,46 @@ public class ImageProcessingService : IImageProcessingService
 
     public async Task<(int Width, int Height)> ProcessAndSaveAsync(Stream fileStream, Guid imageId, CancellationToken cancellationToken = default)
     {
-        using var image = await Image.LoadAsync(fileStream, cancellationToken);
-        var originalWidth = image.Width;
-        var originalHeight = image.Height;
-
-        var thumbPath = Path.Combine(_settings.StoragePath, $"{imageId}{ThumbSuffix}");
-        var fullPath = Path.Combine(_settings.StoragePath, $"{imageId}{FullSuffix}");
-
-        var webpEncoder = new WebpEncoder { Quality = _settings.WebpQuality };
-
-        using (var thumb = image.Clone(x => x.Resize(new ResizeOptions
+        try
         {
-            Size = new Size(_settings.ThumbnailSize, _settings.ThumbnailSize),
-            Mode = ResizeMode.Crop
-        })))
-        {
-            await thumb.SaveAsync(thumbPath, webpEncoder, cancellationToken);
+            using var image = await Image.LoadAsync(fileStream, cancellationToken);
+            var originalWidth = image.Width;
+            var originalHeight = image.Height;
+
+            var thumbPath = Path.Combine(_settings.StoragePath, $"{imageId}{ThumbSuffix}");
+            var fullPath = Path.Combine(_settings.StoragePath, $"{imageId}{FullSuffix}");
+
+            var webpEncoder = new WebpEncoder { Quality = _settings.WebpQuality };
+
+            using (var thumb = image.Clone(x => x.Resize(new ResizeOptions
+            {
+                Size = new Size(_settings.ThumbnailSize, _settings.ThumbnailSize),
+                Mode = ResizeMode.Crop
+            })))
+            {
+                await thumb.SaveAsync(thumbPath, webpEncoder, cancellationToken);
+            }
+
+            using (var full = image.Clone(x => x.Resize(new ResizeOptions
+            {
+                Size = new Size(_settings.MaxWidth, _settings.MaxHeight),
+                Mode = ResizeMode.Max
+            })))
+            {
+                await full.SaveAsync(fullPath, webpEncoder, cancellationToken);
+            }
+
+            return (originalWidth, originalHeight);
         }
-
-        using (var full = image.Clone(x => x.Resize(new ResizeOptions
+        catch (Exception ex) when (
+            ex is NotSupportedException ||
+            ex is InvalidImageContentException ||
+            ex is UnknownImageFormatException ||
+            ex is ImageProcessingException)
         {
-            Size = new Size(_settings.MaxWidth, _settings.MaxHeight),
-            Mode = ResizeMode.Max
-        })))
-        {
-            await full.SaveAsync(fullPath, webpEncoder, cancellationToken);
+            _logger.LogError(ex, ImageProcessingServiceMessages.ImageProcessingError);
+            throw new ImageProcessingServiceException(ImageProcessingServiceMessages.ImageProcessingError, ex);
         }
-
-        return (originalWidth, originalHeight);
     }
 
     public void DeleteImageFile(Guid imageId)
@@ -64,11 +78,11 @@ public class ImageProcessingService : IImageProcessingService
         var thumbPath = Path.Combine(_settings.StoragePath, $"{imageId}{ThumbSuffix}");
         var fullPath = Path.Combine(_settings.StoragePath, $"{imageId}{FullSuffix}");
 
-        DeleteFileSafely(thumbPath);
-        DeleteFileSafely(fullPath);
+        DeleteFile(thumbPath);
+        DeleteFile(fullPath);
     }
 
-    private void DeleteFileSafely(string filePath)
+    private void DeleteFile(string filePath)
     {
         try
         {
@@ -77,13 +91,10 @@ public class ImageProcessingService : IImageProcessingService
                 File.Delete(filePath);
             }
         }
-        catch (UnauthorizedAccessException ex)
-        {
-            _logger.LogWarning(ex, "Permission denied while trying to delete file: {FilePath}", filePath);
-        }
         catch (Exception ex)
         {
-            _logger.LogWarning(ex, "An unexpected error occurred while deleting file: {FilePath}", filePath);
+            _logger.LogWarning(ex, ImageProcessingServiceMessages.ImageDeletionError);
+            throw new ImageProcessingServiceException(ImageProcessingServiceMessages.ImageDeletionError, ex);
         }
     }
 }

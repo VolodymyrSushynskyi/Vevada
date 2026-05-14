@@ -16,15 +16,16 @@ public class UploadImageCommandValidator : AbstractValidator<UploadImageCommand>
 
         RuleFor(x => x.File)
             .NotNull()
-            .WithMessage(ImageValidationMessages.MissingFile);
-
-        RuleFor(x => x.File.Length)
-            .GreaterThan(0).WithMessage(ImageValidationMessages.EmptyFile)
-            .LessThanOrEqualTo(maxFileSizeBytes)
-            .WithMessage(ImageValidationMessages.ExceededMaxSize(settings.MaxFileSizeMb));
-
-        RuleFor(x => x.File.ContentType)
-            .Must(contentType => settings.AllowedContentTypes.Contains(contentType.ToLowerInvariant()))
-            .WithMessage(ImageValidationMessages.InvalidFormat(settings.AllowedContentTypes));
+            .WithMessage(ImageValidationMessages.MissingFile)
+            .DependentRules(() =>
+            {
+                RuleFor(x => x.File.Length)
+                    .GreaterThan(0).WithMessage(ImageValidationMessages.EmptyFile)
+                    .LessThanOrEqualTo(maxFileSizeBytes)
+                    .WithMessage(ImageValidationMessages.ExceededMaxSize(settings.MaxFileSizeMb));
+                RuleFor(x => x.File.ContentType)
+                    .Must(contentType => settings.AllowedContentTypes.Contains(contentType.ToLowerInvariant()))
+                    .WithMessage(ImageValidationMessages.InvalidFormat(settings.AllowedContentTypes));
+            });
     }
 }

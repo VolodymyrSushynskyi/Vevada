@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
 using Vevada.Business.Common;
 using Vevada.Business.ImageProcessing.Commands;
+using Vevada.Business.ImageProcessing.Exceptions;
 using Vevada.Business.ImageProcessing.Interfaces;
 using Vevada.Data;
 using Vevada.Data.Entities;
@@ -22,9 +23,9 @@ public class UploadImageCommandHandler : IRequestHandler<UploadImageCommand, Han
 
     public async Task<HandlerResult<Guid>> Handle(UploadImageCommand request, CancellationToken cancellationToken)
     {
-        using var md5 = MD5.Create();
+        using var sha256 = SHA256.Create();
         using var streamForHashing = request.File.OpenReadStream();
-        var hashBytes = await md5.ComputeHashAsync(streamForHashing, cancellationToken);
+        var hashBytes = await sha256.ComputeHashAsync(streamForHashing, cancellationToken);
         var hashString = Convert.ToHexString(hashBytes);
 
         var existingImage = await _dbContext.ImageAssets
@@ -38,7 +39,16 @@ public class UploadImageCommandHandler : IRequestHandler<UploadImageCommand, Han
         var newImageId = Guid.NewGuid();
         using var streamForProcessing = request.File.OpenReadStream();
 
-        var dimensions = await _imageService.ProcessAndSaveAsync(streamForProcessing, newImageId, cancellationToken);
+        (int Width, int Height) dimensions;
+
+        try
+        {
+            dimensions = await _imageService.ProcessAndSaveAsync(streamForProcessing, newImageId, cancellationToken);
+        }
+        catch (ImageProcessingServiceException ex)
+        {
+            return HandlerResult<Guid>.Failure($"Failed to process image: {ex.Message}");
+        }
 
         var newAsset = new ImageAsset
         {
