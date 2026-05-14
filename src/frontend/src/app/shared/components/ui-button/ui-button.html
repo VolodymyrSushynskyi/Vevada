@@ -1,18 +1,17 @@
-<button 
+<button
   [type]="type"
   [disabled]="disabled"
-  [ngClass]="['custom-btn', variant]">
-  
-  <div class="icon-slot">
-    <ng-content select="[icon-left]"></ng-content>
-  </div>
+  class="btn text-body-1-medium"
+  [ngClass]="variant"
+  (click)="onClick($event)"
+>
+  @if (icon && iconPosition === 'left') {
+    <mat-icon class="btn-icon" [svgIcon]="icon"></mat-icon>
+  }
 
-  <div class="text-slot">
-    <ng-content></ng-content>
-  </div>
+  <span class="btn-label">{{ label }}</span>
 
-  <div class="icon-slot">
-    <ng-content select="[icon-right]"></ng-content>
-  </div>
-
+  @if (icon && iconPosition === 'right') {
+    <mat-icon class="btn-icon" [svgIcon]="icon"></mat-icon>
+  }
 </button>

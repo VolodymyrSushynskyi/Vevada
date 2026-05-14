@@ -1,80 +1,50 @@
-.input-wrapper {
-  position: relative;
+.input-container {
   width: 100%;
-  display: flex;
 }
 
-.custom-input {
-  width: 100%;
-  padding: 16px 48px 16px 20px;
-  font-family: inherit;
-  font-size: 16px;
-  color: var(--grey-400);
-  background-color: transparent;
-  border: 2px solid var(--grey-200); 
-  border-radius: 20px; 
-  outline: none;
-  transition: all 0.2s ease-in-out;
+/* 1. Скругление углов (форма "таблетки") */
+::ng-deep .input-container .mdc-notched-outline__leading {
+  border-top-left-radius: 20px !important;
+  border-bottom-left-radius: 20px !important;
+  width: 24px !important;
+  border-width: 2px !important;
+  border-right: none !important;
 }
 
-.input-label {
-  position: absolute;
-  left: 16px; 
-  top: 50%;
-  transform: translateY(-50%); 
-  color: var(--grey-300);
-  font-size: 16px;
-  pointer-events: none; 
-  transition: all 0.2s ease-in-out;
-  padding: 0 4px; 
-  background-color: var(--white); 
+::ng-deep .input-container .mdc-notched-outline__trailing {
+  border-top-right-radius: 20px !important;
+  border-bottom-right-radius: 20px !important;
+  border-width: 2px !important;
+  border-left: none !important;
 }
 
-
-.input-wrapper.focused .input-label,
-.input-wrapper.has-value .input-label {
-  top: 0;
-  font-size: 14px;
-  color: var(--grey-300); 
+::ng-deep .input-container .mdc-notched-outline__notch {
+  border-width: 2px !important;
+  border-left: none !important;
+  border-right: none !important;
 }
 
-.input-wrapper.focused .custom-input {
-  border-color: var(--green-200);
-  color: var(--grey-700);
+/* 2. Изменение цвета рамки при активном состоянии (фокусе) на твой фирменный цвет */
+::ng-deep .input-container.mat-focused .mdc-notched-outline__leading,
+::ng-deep .input-container.mat-focused .mdc-notched-outline__notch,
+::ng-deep .input-container.mat-focused .mdc-notched-outline__trailing {
+  border-color: var(--green-200) !important;
 }
 
-.input-wrapper.focused .input-label {
-  color: var(--green-200);
-  font-weight: bold;
+/* 3. Изменение цвета текста плавающего лейбла при фокусе */
+::ng-deep .input-container.mat-focused .mdc-floating-label {
+  color: var(--green-200) !important;
 }
 
-.input-wrapper:not(.disabled):not(.focused):hover .custom-input {
-  border-color: var(--grey-300); 
-  color: var(--grey-600);
+::ng-deep .input-container input.mat-mdc-input-element {
+  padding-left: 8px !important;
 }
 
-.input-wrapper:not(.disabled):not(.focused):hover .input-label {
-  color: var(--grey-500); 
-  font-weight: bold;
-}
-
-.input-wrapper.disabled .custom-input {
-  border-color: var(--grey-200);
-  color: var(--grey-300);
-  cursor: not-allowed;
-}
-
-.input-wrapper.disabled .input-label {
+/* 4. Настройка цвета иконки-глазика */
+::ng-deep .input-container mat-icon {
   color: var(--grey-300);
 }
 
-.suffix-slot {
-  position: absolute;
-  right: 24px; 
-  top: 50%;
-  transform: translateY(-50%); 
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1; 
+::ng-deep .input-container button[matSuffix] {
+  margin-right: 12px !important;
 }

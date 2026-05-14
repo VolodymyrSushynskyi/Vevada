@@ -1,73 +1,71 @@
-.custom-btn {
+.btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 7px; 
+  gap: 8px;
+  height: 61px;
+  min-width: 131px;
   padding: 15px 20px;
-  border-radius: 34px; 
-  font-size: 18px;
-  font-weight: 500;
+  border-radius: 34px;
+  border: 1px solid transparent;
   cursor: pointer;
-  border: 2px solid transparent;
-  transition: all 0.2s ease-in-out;
-  width: max-content;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
 }
 
-.icon-slot {
+.btn:disabled {
+  cursor: not-allowed;
+  opacity: 40%;
+}
+
+.btn-icon {
+  width: 28px;
+  height: 28px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
-.icon-slot:empty {
-  display: none;
-}
 
-::ng-deep .icon-slot svg {
-  width: 20px;
-  height: 20px;
-  fill: currentColor; 
-}
-
-/* --- PRIMARY --- */
-.custom-btn.primary {
+.btn.primary {
   background-color: var(--green-50);
-  color: var(--white);
-  border-color: transparent;
+  color: #ffffff;
+  border: none;
 }
-.custom-btn.primary:hover:not(:disabled) {
+
+.btn.primary:hover:not(:disabled) {
   background-color: var(--green-100);
 }
-.custom-btn.primary:active:not(:disabled) {
+
+.btn.primary:active:not(:disabled) {
   background-color: var(--green-200);
 }
 
-.custom-btn.primary:disabled {
+.btn.primary:disabled {
   background-color: var(--grey-200);
   color: var(--grey-500);
-  opacity: 0.4;
-  cursor: not-allowed;
 }
 
-/* --- SECONDARY --- */
-.custom-btn.secondary {
+.btn.secondary {
   background-color: var(--white);
   color: var(--grey-500);
-  border-color: var(--grey-200);
+  border: 2px solid var(--grey-200);
 }
-.custom-btn.secondary:hover:not(:disabled) {
+
+.btn.secondary:hover:not(:disabled) {
   background-color: var(--grey-50);
+  border-color: var(--grey-300);
 }
-.custom-btn.secondary:active:not(:disabled) {
+
+.btn.secondary:active:not(:disabled) {
   background-color: var(--grey-50);
   color: var(--grey-600);
   border-color: var(--grey-400);
 }
 
-/* --- DISABLED --- */
-.custom-btn.secondary:disabled {
+.btn.secondary:disabled {
   background-color: var(--white);
-  color: var(--grey-200);
-  border-color: var(--grey-200);
-  opacity: 0.4;
-  cursor: not-allowed;
+  color: var(--grey-500);
+  border: 2px solid var(--grey-200);
 }

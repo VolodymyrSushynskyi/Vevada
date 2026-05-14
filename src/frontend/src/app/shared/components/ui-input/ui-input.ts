@@ -1,60 +1,36 @@
-import { Component, Input, forwardRef } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { Component, Input } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-ui-input',
-  imports: [],
+  standalone: true,
+  imports: [
+    CommonModule,
+    MatInputModule,
+    MatFormFieldModule,
+    MatIconModule,
+    ReactiveFormsModule,
+    MatButtonModule,
+  ],
   templateUrl: './ui-input.html',
   styleUrl: './ui-input.css',
-  providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => UiInput),
-      multi: true
-    }
-  ]
+  providers: [],
 })
-export class UiInput implements ControlValueAccessor{
-  @Input() label: string = 'Default label';
-  @Input() type: 'text' | 'password' | 'email' | 'number' = 'text';
+export class UiInput {
+  @Input() label: string = '';
+  @Input() type: 'text' | 'password' | 'email' | 'tel' = 'text';
+  @Input() control: FormControl = new FormControl();
 
-  value: string = '';
-  isDisabled: boolean = false;
-  isFocused: boolean = false;
+  isPasswordVisible: boolean = false;
 
-  onChange = (value: string) => {};
-  onTouched = () => {};
-
-
-  writeValue(value: string): void {
-    this.value = value || '';
-  }
-
-  registerOnChange(fn: any): void {
-    this.onChange = fn;
-  }
-
-  registerOnTouched(fn: any): void {
-    this.onTouched = fn;
-  }
-
-  setDisabledState(isDisabled: boolean): void {
-    this.isDisabled = isDisabled;
-  }
-
-
-  handleFocus() {
-    this.isFocused = true;
-  }
-
-  handleBlur() {
-    this.isFocused = false;
-    this.onTouched(); 
-  }
-
-  handleInput(event: Event) {
-    const val = (event.target as HTMLInputElement).value;
-    this.value = val;
-    this.onChange(val); 
+  togglePasswordVisibility(event: Event): void {
+    event.preventDefault();
+    event.stopPropagation();
+    this.isPasswordVisible = !this.isPasswordVisible;
   }
 }

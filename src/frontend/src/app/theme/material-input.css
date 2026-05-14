@@ -1,0 +1,22 @@
+:root {
+  --mdc-outlined-text-field-container-shape: 28px;
+
+  /* Основной цвет (темно-зеленый из макета) */
+  --mdc-outlined-text-field-focus-outline-color: var(--green-200);
+  --mat-form-field-focus-label-indicator-color: var(--green-200);
+
+  /* Цвет в обычном состоянии */
+  --mdc-outlined-text-field-outline-color: var(--grey-200);
+}
+
+/* Специальный фикс для корректного отображения радиуса в Material 3 */
+.mat-mdc-text-field-wrapper.mdc-text-field--outlined .mdc-notched-outline__leading,
+.mat-mdc-text-field-wrapper.mdc-text-field--outlined .mdc-notched-outline__notch,
+.mat-mdc-text-field-wrapper.mdc-text-field--outlined .mdc-notched-outline__trailing {
+  border-radius: 20px !important;
+}
+
+/* Убираем лишние отступы, если нужно плотное прилегание */
+.mat-mdc-form-field-subscript-wrapper {
+  padding-left: 16px !important;
+}

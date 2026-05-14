@@ -1,17 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { UiButton } from './ui-button';
+import { CloseButton } from './close-button';
 
-describe('UiButton', () => {
-  let component: UiButton;
-  let fixture: ComponentFixture<UiButton>;
+describe('CloseButton', () => {
+  let component: CloseButton;
+  let fixture: ComponentFixture<CloseButton>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [UiButton],
-    }).compileComponents();
+      imports: [CloseButton]
+    })
+    .compileComponents();
 
-    fixture = TestBed.createComponent(UiButton);
+    fixture = TestBed.createComponent(CloseButton);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

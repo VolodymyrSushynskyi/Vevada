@@ -2,54 +2,118 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background-color: transparent;
-  border: none;
-  border-radius: 50%; 
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
   padding: 0;
+  border: 2px solid transparent;
+  background-color: transparent;
+  cursor: pointer;
+  box-sizing: border-box;
+  transition: all 0.2s ease;
 }
 
-.icon-wrapper {
+.icon-btn mat-icon {
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-::ng-deep .icon-wrapper svg {
-  display: block;
-  fill: currentColor;
-  width: 100%;
-  height: 100%;
+.icon-btn:disabled {
+  cursor: not-allowed;
 }
 
+/* ==============================
+   2. ФОРМА
+============================== */
+.icon-btn.circle {
+  border-radius: 50%;
+}
 
-.icon-btn.x-small { width: 24px; height: 24px; }
-.icon-btn.small { width: 32px; height: 32px; }
-.icon-btn.medium { width: 40px; height: 40px; }
-.icon-btn.large { width: 48px; height: 48px; }
-.icon-btn.x-large { width: 56px; height: 56px; }
+.icon-btn.rounded {
+  border-radius: 20px;
+}
 
+/* ==============================
+   3. СТИЛИ И ЦВЕТА 
+============================== */
 
-
-/* --- GREY --- */
-.icon-btn.grey { color: var(--grey-500); }
-.icon-btn.grey:hover:not(:disabled) { color: var(--grey-600); }
-.icon-btn.grey:active:not(:disabled) { color: var(--grey-700); }
-
-/* --- WHITE --- */
-.icon-btn.white { color: var(--white); }
-.icon-btn.white:hover:not(:disabled) { color: var(--grey-200);}
-.icon-btn.white:active:not(:disabled) { color: var(--grey-300); }
-
-/* --- LIGHT GREY --- */
-.icon-btn.light-grey { color: var(--grey-300); }
-.icon-btn.light-grey:hover:not(:disabled) { color: var(--grey-400);}
-.icon-btn.light-grey:active:not(:disabled) { color: var(--grey-500); }
-
-/* --- DISABLED --- */
-.icon-btn:disabled {
+/* --- GHOST GREY --- */
+.ghost.grey {
+  color: var(--grey-500);
+}
+.ghost.grey:hover:not(:disabled) {
+  color: var(--grey-600);
+}
+.ghost.grey:active:not(:disabled) {
+  color: var(--grey-700);
+}
+.ghost.grey:disabled {
   color: var(--grey-200);
-  cursor: not-allowed;
-  opacity: 0.4;
+}
+
+/* --- GHOST WHITE--- */
+.ghost.white {
+  color: var(--white);
+}
+.ghost.white:hover:not(:disabled) {
+  color: var(--grey-100);
+}
+.ghost.white:active:not(:disabled) {
+  color: var(--grey-200);
+}
+.ghost.white:disabled {
+  color: var(--grey-200);
+}
+
+/* --- OUTLINED GREY --- */
+.outlined.grey {
+  color: var(--grey-500);
+  background-color: transparent;
+  border-color: var(--grey-200);
+}
+.outlined.grey:hover:not(:disabled) {
+  border-color: var(--grey-300);
+}
+.outlined.grey:active:not(:disabled) {
+  color: var(--grey-600);
+  border-color: var(--grey-400);
+}
+.outlined.grey:disabled {
+  color: var(--grey-500);
+  background-color: transparent;
+  border-color: var(--grey-200);
+  opacity: 40%;
+}
+
+/* --- FILLED GREEN --- */
+.filled.green {
+  background-color: var(--green-50, #0d7054);
+  color: #ffffff;
+}
+.filled.green:hover:not(:disabled) {
+  background-color: var(--green-100);
+}
+.filled.green:active:not(:disabled) {
+  background-color: var(--green-200);
+}
+.filled.green:disabled {
+  background-color: var(--grey-200);
+  color: var(--grey-500);
+  opacity: 40%;
+}
+
+/* --- FILLED PINK --- */
+.filled.pink {
+  background-color: var(--pink-100);
+  color: var(--grey-600);
+}
+.filled.pink:hover:not(:disabled) {
+  background-color: var(--pink-200);
+}
+.filled.pink:active:not(:disabled) {
+  background-color: var(--pink-200);
+  color: var(--grey-600);
+}
+.filled.pink:disabled {
+  background-color: var(--grey-200);
+  color: var(--grey-500);
+  opacity: 40%;
 }

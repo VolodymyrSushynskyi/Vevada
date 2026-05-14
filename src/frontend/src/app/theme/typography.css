@@ -1,0 +1,143 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+  --font-family-primary: 'Inter', sans-serif;
+}
+
+body {
+  font-family: var(--font-family-primary);
+  font-size: 18px;
+  font-weight: 400;
+}
+
+.text-h1 {
+  font-size: 96px;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.text-h2 {
+  font-size: 64px;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.text-h3-semi-bold {
+  font-size: 40px;
+  font-weight: 600;
+  line-height: normal;
+}
+
+.text-h3-bold {
+  font-size: 40px;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.text-h4-semi-bold {
+  font-size: 32px;
+  font-weight: 600;
+  line-height: normal;
+}
+
+.text-h4-bold {
+  font-size: 32px;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.text-subtitle-1-semi-bold {
+  font-size: 24px;
+  font-weight: 600;
+  line-height: normal;
+}
+
+.text-subtitle-1-bold {
+  font-size: 24px;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.text-subtitle-2-semi-bold {
+  font-size: 20px;
+  font-weight: 600;
+  line-height: normal;
+}
+
+.text-subtitle-2-bold {
+  font-size: 20px;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.text-body-1-light {
+  font-size: 18px;
+  font-weight: 300;
+  line-height: normal;
+}
+
+.text-body-1-regular {
+  font-size: 18px;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.text-body-1-medium {
+  font-size: 18px;
+  font-weight: 500;
+  line-height: normal;
+}
+
+.text-body-1-bold {
+  font-size: 18px;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.text-body-2-light {
+  font-size: 16px;
+  font-weight: 300;
+  line-height: normal;
+}
+
+.text-body-2-regular {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.text-body-2-medium {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: normal;
+}
+
+.text-body-2-bold {
+  font-size: 16px;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.text-small-light {
+  font-size: 14px;
+  font-weight: 300;
+  line-height: normal;
+}
+
+.text-small-regular {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.text-small-medium {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: normal;
+}
+
+.text-small-bold {
+  font-size: 14px;
+  font-weight: 700;
+  line-height: normal;
+}
