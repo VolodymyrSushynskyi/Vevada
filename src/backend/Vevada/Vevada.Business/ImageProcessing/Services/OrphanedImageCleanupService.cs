@@ -101,7 +101,11 @@ public class OrphanedImageCleanupService : BackgroundService
             return;
         }
 
-        var fileGuids = files.Select(f => f.Name.Substring(0, 36)).Distinct().ToList();
+        var fileGuids = files
+            .Where(f => f.Name.Length >= 36)
+            .Select(f => f.Name.Substring(0, 36))
+            .Distinct()
+            .ToList();
 
         var validGuidsInDb = await dbContext.ImageAssets
             .Where(x => fileGuids.Contains(x.Id.ToString()))
@@ -133,13 +137,13 @@ public class OrphanedImageCleanupService : BackgroundService
 
         var cutoffTime = DateTime.UtcNow.AddHours(-_settings.OrphanedImageCutoffHours);
 
-        var oldImages = await dbContext.ImageAssets
+        var oldImages = dbContext.ImageAssets
             .Where(img => img.CreatedAt < cutoffTime)
-            .ToListAsync(cancellationToken);
+            .AsAsyncEnumerable();
 
         int deletedCount = 0;
 
-        foreach (var image in oldImages)
+        await foreach (var image in oldImages.WithCancellation(cancellationToken))
         {
             try
             {

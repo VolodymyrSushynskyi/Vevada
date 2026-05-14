@@ -5,7 +5,7 @@ using Vevada.Business.ImageProcessing.Commands;
 
 namespace Vevada.Api.Controllers;
 
-// [Authorize]
+[Authorize]
 public class ImagesController : BaseApiController
 {
     public ImagesController(IMediator mediator) : base(mediator)
@@ -17,12 +17,6 @@ public class ImagesController : BaseApiController
     {
         var command = new UploadImageCommand(file);
         var result = await Mediator.Send(command);
-
-        if (result.IsSuccess)
-        {
-            return Ok(new { ImageId = result.Value });
-        }
-
-        return BadRequest(new { Error = result.Error });
+        return HandleResult(result);
     }
 }
