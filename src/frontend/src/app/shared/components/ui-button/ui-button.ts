@@ -10,7 +10,7 @@ import { MatIconModule } from '@angular/material/icon';
   styleUrl: './ui-button.css',
 })
 export class UiButton {
-  @Input() label: string = '';
+  @Input({ required: true }) label!: string;
   @Input() variant: 'primary' | 'secondary' = 'primary';
   @Input() icon?: string;
   @Input() iconPosition: 'left' | 'right' = 'left';

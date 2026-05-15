@@ -22,7 +22,7 @@ import { MatButtonModule } from '@angular/material/button';
   providers: [],
 })
 export class UiInput {
-  @Input() label: string = '';
+  @Input({ required: true }) label!: string;
   @Input() type: 'text' | 'password' | 'email' | 'tel' = 'text';
   @Input() control: FormControl = new FormControl();
 
