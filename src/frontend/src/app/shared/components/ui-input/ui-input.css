@@ -1,0 +1,50 @@
+.input-container {
+  width: 100%;
+}
+
+/* Rounded corner */
+::ng-deep .input-container .mdc-notched-outline__leading {
+  border-top-left-radius: 20px !important;
+  border-bottom-left-radius: 20px !important;
+  width: 24px !important;
+  border-width: 2px !important;
+  border-right: none !important;
+}
+
+::ng-deep .input-container .mdc-notched-outline__trailing {
+  border-top-right-radius: 20px !important;
+  border-bottom-right-radius: 20px !important;
+  border-width: 2px !important;
+  border-left: none !important;
+}
+
+::ng-deep .input-container .mdc-notched-outline__notch {
+  border-width: 2px !important;
+  border-left: none !important;
+  border-right: none !important;
+}
+
+/* Change the border color when active */
+::ng-deep .input-container.mat-focused .mdc-notched-outline__leading,
+::ng-deep .input-container.mat-focused .mdc-notched-outline__notch,
+::ng-deep .input-container.mat-focused .mdc-notched-outline__trailing {
+  border-color: var(--green-200) !important;
+}
+
+/* Change floating label text color on focus */
+::ng-deep .input-container.mat-focused .mdc-floating-label {
+  color: var(--green-200) !important;
+}
+
+::ng-deep .input-container input.mat-mdc-input-element {
+  padding-left: 8px !important;
+}
+
+/* 4. Настройка цвета иконки-глазика */
+::ng-deep .input-container mat-icon {
+  color: var(--grey-300);
+}
+
+::ng-deep .input-container button[matSuffix] {
+  margin-right: 12px !important;
+}

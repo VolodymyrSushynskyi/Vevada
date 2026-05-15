@@ -1,0 +1,22 @@
+<mat-form-field appearance="outline" class="input-container">
+  @if (label) {
+    <mat-label class="text-body-2-regular">{{ label }}</mat-label>
+  }
+
+  <input
+    matInput
+    [type]="type === 'password' ? (isPasswordVisible ? 'text' : 'password') : type"
+    [formControl]="control"
+    class="text-body-1-regular"
+  />
+
+  @if (type === 'password') {
+    <button mat-icon-button matSuffix (click)="togglePasswordVisibility($event)" type="button">
+      <mat-icon>{{ isPasswordVisible ? 'visibility' : 'visibility_off' }}</mat-icon>
+    </button>
+  }
+
+  @if (control.hasError('required')) {
+    <mat-error class="text-body-2-regular">Це поле обов'язкове</mat-error>
+  }
+</mat-form-field>

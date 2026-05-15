@@ -1,0 +1,16 @@
+<button
+  type="button"
+  [disabled]="disabled"
+  class="icon-btn"
+  [ngClass]="[variant, color, shape]"
+  [style.width]="width"
+  [style.height]="height"
+  (click)="onClick($event)"
+>
+  <mat-icon
+    [svgIcon]="icon"
+    [style.width]="iconSize"
+    [style.height]="iconSize"
+    [style.fontSize]="iconSize"
+  ></mat-icon>
+</button>
