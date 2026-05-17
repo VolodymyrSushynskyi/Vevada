@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Npgsql;
 using Vevada.Business.ImageProcessing.Interfaces;
 using Vevada.Business.ImageProcessing.Models;
 using Vevada.Data;
@@ -86,18 +87,18 @@ public class OrphanedImageCleanupService : BackgroundService
         _logger.LogInformation("Scanning for orphaned physical files...");
 
         if (!Directory.Exists(_settings.StoragePath))
-        { 
+        {
             return;
         }
 
         var cutoffTime = DateTime.UtcNow.AddHours(-_settings.OrphanedImageCutoffHours);
-        var files = Directory.GetFiles(_settings.StoragePath, "*.webp")
+        var files = Directory.EnumerateFiles(_settings.StoragePath, "*.webp")
             .Select(path => new FileInfo(path))
             .Where(f => f.CreationTimeUtc < cutoffTime)
             .ToList();
 
         if (!files.Any())
-        { 
+        {
             return;
         }
 
@@ -112,7 +113,7 @@ public class OrphanedImageCleanupService : BackgroundService
             .Select(x => x.Id.ToString())
             .ToListAsync(cancellationToken);
 
-        var orphanedFiles = files.Where(f => !validGuidsInDb.Contains(f.Name.Substring(0, 36))).ToList();
+        var orphanedFiles = files.Where(f => f.Name.Length >= 36 && !validGuidsInDb.Contains(f.Name.Substring(0, 36))).ToList();
 
         foreach (var file in orphanedFiles)
         {
@@ -136,37 +137,51 @@ public class OrphanedImageCleanupService : BackgroundService
         _logger.LogInformation("Scanning for abandoned records...");
 
         var cutoffTime = DateTime.UtcNow.AddHours(-_settings.OrphanedImageCutoffHours);
+        bool moreRecordsExist = true;
+        const int batchSize = 100;
 
-        var oldImages = dbContext.ImageAssets
-            .Where(img => img.CreatedAt < cutoffTime)
-            .AsAsyncEnumerable();
-
-        int deletedCount = 0;
-
-        await foreach (var image in oldImages.WithCancellation(cancellationToken))
+        while (moreRecordsExist)
         {
-            try
+            var batch = await dbContext.ImageAssets
+                .Where(img => img.CreatedAt < cutoffTime)
+                .Take(batchSize)
+                .ToListAsync(cancellationToken);
+
+            if (!batch.Any())
             {
-                dbContext.ImageAssets.Remove(image);
-
-                await dbContext.SaveChangesAsync(cancellationToken);
-
-                imageService.DeleteImageFile(image.Id);
-                deletedCount++;
-
-                _logger.LogInformation("Deleted abandoned record and its files for Image: {ImageId}", image.Id);
+                moreRecordsExist = false;
+                break;
             }
-            catch (DbUpdateException)
+
+            foreach (var image in batch)
             {
-                dbContext.Entry(image).State = EntityState.Unchanged;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogWarning(ex, "Failed to process database cleanup for Image: {ImageId}", image.Id);
-                dbContext.Entry(image).State = EntityState.Unchanged;
+                try
+                {
+                    dbContext.ImageAssets.Remove(image);
+                    await dbContext.SaveChangesAsync(cancellationToken);
+
+                    imageService.DeleteImageFile(image.Id);
+
+                    _logger.LogInformation("Deleted abandoned record and its files for Image: {ImageId}", image.Id);
+                }
+                catch (DbUpdateException ex)
+                {
+                    if (ex.InnerException is PostgresException pgEx && pgEx.SqlState == PostgresErrorCodes.ForeignKeyViolation)
+                    {
+                        dbContext.Entry(image).State = EntityState.Unchanged;
+                    }
+                    else
+                    {
+                        _logger.LogError(ex, "Unexpected database error while attempting to delete Image: {ImageId}", image.Id);
+                        dbContext.Entry(image).State = EntityState.Unchanged;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogWarning(ex, "Failed to process database cleanup for Image: {ImageId}", image.Id);
+                    dbContext.Entry(image).State = EntityState.Unchanged;
+                }
             }
         }
-
-        _logger.LogInformation("Database cleanup complete. Removed {Count} abandoned records.", deletedCount);
     }
 }

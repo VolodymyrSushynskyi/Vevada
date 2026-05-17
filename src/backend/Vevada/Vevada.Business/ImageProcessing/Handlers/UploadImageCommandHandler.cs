@@ -33,6 +33,8 @@ public class UploadImageCommandHandler : IRequestHandler<UploadImageCommand, Han
 
         if (existingImage != null)
         {
+            existingImage.CreatedAt = DateTime.UtcNow;
+            await _dbContext.SaveChangesAsync(cancellationToken);
             return HandlerResult<Guid>.Success(existingImage.Id);
         }
 

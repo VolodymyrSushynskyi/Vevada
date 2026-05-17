@@ -45,6 +45,8 @@ public static class Program
 
             app.UseHttpsRedirection();
             app.UseImageStaticFiles();
+            app.UseRouting();
+            app.UseRateLimiter();
             app.UseAuthentication();
             app.UseAuthorization();
             app.MapControllers();

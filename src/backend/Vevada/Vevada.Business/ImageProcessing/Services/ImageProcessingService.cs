@@ -18,6 +18,9 @@ public class ImageProcessingService : IImageProcessingService
     private const string ThumbSuffix = "-thumb.webp";
     private const string FullSuffix = "-full.webp";
 
+    private const int MaxPixelWidth = 4096;
+    private const int MaxPixelHeight = 4096;
+
     public ImageProcessingService(IOptions<ImageSettings> options, ILogger<ImageProcessingService> logger)
     {
         _settings = options.Value;
@@ -33,6 +36,12 @@ public class ImageProcessingService : IImageProcessingService
     {
         try
         {
+            if (!await ValidateImagePixelSize(fileStream, cancellationToken))
+            {
+                _logger.LogWarning(ImageProcessingServiceMessages.ImageProcessingError);
+                throw new ImageProcessingServiceException(ImageProcessingServiceMessages.ImageProcessingError);
+            }
+
             using var image = await Image.LoadAsync(fileStream, cancellationToken);
             var originalWidth = image.Width;
             var originalHeight = image.Height;
@@ -96,5 +105,12 @@ public class ImageProcessingService : IImageProcessingService
             _logger.LogWarning(ex, ImageProcessingServiceMessages.ImageDeletionError);
             throw new ImageProcessingServiceException(ImageProcessingServiceMessages.ImageDeletionError, ex);
         }
+    }
+
+    private async Task<bool> ValidateImagePixelSize(Stream fileStream, CancellationToken cancellationToken)
+    {
+        var imageInfo = await Image.IdentifyAsync(fileStream, cancellationToken);
+        fileStream.Position = 0;
+        return imageInfo.Width <= MaxPixelWidth && imageInfo.Height <= MaxPixelHeight;
     }
 }
