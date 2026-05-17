@@ -1,0 +1,33 @@
+<div class="auth-container" [class.right-panel-active]="isLoginActive">
+  <div class="form-container register-container">
+    <h1>Register</h1>
+  </div>
+
+  <div class="form-container login-container">
+    <h1>Auth</h1>
+  </div>
+
+  <div class="overlay-container">
+    <div class="overlay">
+      <div class="overlay-panel overlay-right">
+        <p>Вже зареєстровані?</p>
+        <app-sub-button
+          label="Увійти"
+          iconPosition="right"
+          icon="icon-arrow-right"
+          (btnClick)="toggleMode()"
+        ></app-sub-button>
+      </div>
+
+      <div class="overlay-panel overlay-left">
+        <p>У вас не має акаунту?</p>
+        <app-sub-button
+          label="Зареєструватись"
+          iconPosition="left"
+          icon="icon-arrow-left"
+          (btnClick)="toggleMode()"
+        ></app-sub-button>
+      </div>
+    </div>
+  </div>
+</div>
