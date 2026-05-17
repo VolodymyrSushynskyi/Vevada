@@ -1,0 +1,107 @@
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 2px solid transparent;
+  background-color: transparent;
+  cursor: pointer;
+  box-sizing: border-box;
+  transition: all 0.2s ease;
+}
+
+.icon-btn mat-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-btn:disabled {
+  cursor: not-allowed;
+}
+
+.icon-btn.circle {
+  border-radius: 50%;
+}
+
+.icon-btn.rounded {
+  border-radius: 20px;
+}
+
+.ghost.grey {
+  color: var(--grey-500);
+}
+.ghost.grey:hover:not(:disabled) {
+  color: var(--grey-600);
+}
+.ghost.grey:active:not(:disabled) {
+  color: var(--grey-700);
+}
+.ghost.grey:disabled {
+  color: var(--grey-200);
+}
+
+.ghost.white {
+  color: var(--white);
+}
+.ghost.white:hover:not(:disabled) {
+  color: var(--grey-100);
+}
+.ghost.white:active:not(:disabled) {
+  color: var(--grey-200);
+}
+.ghost.white:disabled {
+  color: var(--grey-200);
+}
+
+.outlined.grey {
+  color: var(--grey-500);
+  background-color: transparent;
+  border-color: var(--grey-200);
+}
+.outlined.grey:hover:not(:disabled) {
+  border-color: var(--grey-300);
+}
+.outlined.grey:active:not(:disabled) {
+  color: var(--grey-600);
+  border-color: var(--grey-400);
+}
+.outlined.grey:disabled {
+  color: var(--grey-500);
+  background-color: transparent;
+  border-color: var(--grey-200);
+  opacity: 40%;
+}
+
+.filled.green {
+  background-color: var(--green-50, #0d7054);
+  color: #ffffff;
+}
+.filled.green:hover:not(:disabled) {
+  background-color: var(--green-100);
+}
+.filled.green:active:not(:disabled) {
+  background-color: var(--green-200);
+}
+.filled.green:disabled {
+  background-color: var(--grey-200);
+  color: var(--grey-500);
+  opacity: 40%;
+}
+
+.filled.pink {
+  background-color: var(--pink-100);
+  color: var(--grey-600);
+}
+.filled.pink:hover:not(:disabled) {
+  background-color: var(--pink-200);
+}
+.filled.pink:active:not(:disabled) {
+  background-color: var(--pink-200);
+  color: var(--grey-600);
+}
+.filled.pink:disabled {
+  background-color: var(--grey-200);
+  color: var(--grey-500);
+  opacity: 40%;
+}

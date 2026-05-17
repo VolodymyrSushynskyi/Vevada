@@ -44,12 +44,19 @@ public static class Program
             }
 
             app.UseHttpsRedirection();
+            app.UseImageStaticFiles();
+            app.UseRouting();
+            app.UseRateLimiter();
             app.UseAuthentication();
             app.UseAuthorization();
             app.MapControllers();
 
             await app.RunAsync();
             Log.Information("Vevada API started successfully");
+        }
+        catch (HostAbortedException)
+        {
+            // The EF Core tools throw this exception intentionally to stop the web server from actually starting
         }
         catch (Exception ex)
         {
