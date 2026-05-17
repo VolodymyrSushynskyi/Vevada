@@ -7,6 +7,7 @@ using Npgsql;
 using Vevada.Business.ImageProcessing.Interfaces;
 using Vevada.Business.ImageProcessing.Models;
 using Vevada.Data;
+using Vevada.Data.Entities;
 
 namespace Vevada.Business.ImageProcessing.Services;
 
@@ -130,9 +131,9 @@ public class OrphanedImageCleanupService : BackgroundService
     }
 
     private async Task CleanupAbandonedRecordsAsync(
-        VevadaDbContext dbContext,
-        IImageProcessingService imageService,
-        CancellationToken cancellationToken)
+    VevadaDbContext dbContext,
+    IImageProcessingService imageService,
+    CancellationToken cancellationToken)
     {
         _logger.LogInformation("Scanning for abandoned records...");
 
@@ -140,10 +141,17 @@ public class OrphanedImageCleanupService : BackgroundService
         bool moreRecordsExist = true;
         const int batchSize = 100;
 
+        var failedImageIds = new List<Guid>();
+
         while (moreRecordsExist)
         {
-            var batch = await dbContext.ImageAssets
-                .Where(img => img.CreatedAt < cutoffTime)
+            var query = dbContext.ImageAssets
+                .Where(img => img.CreatedAt < cutoffTime && !failedImageIds.Contains(img.Id));
+
+            query = FilterToOnlyOrphans(query);
+
+            var batch = await query
+                .OrderBy(img => img.Id)
                 .Take(batchSize)
                 .ToListAsync(cancellationToken);
 
@@ -164,24 +172,22 @@ public class OrphanedImageCleanupService : BackgroundService
 
                     _logger.LogInformation("Deleted abandoned record and its files for Image: {ImageId}", image.Id);
                 }
-                catch (DbUpdateException ex)
-                {
-                    if (ex.InnerException is PostgresException pgEx && pgEx.SqlState == PostgresErrorCodes.ForeignKeyViolation)
-                    {
-                        dbContext.Entry(image).State = EntityState.Unchanged;
-                    }
-                    else
-                    {
-                        _logger.LogError(ex, "Unexpected database error while attempting to delete Image: {ImageId}", image.Id);
-                        dbContext.Entry(image).State = EntityState.Unchanged;
-                    }
-                }
                 catch (Exception ex)
                 {
-                    _logger.LogWarning(ex, "Failed to process database cleanup for Image: {ImageId}", image.Id);
+                    _logger.LogError(ex, "Unexpected system error while attempting to delete true orphan Image: {ImageId}", image.Id);
+
                     dbContext.Entry(image).State = EntityState.Unchanged;
+
+                    failedImageIds.Add(image.Id);
                 }
             }
         }
+    }
+
+    private IQueryable<ImageAsset> FilterToOnlyOrphans(IQueryable<ImageAsset> baseQuery)
+    {
+        // Add additional conditions here if there are other entities that reference ImageAsset in the future
+        //return baseQuery.Where(img => !img.Products.Any());
+        return baseQuery;
     }
 }

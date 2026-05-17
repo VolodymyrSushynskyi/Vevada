@@ -6,7 +6,7 @@ using Vevada.Business.ImageProcessing.Commands;
 
 namespace Vevada.Api.Controllers;
 
-//[Authorize]
+[Authorize]
 public class ImagesController : BaseApiController
 {
     public ImagesController(IMediator mediator) : base(mediator)

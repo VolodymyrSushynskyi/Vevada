@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
+using System.Threading.RateLimiting;
 using Vevada.Api.Middleware;
 using Vevada.Business.Auth.Models;
 using Vevada.Business.ImageProcessing.Models;
@@ -52,12 +53,17 @@ public static class ApiServicesExtensions
         {
             options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
 
-            options.AddFixedWindowLimiter("ImageUploadLimit", limiterOptions =>
+            options.AddPolicy("ImageUploadLimit", httpContext =>
             {
-                limiterOptions.PermitLimit = 15;
-                limiterOptions.Window = TimeSpan.FromMinutes(1);
-                limiterOptions.QueueProcessingOrder = System.Threading.RateLimiting.QueueProcessingOrder.OldestFirst;
-                limiterOptions.QueueLimit = 0;
+                var clientIp = httpContext.Connection.RemoteIpAddress?.ToString() ?? "unknown-ip";
+
+                return RateLimitPartition.GetFixedWindowLimiter(partitionKey: clientIp, factory: _ => new FixedWindowRateLimiterOptions
+                {
+                    PermitLimit = 15,
+                    Window = TimeSpan.FromMinutes(1),
+                    QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
+                    QueueLimit = 0
+                });
             });
         });
 
