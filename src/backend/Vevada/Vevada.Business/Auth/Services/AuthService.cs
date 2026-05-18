@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Logging;
 using Vevada.Business.Auth.Constants;
 using Vevada.Business.Auth.DTOs;
@@ -82,15 +83,18 @@ public class AuthService : IAuthService
 
         try
         {
+            var rawRefreshToken = _tokenService.GenerateRefreshToken();
+
             var user = new User
             {
                 UserName = userEmail,
                 Email = userEmail,
-                SecurityStamp = Guid.NewGuid().ToString()
+                SecurityStamp = Guid.NewGuid().ToString(),
+                RefreshTokenHash = TokenService.ComputeHash(rawRefreshToken),
+                RefreshTokenExpiryTime = DateTimeOffset.UtcNow.AddDays(RefreshTokenValidityDays)
             };
 
             var createResult = await _userManager.CreateAsync(user, model.Password);
-
             if (!createResult.Succeeded)
             {
                 var errors = string.Join(", ", createResult.Errors.Select(e => e.Description));
@@ -115,21 +119,9 @@ public class AuthService : IAuthService
 
             await _context.ClientDetails.AddAsync(clientDetails);
             await _context.SaveChangesAsync();
+            await transaction.CommitAsync();
 
             var accessToken = await _tokenService.GenerateAccessTokenAsync(user);
-            var rawRefreshToken = _tokenService.GenerateRefreshToken();
-
-            user.RefreshTokenHash = TokenService.ComputeHash(rawRefreshToken);
-            user.RefreshTokenExpiryTime = DateTimeOffset.UtcNow.AddDays(RefreshTokenValidityDays);
-
-            var updateResult = await _userManager.UpdateAsync(user);
-            if (!updateResult.Succeeded)
-            {
-                var errors = string.Join(", ", updateResult.Errors.Select(e => e.Description));
-                throw new InvalidOperationException($"{AuthMessages.TokenGenerationFailed}: {errors}");
-            }
-
-            await transaction.CommitAsync();
 
             return new AuthResponseDto
             {
@@ -142,7 +134,12 @@ public class AuthService : IAuthService
         catch (Exception ex)
         {
             _logger.LogRegistrationTransactionFailed(ex, userEmail);
-            await transaction.RollbackAsync();
+
+            if (transaction.GetDbTransaction().Connection != null)
+            {
+                await transaction.RollbackAsync();
+            }
+
             throw;
         }
     }
