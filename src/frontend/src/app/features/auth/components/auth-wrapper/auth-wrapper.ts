@@ -1,11 +1,10 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import { SubButton } from '../../../../shared/components/sub-button/sub-button';
 import { RegisterForm } from '../register-form/register-form';
 import { LoginForm } from '../login-form/login-form';
 import { BrandLogoWithText } from '../../../../shared/components/brand-logo-with-text/brand-logo-with-text';
 import { CloseButton } from '../../../../shared/components/close-button/close-button';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-auth-wrapper',
@@ -15,7 +14,7 @@ import { Router } from '@angular/router';
   styleUrl: './auth-wrapper.css',
 })
 export class AuthWrapper {
-  constructor(private router: Router) {}
+  constructor(private location: Location) {}
 
   isLoginActive = false;
 
@@ -24,6 +23,6 @@ export class AuthWrapper {
   }
 
   onClose() {
-    window.history.back();
+    this.location.back();
   }
 }

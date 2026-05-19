@@ -6,14 +6,21 @@
 
 .brand-text {
   font-family: 'Kaushan Script', cursive;
-  color: #ffffff;
+  color: var(--white);
   line-height: 1;
   white-space: nowrap;
 }
 
+.icon-anchor {
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
 .brand-icon {
-  margin-left: -110px;
-  /* Чуть-чуть приподнимаем */
-  margin-top: -180px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: translate(-75%, -110%);
   z-index: 2;
 }

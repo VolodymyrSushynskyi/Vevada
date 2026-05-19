@@ -11,5 +11,5 @@ import { MatIconModule } from '@angular/material/icon';
 })
 export class BrandLogoWithText {
   @Input() textSize: string = '64px';
-  @Input() iconSize: string = '60px';
+  @Input() iconSize: string = '80px';
 }
