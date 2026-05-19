@@ -17,6 +17,8 @@ public class TokenService : ITokenService
     private readonly JwtSettings _jwtSettings;
     private readonly UserManager<User> _userManager;
 
+    private const string SecurityAlgorithm = SecurityAlgorithms.HmacSha256Signature;
+
     public TokenService(IOptions<JwtSettings> jwtSettings, UserManager<User> userManager)
     {
         _jwtSettings = jwtSettings.Value;
@@ -46,7 +48,7 @@ public class TokenService : ITokenService
         {
             Subject = new ClaimsIdentity(claims),
             Expires = DateTime.UtcNow.AddMinutes(_jwtSettings.ExpireMinutes),
-            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
+            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithm),
             Issuer = _jwtSettings.Issuer,
             Audience = _jwtSettings.Audience,
         };
@@ -75,11 +77,12 @@ public class TokenService : ITokenService
 
         var tokenValidationParameters = new TokenValidationParameters
         {
-            ValidateAudience = false,
-            ValidateIssuer = false,
+            ValidateAudience = true,
+            ValidateIssuer = true,
             ValidateIssuerSigningKey = true,
             IssuerSigningKey = new SymmetricSecurityKey(key),
-            ValidateLifetime = false
+            ValidateLifetime = false,
+            ValidAlgorithms = new[] { SecurityAlgorithm }
         };
 
         var tokenHandler = new JsonWebTokenHandler();
@@ -88,12 +91,6 @@ public class TokenService : ITokenService
         if (!result.IsValid)
         {
             return null;
-        }
-
-        if (result.SecurityToken is JsonWebToken jwt 
-            && !jwt.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
-        {
-            throw new SecurityTokenException($"Token validation failed: Invalid algorithm used. Expected HmacSha256, got {jwt.Alg}");
         }
 
         return result.ClaimsIdentity == null ? null : new ClaimsPrincipal(result.ClaimsIdentity);

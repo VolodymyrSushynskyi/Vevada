@@ -17,6 +17,21 @@ public static class ApiServicesExtensions
         services.AddControllers();
         services.AddEndpointsApiExplorer();
 
+        services.AddCors(options =>
+        {
+            options.AddPolicy("DefaultCorsPolicy", policy =>
+            {
+                var allowedOriginsString = configuration["AllowedOrigins"] ?? "http://localhost:4200";
+
+                var originsArray = allowedOriginsString.Split(',', StringSplitOptions.RemoveEmptyEntries);
+
+                policy.WithOrigins(originsArray)
+                      .AllowAnyMethod()
+                      .AllowAnyHeader()
+                      .AllowCredentials();
+            });
+        });
+
         services.AddExceptionHandler<GlobalExceptionHandler>();
         services.AddProblemDetails();
 

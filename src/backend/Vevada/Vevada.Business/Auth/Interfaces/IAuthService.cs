@@ -9,4 +9,5 @@ public interface IAuthService
     Task<AuthResponseDto> LoginAsync(string email, string password);
     Task<AuthResponseDto> RegisterClientAsync(RegisterClientModel model);
     Task<bool> LogoutAsync(int userId);
+    Task<AuthResponseDto> RefreshTokenAsync(string accessToken, string refreshToken);
 }
