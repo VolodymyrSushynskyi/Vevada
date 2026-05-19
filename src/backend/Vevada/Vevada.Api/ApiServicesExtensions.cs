@@ -21,9 +21,11 @@ public static class ApiServicesExtensions
         {
             options.AddPolicy("DefaultCorsPolicy", policy =>
             {
-                var allowedOrigins = configuration["AllowedOrigins"] ?? "http://localhost:4200";
+                var allowedOriginsString = configuration["AllowedOrigins"] ?? "http://localhost:4200";
 
-                policy.WithOrigins(allowedOrigins)
+                var originsArray = allowedOriginsString.Split(',', StringSplitOptions.RemoveEmptyEntries);
+
+                policy.WithOrigins(originsArray)
                       .AllowAnyMethod()
                       .AllowAnyHeader()
                       .AllowCredentials();

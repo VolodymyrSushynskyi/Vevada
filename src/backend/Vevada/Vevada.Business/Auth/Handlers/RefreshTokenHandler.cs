@@ -1,13 +1,9 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Identity;
-using System.Security.Claims;
 using Vevada.Business.Auth.Commands;
 using Vevada.Business.Auth.DTOs;
 using Vevada.Business.Auth.Exceptions;
 using Vevada.Business.Auth.Interfaces;
-using Vevada.Business.Auth.Services;
 using Vevada.Business.Common;
-using Vevada.Data.Entities;
 
 namespace Vevada.Business.Auth.Handlers;
 
