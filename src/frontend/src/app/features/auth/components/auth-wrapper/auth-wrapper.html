@@ -1,4 +1,11 @@
 <div class="auth-container" [class.right-panel-active]="isLoginActive">
+  <app-close-button
+    class="auth-close-btn"
+    [color]="isLoginActive ? 'grey' : 'white'"
+    (close)="onClose()"
+  >
+  </app-close-button>
+
   <div class="form-container register-container">
     <app-register-form></app-register-form>
   </div>
@@ -10,23 +17,35 @@
   <div class="overlay-container">
     <div class="overlay">
       <div class="overlay-panel overlay-right">
-        <p>Вже зареєстровані?</p>
-        <app-sub-button
-          label="Увійти"
-          iconPosition="right"
-          icon="icon-arrow-right"
-          (btnClick)="toggleMode()"
-        ></app-sub-button>
+        <div class="panel-logo">
+          <app-brand-logo-with-text variant="vertical-right" textSize="128px" iconSize="160px">
+          </app-brand-logo-with-text>
+        </div>
+        <div class="panel-footer">
+          <p>Вже зареєстровані?</p>
+          <app-sub-button
+            label="Увійти"
+            iconPosition="right"
+            icon="icon-arrow-right"
+            (btnClick)="toggleMode()"
+          ></app-sub-button>
+        </div>
       </div>
 
       <div class="overlay-panel overlay-left">
-        <p>У вас не має акаунту?</p>
-        <app-sub-button
-          label="Зареєструватись"
-          iconPosition="left"
-          icon="icon-arrow-left"
-          (btnClick)="toggleMode()"
-        ></app-sub-button>
+        <div class="panel-logo">
+          <app-brand-logo-with-text variant="vertical-right" textSize="128px" iconSize="160px">
+          </app-brand-logo-with-text>
+        </div>
+        <div class="panel-footer">
+          <p>У вас не має акаунту?</p>
+          <app-sub-button
+            label="Зареєструватись"
+            iconPosition="left"
+            icon="icon-arrow-left"
+            (btnClick)="toggleMode()"
+          ></app-sub-button>
+        </div>
       </div>
     </div>
   </div>
