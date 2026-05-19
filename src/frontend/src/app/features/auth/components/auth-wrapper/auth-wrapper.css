@@ -57,7 +57,7 @@
   overflow: hidden;
   transition: left 0.7s ease-in-out;
   background-color: var(--green-50);
-  color: #ffffff;
+  color: var(--white);
   z-index: 3;
 }
 
