@@ -1,0 +1,26 @@
+.logo-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.brand-text {
+  font-family: 'Kaushan Script', cursive;
+  color: var(--white);
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.icon-anchor {
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+.brand-icon {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: translate(-75%, -110%);
+  z-index: 2;
+}
