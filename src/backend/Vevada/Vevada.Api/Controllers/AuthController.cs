@@ -45,6 +45,12 @@ public class AuthController : BaseApiController
         return HandleResult(await Mediator.Send(command));
     }
 
+    [HttpPost("refresh-token")]
+    public async Task<IActionResult> RefreshToken(RefreshTokenCommand command)
+    {
+        return HandleResult(await Mediator.Send(command));
+    }
+
     [Authorize]
     [HttpGet]
     public IActionResult TestAuthentication()
