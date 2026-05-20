@@ -1,0 +1,36 @@
+<div class="register-wrapper" [class.step-two]="currentStep === 2">
+  <app-ui-icon-button
+    class="back-btn"
+    icon="icon-arrow-left"
+    height="46px"
+    width="46px"
+    iconSize="36px"
+    [class.visible]="currentStep === 2"
+    (btnClick)="prevStep()"
+  ></app-ui-icon-button>
+  <div class="header-container">
+    <h2 class="text-h3-semi-bold">Створіть Акаунт</h2>
+  </div>
+
+  <div class="steps-container">
+    <div class="form-step step-1">
+      <app-ui-input label="Ім'я"></app-ui-input>
+      <app-ui-input label="Прізвище"></app-ui-input>
+      <app-ui-input label="Номер телефону"></app-ui-input>
+
+      <div class="action-btn">
+        <app-main-button label="Далі" (btnClick)="nextStep()"></app-main-button>
+      </div>
+    </div>
+
+    <div class="form-step step-2">
+      <app-ui-input label="Пошта"></app-ui-input>
+      <app-ui-input label="Пароль" type="password"></app-ui-input>
+      <app-ui-input label="Підтвердження паролю" type="password"></app-ui-input>
+
+      <div class="action-btn">
+        <app-main-button label="Зареєструватися"></app-main-button>
+      </div>
+    </div>
+  </div>
+</div>

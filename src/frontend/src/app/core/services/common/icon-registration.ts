@@ -16,6 +16,7 @@ export class IconRegistration {
       { name: 'icon-close', path: 'icons/x.svg' },
       { name: 'icon-arrow-right', path: 'icons/arrow-right.svg' },
       { name: 'icon-arrow-left', path: 'icons/arrow-left.svg' },
+      { name: 'icon-white-logo', path: 'icons/white-logo.svg' },
     ];
 
     icons.forEach((icon) => {

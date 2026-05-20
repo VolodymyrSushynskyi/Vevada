@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Logging;
+using System.Security.Claims;
 using Vevada.Business.Auth.Constants;
 using Vevada.Business.Auth.DTOs;
 using Vevada.Business.Auth.Exceptions;
@@ -82,15 +84,18 @@ public class AuthService : IAuthService
 
         try
         {
+            var rawRefreshToken = _tokenService.GenerateRefreshToken();
+
             var user = new User
             {
                 UserName = userEmail,
                 Email = userEmail,
-                SecurityStamp = Guid.NewGuid().ToString()
+                SecurityStamp = Guid.NewGuid().ToString(),
+                RefreshTokenHash = TokenService.ComputeHash(rawRefreshToken),
+                RefreshTokenExpiryTime = DateTimeOffset.UtcNow.AddDays(RefreshTokenValidityDays)
             };
 
             var createResult = await _userManager.CreateAsync(user, model.Password);
-
             if (!createResult.Succeeded)
             {
                 var errors = string.Join(", ", createResult.Errors.Select(e => e.Description));
@@ -115,21 +120,9 @@ public class AuthService : IAuthService
 
             await _context.ClientDetails.AddAsync(clientDetails);
             await _context.SaveChangesAsync();
+            await transaction.CommitAsync();
 
             var accessToken = await _tokenService.GenerateAccessTokenAsync(user);
-            var rawRefreshToken = _tokenService.GenerateRefreshToken();
-
-            user.RefreshTokenHash = TokenService.ComputeHash(rawRefreshToken);
-            user.RefreshTokenExpiryTime = DateTimeOffset.UtcNow.AddDays(RefreshTokenValidityDays);
-
-            var updateResult = await _userManager.UpdateAsync(user);
-            if (!updateResult.Succeeded)
-            {
-                var errors = string.Join(", ", updateResult.Errors.Select(e => e.Description));
-                throw new InvalidOperationException($"{AuthMessages.TokenGenerationFailed}: {errors}");
-            }
-
-            await transaction.CommitAsync();
 
             return new AuthResponseDto
             {
@@ -142,7 +135,12 @@ public class AuthService : IAuthService
         catch (Exception ex)
         {
             _logger.LogRegistrationTransactionFailed(ex, userEmail);
-            await transaction.RollbackAsync();
+
+            if (transaction.GetDbTransaction().Connection != null)
+            {
+                await transaction.RollbackAsync();
+            }
+
             throw;
         }
     }
@@ -176,5 +174,55 @@ public class AuthService : IAuthService
         var userRoles = await _userManager.GetRolesAsync(user);
 
         return userRoles.Intersect(roles);
+    }
+
+    public async Task<AuthResponseDto> RefreshTokenAsync(string accessToken, string refreshToken)
+    {
+        var principal = await _tokenService.GetPrincipalFromExpiredTokenAsync(accessToken);
+        if (principal == null)
+        {
+            throw new AuthException("Invalid access token or signature.");
+        }
+
+        var email = principal.FindFirstValue(ClaimTypes.Email);
+        if (string.IsNullOrEmpty(email))
+        {
+            throw new AuthException("Token does not contain email claim.");
+        }
+
+        var user = await _userManager.FindByEmailAsync(email);
+        if (user == null || user.RefreshTokenHash == null || user.RefreshTokenExpiryTime <= DateTimeOffset.UtcNow)
+        {
+            throw new AuthException("Invalid or expired refresh token. Please log in again.");
+        }
+
+        var providedTokenHash = TokenService.ComputeHash(refreshToken);
+        if (user.RefreshTokenHash != providedTokenHash)
+        {
+            throw new AuthException("Invalid refresh token.");
+        }
+
+        var newAccessToken = await _tokenService.GenerateAccessTokenAsync(user);
+        var newRefreshToken = _tokenService.GenerateRefreshToken();
+
+        user.RefreshTokenHash = TokenService.ComputeHash(newRefreshToken);
+        user.RefreshTokenExpiryTime = DateTimeOffset.UtcNow.AddDays(RefreshTokenValidityDays);
+
+        var updateResult = await _userManager.UpdateAsync(user);
+        if (!updateResult.Succeeded)
+        {
+            var errors = string.Join(", ", updateResult.Errors.Select(e => e.Description));
+            throw new InvalidOperationException($"Failed to save new refresh token: {errors}");
+        }
+
+        var roles = await _userManager.GetRolesAsync(user);
+
+        return new AuthResponseDto
+        {
+            AccessToken = newAccessToken,
+            RefreshToken = newRefreshToken,
+            Email = user.Email!,
+            Role = roles.FirstOrDefault() ?? AppRoles.Client.Name!
+        };
     }
 }

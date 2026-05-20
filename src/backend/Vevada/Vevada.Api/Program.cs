@@ -46,6 +46,7 @@ public static class Program
             app.UseHttpsRedirection();
             app.UseImageStaticFiles();
             app.UseRouting();
+            app.UseCors("DefaultCorsPolicy");
             app.UseRateLimiter();
             app.UseAuthentication();
             app.UseAuthorization();
