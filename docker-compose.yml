@@ -1,0 +1,50 @@
+services:
+  # 1. PostgreSQL Database
+  vevada-db:
+    image: postgres:16-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=Vevada
+    env_file:
+      - .env
+    volumes:
+      - vevada-postgres-data:/var/lib/postgresql/data
+
+  # 2. The Vevada .NET 8 API
+  vevada-api:
+    build: 
+      context: ./src/backend/Vevada
+      dockerfile: Vevada.Api/Dockerfile
+    ports:
+      - "5000:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ConnectionStrings__DefaultConnection=${DB_CONNECTION_STRING}
+      - JwtSettings__Key=${JWT_KEY}
+      - JwtSettings__Issuer=${JWT_ISSUER}
+      - JwtSettings__Audience=${JWT_AUDIENCE}
+      - JwtSettings__ExpireMinutes=${JWT_EXPIRE_MINUTES}
+      - AllowedOrigins=${CORS_ORIGINS}
+    env_file:
+      - .env
+    depends_on:
+      - vevada-db
+    volumes:
+      - vevada-image-uploads:/app/Storage/Images
+
+  # 3. The Angular Frontend
+  vevada-frontend:
+    build:
+      context: ./src/frontend
+      dockerfile: Dockerfile
+    ports:
+      - "4200:80"
+    depends_on:
+      - vevada-api
+
+volumes:
+  vevada-postgres-data:
+  vevada-image-uploads:
