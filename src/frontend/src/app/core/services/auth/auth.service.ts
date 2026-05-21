@@ -20,7 +20,7 @@ export class AuthService {
     return this.http.post<AuthResponse>(`${this.API_URL}/register`, userData);
   }
 
-  checkAuthStatus() {
+  checkAuthStatus(): Observable<string> {
     return this.http.get(this.API_URL, { responseType: 'text' });
   }
 }
