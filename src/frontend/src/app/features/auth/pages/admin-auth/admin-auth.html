@@ -1,0 +1,24 @@
+<div class="admin-auth-wrapper">
+  <div class="admin-auth-card">
+    <div class="logo-container">
+      <app-brand-logo-with-text theme="dark"> </app-brand-logo-with-text>
+    </div>
+
+    <form [formGroup]="adminAuthForm" (ngSubmit)="onSubmit()">
+      <app-ui-input
+        label="Пошта"
+        type="email"
+        [control]="adminAuthForm.controls.email"
+      ></app-ui-input>
+      <app-ui-input
+        label="Пароль"
+        type="password"
+        [control]="adminAuthForm.controls.password"
+      ></app-ui-input>
+
+      <div class="actions">
+        <app-main-button type="submit" label="Увійти"></app-main-button>
+      </div>
+    </form>
+  </div>
+</div>

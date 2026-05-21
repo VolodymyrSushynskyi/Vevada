@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { MainButton } from '../../../../shared/components/main-button/main-button';
 import { UiInput } from '../../../../shared/components/ui-input/ui-input';
 import { AuthService } from '../../../../core/services/auth/auth.service';
+import { SessionService } from '../../../../core/services/auth/session.service';
 
 @Component({
   selector: 'app-login-form',
@@ -15,6 +16,7 @@ import { AuthService } from '../../../../core/services/auth/auth.service';
 })
 export class LoginForm {
   private authService = inject(AuthService);
+  private sessionService = inject(SessionService);
   private router = inject(Router);
 
   loginForm = new FormGroup({
@@ -31,8 +33,7 @@ export class LoginForm {
 
       this.authService.login(credentials).subscribe({
         next: (response) => {
-          localStorage.setItem('access_token', response.accessToken);
-
+          this.sessionService.startSession(response);
           this.router.navigate(['/']);
         },
         error: (error) => {},

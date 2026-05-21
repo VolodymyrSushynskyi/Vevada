@@ -8,6 +8,7 @@ import { UiInput } from '../../../../shared/components/ui-input/ui-input';
 import { AuthService } from '../../../../core/services/auth/auth.service';
 import { RegisterClientRules } from '../../../../core/validators/client/register-client';
 import { passwordMatchValidator } from '../../../../core/validators/client/password-match';
+import { SessionService } from '../../../../core/services/auth/session.service';
 
 @Component({
   selector: 'app-register-form',
@@ -20,6 +21,7 @@ export class RegisterForm {
   currentStep = 1;
 
   private authService = inject(AuthService);
+  private sessionService = inject(SessionService);
   private router = inject(Router);
 
   registerForm = new FormGroup(
@@ -67,7 +69,7 @@ export class RegisterForm {
 
       this.authService.register(userData).subscribe({
         next: (response) => {
-          localStorage.setItem('access_token', response.accessToken);
+          this.sessionService.startSession(response);
           this.router.navigate(['/']);
         },
         error: (err) => {},

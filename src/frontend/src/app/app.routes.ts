@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { Home } from './features/client/pages/home/home';
 import { ClientAuth } from './features/auth/pages/client-auth/client-auth';
+import { AdminAuth } from './features/auth/pages/admin-auth/admin-auth';
 
 export const routes: Routes = [
   {
@@ -8,4 +9,8 @@ export const routes: Routes = [
     component: Home,
   },
   { path: 'login', component: ClientAuth },
+  {
+    path: 'admin/login',
+    component: AdminAuth,
+  },
 ];
