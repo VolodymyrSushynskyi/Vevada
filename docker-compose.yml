@@ -34,6 +34,7 @@ services:
       - JwtSettings__ExpireMinutes=${JWT_EXPIRE_MINUTES}
       - AllowedOrigins=${CORS_ORIGINS}
       - RUN_MIGRATIONS_ON_STARTUP=${RUN_MIGRATIONS_ON_STARTUP}
+      - ENABLE_SWAGGER=${ENABLE_SWAGGER}
     env_file:
       - .env
     depends_on:

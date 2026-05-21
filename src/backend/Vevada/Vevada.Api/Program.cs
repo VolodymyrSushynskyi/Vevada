@@ -28,8 +28,7 @@ public static class Program
 
             var app = builder.Build();
 
-            var runMigrations = app.Configuration.GetValue<bool>("RUN_MIGRATIONS_ON_STARTUP");
-
+            var runMigrations = app.Configuration.GetValue<bool>("RUN_MIGRATIONS_ON_STARTUP", app.Environment.IsDevelopment());
             if (runMigrations)
             {
                 await app.Services.InitializeDatabaseAsync();
@@ -39,7 +38,9 @@ public static class Program
 
             app.UseSerilogRequestLogging();
 
-            if (app.Environment.IsDevelopment())
+
+            var enableSwagger = app.Configuration.GetValue<bool>("ENABLE_SWAGGER", app.Environment.IsDevelopment());
+            if (enableSwagger)
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
