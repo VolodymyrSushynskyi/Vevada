@@ -17,7 +17,7 @@ RUN npm run build
 # ==========================================
 # Stage 2: Serve the application with Nginx
 # ==========================================
-FROM nginx:alpine
+FROM nginx:1.27-alpine
 
 # Remove the default Nginx welcome page
 RUN rm -rf /usr/share/nginx/html/*

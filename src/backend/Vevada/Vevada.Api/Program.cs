@@ -28,10 +28,7 @@ public static class Program
 
             var app = builder.Build();
 
-            if (app.Environment.IsDevelopment())
-            {
-                await app.Services.InitializeDatabaseAsync();
-            }
+            await app.Services.InitializeDatabaseAsync();
 
             app.UseExceptionHandler();
 
@@ -52,8 +49,8 @@ public static class Program
             app.UseAuthorization();
             app.MapControllers();
 
-            await app.RunAsync();
             Log.Information("Vevada API started successfully");
+            await app.RunAsync();
         }
         catch (HostAbortedException)
         {
