@@ -28,7 +28,12 @@ public static class Program
 
             var app = builder.Build();
 
-            await app.Services.InitializeDatabaseAsync();
+            var runMigrations = app.Configuration.GetValue<bool>("RUN_MIGRATIONS_ON_STARTUP");
+
+            if (runMigrations)
+            {
+                await app.Services.InitializeDatabaseAsync();
+            }
 
             app.UseExceptionHandler();
 
