@@ -9,6 +9,7 @@ import { AuthService } from '../../../../core/services/auth/auth.service';
 import { RegisterClientRules } from '../../../../core/validators/client/register-client';
 import { passwordMatchValidator } from '../../../../core/validators/client/password-match';
 import { SessionService } from '../../../../core/services/auth/session.service';
+import { ToastService } from '../../../../core/services/common/toast.service';
 
 @Component({
   selector: 'app-register-form',
@@ -21,6 +22,7 @@ export class RegisterForm {
   currentStep = 1;
 
   private authService = inject(AuthService);
+  private toastService = inject(ToastService);
   private sessionService = inject(SessionService);
   private router = inject(Router);
 
@@ -72,7 +74,9 @@ export class RegisterForm {
           this.sessionService.startSession(response);
           this.router.navigate(['/']);
         },
-        error: (err) => {},
+        error: (err) => {
+          this.toastService.showError(err.error?.message || 'Виникла помилка при реєстрації');
+        },
       });
     } else {
       this.registerForm.markAllAsTouched();

@@ -6,6 +6,7 @@ import { MainButton } from '../../../../shared/components/main-button/main-butto
 import { UiInput } from '../../../../shared/components/ui-input/ui-input';
 import { AuthService } from '../../../../core/services/auth/auth.service';
 import { SessionService } from '../../../../core/services/auth/session.service';
+import { ToastService } from '../../../../core/services/common/toast.service';
 
 @Component({
   selector: 'app-login-form',
@@ -16,6 +17,7 @@ import { SessionService } from '../../../../core/services/auth/session.service';
 })
 export class LoginForm {
   private authService = inject(AuthService);
+  private toastService = inject(ToastService);
   private sessionService = inject(SessionService);
   private router = inject(Router);
 
@@ -36,7 +38,9 @@ export class LoginForm {
           this.sessionService.startSession(response);
           this.router.navigate(['/']);
         },
-        error: (error) => {},
+        error: (err) => {
+          this.toastService.showError(err.error?.message || 'Виникла помилка при вході');
+        },
       });
     } else {
       this.loginForm.markAllAsTouched();
