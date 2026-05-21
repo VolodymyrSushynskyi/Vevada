@@ -6,3 +6,12 @@ export const VALIDATION_MESSAGES: Record<string, (err: any) => string> = {
   passwordMismatch: () => 'Паролі не співпадають',
   passwordComplexity: () => 'Пароль має містити великі та малі літери, цифри та спецсимвол',
 };
+
+export const VALIDATION_PRIORITY: string[] = [
+  'required',
+  'email',
+  'minlength',
+  'maxlength',
+  'passwordComplexity',
+  'passwordMismatch',
+];
