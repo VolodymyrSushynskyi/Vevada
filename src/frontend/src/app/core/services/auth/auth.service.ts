@@ -24,8 +24,8 @@ export class AuthService {
     return this.http.post<AuthResponse>(`${this.API_URL}/admin/login`, credentials);
   }
 
-  logout(): Observable<any> {
-    return this.http.post(`${this.API_URL}/logout`, {});
+  logout(): Observable<void> {
+    return this.http.post<void>(`${this.API_URL}/logout`, {});
   }
 
   checkAuthStatus(): Observable<string> {
