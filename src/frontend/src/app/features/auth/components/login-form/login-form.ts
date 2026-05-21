@@ -4,7 +4,7 @@ import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angula
 import { Router } from '@angular/router';
 import { MainButton } from '../../../../shared/components/main-button/main-button';
 import { UiInput } from '../../../../shared/components/ui-input/ui-input';
-import { Auth } from '../../../../core/services/auth/auth';
+import { AuthService } from '../../../../core/services/auth/auth.service';
 
 @Component({
   selector: 'app-login-form',
@@ -14,7 +14,7 @@ import { Auth } from '../../../../core/services/auth/auth';
   styleUrl: './login-form.css',
 })
 export class LoginForm {
-  private authService = inject(Auth);
+  private authService = inject(AuthService);
   private router = inject(Router);
 
   loginForm = new FormGroup({

@@ -12,11 +12,14 @@
     <h2 class="text-h3-semi-bold">Створіть Акаунт</h2>
   </div>
 
-  <div class="steps-container">
+  <form class="steps-container" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
     <div class="form-step step-1">
-      <app-ui-input label="Ім'я"></app-ui-input>
-      <app-ui-input label="Прізвище"></app-ui-input>
-      <app-ui-input label="Номер телефону"></app-ui-input>
+      <app-ui-input label="Ім'я" [control]="registerForm.controls.firstName"></app-ui-input>
+      <app-ui-input label="Прізвище" [control]="registerForm.controls.lastName"></app-ui-input>
+      <app-ui-input
+        label="Номер телефону"
+        [control]="registerForm.controls.phoneNumber"
+      ></app-ui-input>
 
       <div class="action-btn">
         <app-main-button label="Далі" (btnClick)="nextStep()"></app-main-button>
@@ -24,13 +27,25 @@
     </div>
 
     <div class="form-step step-2">
-      <app-ui-input label="Пошта"></app-ui-input>
-      <app-ui-input label="Пароль" type="password"></app-ui-input>
-      <app-ui-input label="Підтвердження паролю" type="password"></app-ui-input>
+      <app-ui-input
+        label="Пошта"
+        type="email"
+        [control]="registerForm.controls.email"
+      ></app-ui-input>
+      <app-ui-input
+        label="Пароль"
+        type="password"
+        [control]="registerForm.controls.password"
+      ></app-ui-input>
+      <app-ui-input
+        label="Підтвердження паролю"
+        type="password"
+        [control]="registerForm.controls.confirmPassword"
+      ></app-ui-input>
 
       <div class="action-btn">
-        <app-main-button label="Зареєструватися"></app-main-button>
+        <app-main-button label="Зареєструватися" (btnClick)="onSubmit()"></app-main-button>
       </div>
     </div>
-  </div>
+  </form>
 </div>

@@ -6,7 +6,7 @@ import { LoginRequest, RegisterRequest, AuthResponse } from '../../models/base/a
 @Injectable({
   providedIn: 'root',
 })
-export class Auth {
+export class AuthService {
   private http = inject(HttpClient);
 
   private readonly API_URL = 'https://localhost:7083/api/auth';
@@ -17,5 +17,9 @@ export class Auth {
 
   register(userData: RegisterRequest): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(`${this.API_URL}/register`, userData);
+  }
+
+  checkAuthStatus() {
+    return this.http.get(this.API_URL, { responseType: 'text' });
   }
 }

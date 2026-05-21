@@ -11,6 +11,7 @@ import { UiButton } from '../ui-button/ui-button';
 export class MainButton {
   @Input({ required: true }) label!: string;
   @Input() disabled: boolean = false;
+  @Input() type: 'button' | 'submit' = 'button';
 
   @Output() btnClick = new EventEmitter<Event>();
 }
