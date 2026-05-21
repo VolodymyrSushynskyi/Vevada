@@ -3,12 +3,16 @@
     <h2 class="text-h3-semi-bold">Вхід</h2>
   </div>
 
-  <div class="form-container">
-    <app-ui-input label="Пошта"></app-ui-input>
-    <app-ui-input label="Пароль" type="password"></app-ui-input>
+  <form class="form-container" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <app-ui-input label="Пошта" type="email" [control]="loginForm.controls.email"></app-ui-input>
+    <app-ui-input
+      label="Пароль"
+      type="password"
+      [control]="loginForm.controls.password"
+    ></app-ui-input>
 
     <div class="action-btn">
-      <app-main-button label="Увійти"></app-main-button>
+      <app-main-button label="Увійти" type="submit"></app-main-button>
     </div>
-  </div>
+  </form>
 </div>
