@@ -28,7 +28,8 @@ public static class Program
 
             var app = builder.Build();
 
-            if (app.Environment.IsDevelopment())
+            var runMigrations = app.Configuration.GetValue<bool>("RUN_MIGRATIONS_ON_STARTUP", app.Environment.IsDevelopment());
+            if (runMigrations)
             {
                 await app.Services.InitializeDatabaseAsync();
             }
@@ -37,7 +38,9 @@ public static class Program
 
             app.UseSerilogRequestLogging();
 
-            if (app.Environment.IsDevelopment())
+
+            var enableSwagger = app.Configuration.GetValue<bool>("ENABLE_SWAGGER", app.Environment.IsDevelopment());
+            if (enableSwagger)
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
@@ -52,6 +55,7 @@ public static class Program
             app.UseAuthorization();
             app.MapControllers();
 
+            Log.Information("Vevada API started successfully");
             await app.RunAsync();
         }
         catch (HostAbortedException)
