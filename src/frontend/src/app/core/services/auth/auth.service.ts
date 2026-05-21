@@ -20,6 +20,14 @@ export class AuthService {
     return this.http.post<AuthResponse>(`${this.API_URL}/register`, userData);
   }
 
+  loginAdmin(credentials: LoginRequest): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(`${this.API_URL}/admin/login`, credentials);
+  }
+
+  logout(): Observable<void> {
+    return this.http.post<void>(`${this.API_URL}/logout`, {});
+  }
+
   checkAuthStatus(): Observable<string> {
     return this.http.get(this.API_URL, { responseType: 'text' });
   }
