@@ -9,7 +9,7 @@ body {
 
 .vevada-toast .mdc-snackbar__surface {
   background-color: var(--white) !important;
-  min-height: 80px !important;
+  min-height: 60px !important;
   border-radius: 20px !important;
   box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.12) !important;
 }

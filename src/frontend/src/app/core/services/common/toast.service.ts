@@ -7,7 +7,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class ToastService {
   private snackBar = inject(MatSnackBar);
 
-  private duration = 3000;
+  private duration = 5000;
 
   showSuccess(message: string): void {
     this.snackBar.open(message, 'Закрыть', {
