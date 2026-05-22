@@ -1,0 +1,39 @@
+<header class="header">
+  <div class="header-container">
+    <div class="header-top">
+      <a routerLink="/" class="logo-link">
+        <app-brand-logo-with-text
+          theme="dark"
+          iconSize="62px"
+          textSize="46px"
+        ></app-brand-logo-with-text>
+      </a>
+    </div>
+
+    <div class="header-bottom">
+      <nav class="header-nav">
+        <a routerLink="/catalog" class="header-link text-body-1-regular">Каталог</a>
+        <a routerLink="/help" class="header-link text-body-1-regular">Допомога</a>
+        <a routerLink="/custom-order" class="header-link text-body-1-regular"
+          >Індивідуальне замовлення</a
+        >
+      </nav>
+
+      <div class="header-actions">
+        <app-ui-icon-button icon="icon-heart"></app-ui-icon-button>
+
+        <div
+          class
+          class="badge-wrapper"
+          [matBadge]="cartItemsCount"
+          [matBadgeHidden]="cartItemsCount === 0"
+          matBadgeColor="warn"
+        >
+          <app-ui-icon-button icon="icon-cart"></app-ui-icon-button>
+        </div>
+
+        <app-ui-icon-button icon="icon-user" (click)="onUserIconClick()"> </app-ui-icon-button>
+      </div>
+    </div>
+  </div>
+</header>
