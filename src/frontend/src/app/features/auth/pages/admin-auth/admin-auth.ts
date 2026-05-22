@@ -7,6 +7,7 @@ import { UiInput } from '../../../../shared/components/ui-input/ui-input';
 import { BrandLogoWithText } from '../../../../shared/components/brand-logo-with-text/brand-logo-with-text';
 import { AuthService } from '../../../../core/services/auth/auth.service';
 import { SessionService } from '../../../../core/services/auth/session.service';
+import { ToastService } from '../../../../core/services/common/toast.service';
 
 @Component({
   selector: 'app-admin-auth',
@@ -17,6 +18,7 @@ import { SessionService } from '../../../../core/services/auth/session.service';
 })
 export class AdminAuth {
   private authService = inject(AuthService);
+  private toastService = inject(ToastService);
   private sessionService = inject(SessionService);
   private router = inject(Router);
 
@@ -37,7 +39,9 @@ export class AdminAuth {
           this.sessionService.startSession(response);
           this.navigateByRole(response.role);
         },
-        error: (error) => {},
+        error: (err) => {
+          this.toastService.showError(err.error?.message || 'Виникла помилка при вході');
+        },
       });
     } else {
       this.adminAuthForm.markAllAsTouched();
@@ -59,7 +63,7 @@ export class AdminAuth {
         this.router.navigate(['/manufacturer']);
         break;
       default:
-        console.warn('Неизвестная роль или роль не указана:', role);
+        console.warn('Невідома роль:', role);
         this.router.navigate(['/']);
         break;
     }
