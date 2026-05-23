@@ -1,0 +1,37 @@
+name: PR Build Validation
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  validate-build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      # 1. Test Backend Build
+      - name: Validate Backend Build
+        uses: docker/build-push-action@v5
+        with:
+          context: ./src/backend/Vevada
+          file: ./src/backend/Vevada/Vevada.Api/Dockerfile
+          push: false
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      # 2. Test Frontend Build
+      - name: Validate Frontend Build
+        uses: docker/build-push-action@v5
+        with:
+          context: ./src/frontend
+          file: ./src/frontend/Dockerfile
+          push: false
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
