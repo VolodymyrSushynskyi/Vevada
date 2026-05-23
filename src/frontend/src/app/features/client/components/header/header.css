@@ -1,64 +1,44 @@
+/* 1. Внешняя обертка: отвечает за липкость, фон на всю ширину и центрирование контейнера */
 .header {
-  background-color: #ffffff;
-  border-bottom: 1px solid #e5e7eb;
   width: 100%;
-  display: flex;
-  justify-content: center; /* Центрируем сам контейнер внутри хедера */
-}
-
-/* Наш новый ограничитель ширины */
-.header-container {
-  width: 100%;
-  max-width: 1400px; /* Зайди в Figma, кликни на фрейм макета и посмотри его ширину (W). Впиши эту цифру сюда вместо 1200px */
-  padding: 10px 40px; /* Уменьшили нижний отступ */
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.header-top {
   display: flex;
   justify-content: center;
-  margin-top: 35px;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background-color: var(--white);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.header-container {
+  width: 100%;
+  max-width: 1440px;
+  padding: 7px 45px;
+  display: flex;
+  align-items: center;
+  position: relative;
 }
 
 .logo-link {
   text-decoration: none;
-  display: inline-block;
-  line-height: 1; /* Убирает лишнее пустое пространство вокруг текста/картинки */
 }
 
-.header-bottom {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
+.navigation-section {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
-.header-nav {
-  display: flex;
-  gap: 108px;
-  align-items: center;
-}
-
-.header-link {
+.nav-link {
   text-decoration: none;
-  color: #333333;
-  white-space: nowrap;
-  transition: color 0.2s ease;
+  color: var(--grey-400);
+  transition: color 0.2s ease-in-out;
 }
 
-.header-link:hover {
-  color: #0d9488;
+.nav-link:hover {
+  color: var(--green-200);
 }
 
-.header-actions {
-  display: flex;
-  gap: 16px;
-  align-items: center;
-}
-
-.badge-wrapper {
-  display: inline-flex;
-  cursor: pointer;
+.actions-section {
+  margin-left: auto;
 }

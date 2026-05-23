@@ -5,12 +5,12 @@
   [ngClass]="[variant, color, shape]"
   [style.width]="width"
   [style.height]="height"
+  [matBadge]="badgeCount"
+  [matBadgeHidden]="badgeCount === 0"
+  matBadgeColor="warn"
   (click)="onClick($event)"
 >
-  <mat-icon
-    [svgIcon]="icon"
-    [style.width]="iconSize"
-    [style.height]="iconSize"
-    [style.fontSize]="iconSize"
-  ></mat-icon>
+  @if (isBrowser) {
+    <mat-icon [svgIcon]="icon" [style.width]="iconSize" [style.height]="iconSize"> </mat-icon>
+  }
 </button>

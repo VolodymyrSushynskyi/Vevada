@@ -1,15 +1,14 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { MatBadgeModule } from '@angular/material/badge';
 import { RouterModule } from '@angular/router';
 import { UiIconButton } from '../../../../shared/components/ui-icon-button/ui-icon-button';
-import { BrandLogoWithText } from '../../../../shared/components/brand-logo-with-text/brand-logo-with-text';
+import { BrandLogo } from '../../../../shared/components/brand-logo/brand-logo';
 import { HorizontalList } from '../../../../shared/components/horizontal-list/horizontal-list';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [RouterModule, MatBadgeModule, UiIconButton, BrandLogoWithText, HorizontalList],
+  imports: [RouterModule, UiIconButton, BrandLogo, HorizontalList],
   templateUrl: './header.html',
   styleUrl: './header.css',
 })
