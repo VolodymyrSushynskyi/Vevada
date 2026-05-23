@@ -5,6 +5,10 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import {
+  VALIDATION_MESSAGES,
+  VALIDATION_PRIORITY,
+} from '../../../core/constants/validation-messages';
 
 @Component({
   selector: 'app-ui-input',
@@ -27,6 +31,21 @@ export class UiInput {
   @Input() control: FormControl = new FormControl();
 
   isPasswordVisible: boolean = false;
+
+  private readonly errorMessages = VALIDATION_MESSAGES;
+  private readonly priorityOrder = VALIDATION_PRIORITY;
+
+  get errorMessage(): string | null {
+    if (!this.control || !this.control.errors) return null;
+
+    const firstErrorKey = this.priorityOrder.find((key) => this.control.errors![key]);
+
+    const activeErrorKey = firstErrorKey || Object.keys(this.control.errors)[0];
+
+    const getMessage = this.errorMessages[activeErrorKey];
+
+    return getMessage ? getMessage(this.control.errors[activeErrorKey]) : 'Невірне значення';
+  }
 
   togglePasswordVisibility(event: Event): void {
     event.preventDefault();

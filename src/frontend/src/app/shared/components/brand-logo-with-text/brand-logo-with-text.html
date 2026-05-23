@@ -1,14 +1,15 @@
-<div class="logo-wrapper">
+<div class="logo-wrapper" [ngClass]="{ 'dark-theme': theme === 'dark' }">
   <div class="text-container">
     <span class="brand-text" [style.font-size]="textSize">Vevada</span>
   </div>
 
   <div class="icon-anchor">
-    <mat-icon
-      svgIcon="icon-white-logo"
+    <img
+      [src]="theme === 'white' ? '/icons/white-logo.svg' : '/icons/green-logo.svg'"
+      alt="Vevada Logo"
       class="brand-icon"
       [style.width]="iconSize"
       [style.height]="iconSize"
-    ></mat-icon>
+    />
   </div>
 </div>

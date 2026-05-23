@@ -1,3 +1,21 @@
 <div class="page-container">
   <app-main-button label="Увійти" routerLink="/login"></app-main-button>
 </div>
+
+<div style="padding: 40px; text-align: center">
+  <h2>Перевірка захищеного маршруту</h2>
+  <p>Натисніть кнопку, щоб відправити запит з токеном на бекенд.</p>
+
+  <div style="max-width: 300px; margin: 20px auto">
+    <app-main-button label="Перевірити статус" (btnClick)="testAuth()"></app-main-button>
+  </div>
+
+  @if (authMessage) {
+    <div
+      [style.color]="isSuccess ? '#4CAF50' : '#F44336'"
+      style="margin-top: 20px; font-size: 18px; font-weight: bold"
+    >
+      {{ authMessage }}
+    </div>
+  }
+</div>

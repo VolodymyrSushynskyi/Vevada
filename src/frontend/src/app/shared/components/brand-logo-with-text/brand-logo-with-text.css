@@ -11,6 +11,10 @@
   white-space: nowrap;
 }
 
+.logo-wrapper.dark-theme .brand-text {
+  color: var(--grey-700);
+}
+
 .icon-anchor {
   position: relative;
   width: 0;

@@ -4,46 +4,68 @@ import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angula
 import { Router } from '@angular/router';
 import { MainButton } from '../../../../shared/components/main-button/main-button';
 import { UiInput } from '../../../../shared/components/ui-input/ui-input';
+import { BrandLogoWithText } from '../../../../shared/components/brand-logo-with-text/brand-logo-with-text';
 import { AuthService } from '../../../../core/services/auth/auth.service';
 import { SessionService } from '../../../../core/services/auth/session.service';
 import { ToastService } from '../../../../core/services/common/toast.service';
 
 @Component({
-  selector: 'app-login-form',
+  selector: 'app-admin-auth',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, MainButton, UiInput],
-  templateUrl: './login-form.html',
-  styleUrl: './login-form.css',
+  imports: [CommonModule, ReactiveFormsModule, BrandLogoWithText, MainButton, UiInput],
+  templateUrl: './admin-auth.html',
+  styleUrl: './admin-auth.css',
 })
-export class LoginForm {
+export class AdminAuth {
   private authService = inject(AuthService);
   private toastService = inject(ToastService);
   private sessionService = inject(SessionService);
   private router = inject(Router);
 
-  loginForm = new FormGroup({
+  adminAuthForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [Validators.required]),
   });
 
   onSubmit() {
-    if (this.loginForm.valid) {
+    if (this.adminAuthForm.valid) {
       const credentials = {
-        email: this.loginForm.value.email!,
-        password: this.loginForm.value.password!,
+        email: this.adminAuthForm.value.email!,
+        password: this.adminAuthForm.value.password!,
       };
 
-      this.authService.login(credentials).subscribe({
+      this.authService.loginAdmin(credentials).subscribe({
         next: (response) => {
           this.sessionService.startSession(response);
-          this.router.navigate(['/']);
+          this.navigateByRole(response.role);
         },
         error: (err) => {
           this.toastService.showError(err.error?.message || 'Виникла помилка при вході');
         },
       });
     } else {
-      this.loginForm.markAllAsTouched();
+      this.adminAuthForm.markAllAsTouched();
+    }
+  }
+
+  private navigateByRole(role: string) {
+    switch (role) {
+      case 'SuperAdmin':
+        this.router.navigate(['/']);
+        break;
+      case 'Analyst':
+        this.router.navigate(['/analyst']);
+        break;
+      case 'ProductManager':
+        this.router.navigate(['/product-manager']);
+        break;
+      case 'Manufacturer':
+        this.router.navigate(['/manufacturer']);
+        break;
+      default:
+        console.warn('Невідома роль:', role);
+        this.router.navigate(['/']);
+        break;
     }
   }
 }

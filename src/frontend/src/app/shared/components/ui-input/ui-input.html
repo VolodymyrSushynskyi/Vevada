@@ -16,7 +16,7 @@
     </button>
   }
 
-  @if (control.hasError('required')) {
-    <mat-error class="text-body-2-regular">Це поле обов'язкове</mat-error>
+  @if (errorMessage) {
+    <mat-error class="text-body-2-regular">{{ errorMessage }}</mat-error>
   }
 </mat-form-field>
