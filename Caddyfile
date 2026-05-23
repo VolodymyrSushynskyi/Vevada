@@ -1,0 +1,9 @@
+95.169.204.46.sslip.io {
+    # Route traffic to the Angular Nginx container
+    reverse_proxy vevada-frontend:80
+}
+
+api-95-169-204-46.sslip.io {
+    # Route traffic to the .NET 8 API container
+    reverse_proxy vevada-api:8080
+}
