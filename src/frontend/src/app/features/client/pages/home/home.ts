@@ -3,11 +3,10 @@ import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { MainButton } from '../../../../shared/components/main-button/main-button';
 import { AuthService } from '../../../../core/services/auth/auth.service';
-import { Header } from '../../components/header/header';
 
 @Component({
   selector: 'app-home',
-  imports: [CommonModule, RouterLink, MainButton, Header],
+  imports: [CommonModule, RouterLink, MainButton],
   templateUrl: './home.html',
   styleUrl: './home.css',
 })

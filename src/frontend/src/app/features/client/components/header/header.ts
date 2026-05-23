@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { RouterModule } from '@angular/router';
 import { UiIconButton } from '../../../../shared/components/ui-icon-button/ui-icon-button';
 import { BrandLogo } from '../../../../shared/components/brand-logo/brand-logo';
 import { HorizontalList } from '../../../../shared/components/horizontal-list/horizontal-list';
+import { SessionService } from '../../../../core/services/auth/session.service';
 
 @Component({
   selector: 'app-header',
@@ -13,13 +14,15 @@ import { HorizontalList } from '../../../../shared/components/horizontal-list/ho
   styleUrl: './header.css',
 })
 export class Header {
-  public cartItemsCount: number = 2;
-  public isLoggedIn: boolean = false;
+  private sessionService = inject(SessionService);
+  private router = inject(Router);
 
-  constructor(private router: Router) {}
+  public cartItemsCount: number = 2;
 
   public onUserIconClick(): void {
-    if (this.isLoggedIn) {
+    const isLoggedIn = this.sessionService.isAuthenticated();
+
+    if (isLoggedIn) {
       this.router.navigate(['/']);
     } else {
       this.router.navigate(['/login']);
