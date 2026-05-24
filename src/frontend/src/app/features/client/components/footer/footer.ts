@@ -28,7 +28,7 @@ export class Footer {
 
     const url = links[network];
 
-    if (url) {
+    if (this.isBrowser && url) {
       window.open(url, '_blank', 'noopener,noreferrer');
     }
   }
