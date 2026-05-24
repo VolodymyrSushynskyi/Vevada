@@ -24,6 +24,13 @@ export class IconRegistration {
         { name: 'icon-heart', path: 'icons/heart.svg' },
         { name: 'icon-cart', path: 'icons/cart.svg' },
         { name: 'icon-user', path: 'icons/user.svg' },
+        { name: 'icon-map-pin', path: 'icons/map-pin.svg' },
+        { name: 'icon-envelope', path: 'icons/envelope.svg' },
+        { name: 'icon-phone', path: 'icons/phone.svg' },
+        { name: 'icon-instagram-logo', path: 'icons/instagram-logo.svg' },
+        { name: 'icon-pinterest-logo', path: 'icons/pinterest-logo.svg' },
+        { name: 'icon-viber-logo', path: 'icons/viber-logo.svg' },
+        { name: 'icon-telegram-logo', path: 'icons/telegram-logo.svg' },
       ];
 
       icons.forEach((icon) => {
