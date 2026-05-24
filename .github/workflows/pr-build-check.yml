@@ -11,10 +11,10 @@ jobs:
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v4
+        uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@d70bba72b1f3fd22344832f00baa16ece964efeb
 
       # 1. Test Backend Build
       - name: Validate Backend Build
@@ -23,15 +23,15 @@ jobs:
           context: ./src/backend/Vevada
           file: ./src/backend/Vevada/Vevada.Api/Dockerfile
           push: false
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          cache-from: type=gha,scope=backend
+          cache-to: type=gha,mode=max,scope=backend
 
       # 2. Test Frontend Build
       - name: Validate Frontend Build
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@2cdde99a31192fa94254f6acdfb6bc16aee70c29
         with:
           context: ./src/frontend
           file: ./src/frontend/Dockerfile
           push: false
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          cache-from: type=gha,scope=frontend
+          cache-to: type=gha,mode=max,scope=frontend
