@@ -1,6 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { Router } from '@angular/router';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { UiIconButton } from '../../../../shared/components/ui-icon-button/ui-icon-button';
 import { BrandLogo } from '../../../../shared/components/brand-logo/brand-logo';
 import { HorizontalList } from '../../../../shared/components/horizontal-list/horizontal-list';
@@ -17,7 +16,7 @@ export class Header {
   private sessionService = inject(SessionService);
   private router = inject(Router);
 
-  public cartItemsCount: number = 2;
+  public cartItemsCount: number = 0;
 
   public onUserIconClick(): void {
     const isLoggedIn = this.sessionService.isAuthenticated();
