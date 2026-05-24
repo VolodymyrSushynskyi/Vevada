@@ -2,11 +2,15 @@
   <div class="footer-column left-column">
     <h3 class="column-title">Контакти</h3>
     <div class="contact-item">
-      <mat-icon svgIcon="icon-map-pin"></mat-icon>
+      @if (isBrowser) {
+        <mat-icon svgIcon="icon-map-pin"></mat-icon>
+      }
       <span>м. Дніпро, Україна</span>
     </div>
     <div class="contact-item">
-      <mat-icon svgIcon="icon-envelope"></mat-icon>
+      @if (isBrowser) {
+        <mat-icon svgIcon="icon-envelope"></mat-icon>
+      }
       <span>kvalentinaevamelissa@gmail.com</span>
     </div>
   </div>
@@ -19,11 +23,15 @@
   <div class="footer-column right-column">
     <h3 class="column-title">Зв’язатися з нами</h3>
     <div class="contact-item phone">
-      <mat-icon svgIcon="icon-phone"></mat-icon>
+      @if (isBrowser) {
+        <mat-icon svgIcon="icon-phone"></mat-icon>
+      }
       <span>+380 (99) 474-16-69</span>
     </div>
     <div class="contact-item phone">
-      <mat-icon svgIcon="icon-phone"></mat-icon>
+      @if (isBrowser) {
+        <mat-icon svgIcon="icon-phone"></mat-icon>
+      }
       <span>+380 (50) 744-79-88</span>
     </div>
 
@@ -35,6 +43,7 @@
         width="40px"
         height="40px"
         iconSize="24px"
+        (btnClick)="openSocialLink('instagram')"
       >
       </app-ui-icon-button>
 
@@ -45,6 +54,7 @@
         width="40px"
         height="40px"
         iconSize="24px"
+        (btnClick)="openSocialLink('pinterest')"
       >
       </app-ui-icon-button>
 
@@ -55,6 +65,7 @@
         width="40px"
         height="40px"
         iconSize="24px"
+        (btnClick)="openSocialLink('viber')"
       >
       </app-ui-icon-button>
 
@@ -65,6 +76,7 @@
         width="40px"
         height="40px"
         iconSize="24px"
+        (btnClick)="openSocialLink('telegram')"
       >
       </app-ui-icon-button>
     </app-horizontal-list>
