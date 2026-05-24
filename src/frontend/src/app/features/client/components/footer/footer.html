@@ -1,0 +1,84 @@
+<footer class="footer-container">
+  <div class="footer-column left-column">
+    <h3 class="column-title">Контакти</h3>
+    <div class="contact-item">
+      @if (isBrowser) {
+        <mat-icon svgIcon="icon-map-pin"></mat-icon>
+      }
+      <span>м. Дніпро, Україна</span>
+    </div>
+    <div class="contact-item">
+      @if (isBrowser) {
+        <mat-icon svgIcon="icon-envelope"></mat-icon>
+      }
+      <span>kvalentinaevamelissa@gmail.com</span>
+    </div>
+  </div>
+
+  <div class="footer-column center-column">
+    <app-brand-logo-with-text theme="dark"></app-brand-logo-with-text>
+    <p class="brand-subtitle">Мистецтво в русі</p>
+  </div>
+
+  <div class="footer-column right-column">
+    <h3 class="column-title">Зв’язатися з нами</h3>
+    <div class="contact-item phone">
+      @if (isBrowser) {
+        <mat-icon svgIcon="icon-phone"></mat-icon>
+      }
+      <span>+380 (99) 474-16-69</span>
+    </div>
+    <div class="contact-item phone">
+      @if (isBrowser) {
+        <mat-icon svgIcon="icon-phone"></mat-icon>
+      }
+      <span>+380 (50) 744-79-88</span>
+    </div>
+
+    <app-horizontal-list gap="0px" justify="flex-start" align="center">
+      <app-ui-icon-button
+        icon="icon-instagram-logo"
+        variant="ghost"
+        color="grey"
+        width="40px"
+        height="40px"
+        iconSize="24px"
+        (btnClick)="openSocialLink('instagram')"
+      >
+      </app-ui-icon-button>
+
+      <app-ui-icon-button
+        icon="icon-pinterest-logo"
+        variant="ghost"
+        color="grey"
+        width="40px"
+        height="40px"
+        iconSize="24px"
+        (btnClick)="openSocialLink('pinterest')"
+      >
+      </app-ui-icon-button>
+
+      <app-ui-icon-button
+        icon="icon-viber-logo"
+        variant="ghost"
+        color="grey"
+        width="40px"
+        height="40px"
+        iconSize="24px"
+        (btnClick)="openSocialLink('viber')"
+      >
+      </app-ui-icon-button>
+
+      <app-ui-icon-button
+        icon="icon-telegram-logo"
+        variant="ghost"
+        color="grey"
+        width="40px"
+        height="40px"
+        iconSize="24px"
+        (btnClick)="openSocialLink('telegram')"
+      >
+      </app-ui-icon-button>
+    </app-horizontal-list>
+  </div>
+</footer>
