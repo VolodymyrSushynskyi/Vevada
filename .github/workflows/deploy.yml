@@ -9,13 +9,15 @@ concurrency:
   group: production_deployment
   cancel-in-progress: true
 
+permissions: {}
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
       - name: Deploying Vevada Stack via SSH
-        uses: appleboy/ssh-action@7eaf76671a0d7eec5d98ce8ee3ada08452bf52c8
+        uses: appleboy/ssh-action@029f5b4aeeeb58fdfe1410a5d17f967dacf36262
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
