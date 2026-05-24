@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://api.vevada.com',
+  apiUrl: 'https://api.vevada.uk/',
 };
