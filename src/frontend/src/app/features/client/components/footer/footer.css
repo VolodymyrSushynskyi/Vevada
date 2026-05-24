@@ -1,0 +1,52 @@
+.footer-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  align-items: center;
+  padding: 40px 10%;
+  background-color: var(--grey-50);
+  color: var(--grey-400);
+  gap: 20px;
+}
+
+.footer-column {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.left-column {
+  align-items: flex-start;
+}
+
+.center-column {
+  align-items: center;
+  margin-top: 35px;
+}
+
+.right-column {
+  align-items: flex-end;
+}
+
+.column-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0 0 8px 0;
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.contact-item mat-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.brand-subtitle {
+  margin-top: 4px;
+  font-size: 12px;
+  color: var(--grey-500);
+}
