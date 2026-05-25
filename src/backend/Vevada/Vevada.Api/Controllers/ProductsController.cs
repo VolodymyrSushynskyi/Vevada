@@ -27,4 +27,16 @@ public class ProductsController : BaseApiController
         var result = await Mediator.Send(command, cancellationToken);
         return HandleResult(result);
     }
+
+    [HttpPut("{id:guid}")]
+    public async Task<IActionResult> UpdateProduct(Guid id, [FromBody] UpdateProductCommand command, CancellationToken cancellationToken)
+    {
+        if (id != command.Id)
+        {
+            return BadRequest(new { error = "Route ID does not match Command ID." });
+        }
+
+        var result = await Mediator.Send(command, cancellationToken);
+        return HandleResult(result);
+    }
 }
