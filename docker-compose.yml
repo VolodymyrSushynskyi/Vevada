@@ -33,6 +33,8 @@ services:
       - AllowedOrigins=${CORS_ORIGINS}
       - RUN_MIGRATIONS_ON_STARTUP=${RUN_MIGRATIONS_ON_STARTUP}
       - ENABLE_SWAGGER=${ENABLE_SWAGGER}
+      - SuperAdminConfig__Email=${SUPERADMIN_EMAIL}
+      - SuperAdminConfig__Password=${SUPERADMIN_PASSWORD}
     env_file:
       - .env
     depends_on:
