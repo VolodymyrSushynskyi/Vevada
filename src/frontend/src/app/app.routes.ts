@@ -5,6 +5,7 @@ import { AdminAuth } from './features/auth/pages/admin-auth/admin-auth';
 import { ClientLayout } from './features/client/components/client-layout/client-layout';
 import { AdminLayout } from './features/admin/components/admin-layout/admin-layout';
 import { Products } from './features/admin/pages/products/products';
+import { EditProduct } from './features/admin/pages/edit-product/edit-product';
 
 export const routes: Routes = [
   {
@@ -15,7 +16,10 @@ export const routes: Routes = [
   {
     path: 'admin',
     component: AdminLayout,
-    children: [{ path: 'products', component: Products }],
+    children: [
+      { path: 'products', component: Products },
+      { path: 'edit', component: EditProduct },
+    ],
   },
   { path: 'login', component: ClientAuth },
   {
