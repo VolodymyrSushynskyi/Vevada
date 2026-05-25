@@ -1,1 +1,60 @@
+<div class="page-header">
+  <h1 class="page-title text-h4-bold">Товари</h1>
+  <app-main-button label="Додати товар" variant="primary"></app-main-button>
+</div>
 
+<mat-tab-group class="custom-tabs" animationDuration="0ms">
+  <mat-tab class="text-body-1-regular" label="Всі (49)"></mat-tab>
+  <mat-tab class="text-body-1-regular" label="Опубліковані (30)"></mat-tab>
+  <mat-tab class="text-body-1-regular" label="Чернетки (6)"></mat-tab>
+</mat-tab-group>
+
+<div class="table-container">
+  <table mat-table [dataSource]="dataSource" class="product-table">
+    <ng-container matColumnDef="photo">
+      <th mat-header-cell *matHeaderCellDef class="text-small-medium">Фото</th>
+      <td mat-cell *matCellDef="let element">
+        <img [src]="element.photoUrl" class="product-img" alt="Фото товару" />
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef class="text-small-medium">Назва</th>
+      <td mat-cell *matCellDef="let element" class="text-small-regular">
+        {{ element.name }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="status">
+      <th mat-header-cell *matHeaderCellDef class="text-small-medium">Статус</th>
+      <td mat-cell *matCellDef="let element">
+        <app-status-chip [status]="element.status"></app-status-chip>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="date">
+      <th mat-header-cell *matHeaderCellDef class="text-small-medium">Останнє змінено</th>
+      <td mat-cell *matCellDef="let element" class="date-cell">
+        <span class="date-status text-small-regular">
+          {{ element.status === 'published' ? 'Опубліковано' : 'Остання зміна' }} </span
+        ><br />
+        <span class="date-time text-small-regular">{{ element.date }}</span>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef class="text-small-medium">Дії</th>
+      <td mat-cell *matCellDef="let element">
+        <div class="action-buttons">
+          <app-pencil-button></app-pencil-button>
+          <app-trash-button></app-trash-button>
+        </div>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+
+  <mat-paginator [length]="49" [pageSize]="10" hidePageSize="true"></mat-paginator>
+</div>

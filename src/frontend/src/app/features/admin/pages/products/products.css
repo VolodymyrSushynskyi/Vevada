@@ -1,0 +1,85 @@
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.page-title {
+  color: var(--grey-700);
+  margin: 0;
+}
+
+.custom-tabs {
+  margin-bottom: 34px;
+}
+
+.custom-tabs ::ng-deep .mat-mdc-tab .mdc-tab__text-label {
+  color: var(--grey-400);
+  padding: 0 24px;
+}
+
+.custom-tabs ::ng-deep .mat-mdc-tab.mdc-tab--active .mdc-tab__text-label {
+  color: var(--green-200);
+  font-weight: var(--font-weight-bold);
+}
+
+.custom-tabs ::ng-deep .mdc-tab-indicator__content--underline {
+  border-color: var(--green-200) !important;
+  border-top-width: 3px !important;
+}
+
+.table-container {
+  background: var(--white);
+  border-radius: 10px;
+  border: 1px solid var(--grey-300);
+  overflow: hidden;
+}
+
+.product-table {
+  width: 100%;
+  background: transparent;
+}
+
+.product-table ::ng-deep th.mat-mdc-header-cell {
+  background-color: var(--grey-50);
+  color: var(--grey-600);
+  border-bottom: 1px solid var(--grey-300);
+  padding: 16px 30px;
+}
+
+.product-table ::ng-deep td.mat-mdc-cell {
+  padding: 12px 30px;
+  border-bottom: 1px solid var(--grey-200);
+  vertical-align: middle;
+}
+
+.product-img {
+  width: 70px;
+  height: 70px;
+  object-fit: cover;
+  display: block;
+}
+
+.date-cell {
+  line-height: 1.5;
+}
+
+.date-status {
+  color: var(--grey-500);
+}
+
+.date-time {
+  color: var(--grey-500);
+}
+
+.action-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.table-container ::ng-deep .mat-mdc-paginator {
+  background: transparent;
+  font-size: var(--font-size-body-2);
+  color: var(--grey-600);
+}

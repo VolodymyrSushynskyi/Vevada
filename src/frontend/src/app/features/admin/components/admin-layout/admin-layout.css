@@ -1,3 +1,11 @@
-.main-content {
+.admin-layout-wrapper {
+  display: flex;
   min-height: 100vh;
+}
+
+.main-content {
+  flex-grow: 1;
+  padding: 20px 60px;
+  overflow-y: auto;
+  box-sizing: border-box;
 }
