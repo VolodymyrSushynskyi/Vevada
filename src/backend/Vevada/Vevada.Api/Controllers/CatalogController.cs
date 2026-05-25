@@ -21,4 +21,13 @@ public class CatalogController : BaseApiController
 
         return HandleResult(result);
     }
+
+    [HttpGet("{id:guid}")]
+    public async Task<IActionResult> GetProductById(Guid id, CancellationToken cancellationToken)
+    {
+        var query = new GetProductDetailsQuery(id);
+        var result = await Mediator.Send(query, cancellationToken);
+
+        return HandleResult(result);
+    }
 }
