@@ -1,0 +1,20 @@
+.status-chip {
+  display: inline-block;
+  padding: 8px 16px;
+  border: 1px solid;
+  border-radius: 25px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.published {
+  border-color: var(--green-200);
+  color: var(--green-200);
+  background-color: rgba(0, 107, 86, 10%);
+}
+
+.draft {
+  border-color: var(--grey-500);
+  color: var(--grey-500);
+  background-color: rgba(155, 155, 155, 10%);
+}

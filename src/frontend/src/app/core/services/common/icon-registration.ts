@@ -31,6 +31,9 @@ export class IconRegistration {
         { name: 'icon-pinterest-logo', path: 'icons/pinterest-logo.svg' },
         { name: 'icon-viber-logo', path: 'icons/viber-logo.svg' },
         { name: 'icon-telegram-logo', path: 'icons/telegram-logo.svg' },
+        { name: 'icon-pencil', path: 'icons/pencil.svg' },
+        { name: 'icon-trash', path: 'icons/trash.svg' },
+        { name: 'icon-sign-out', path: 'icons/sign-out.svg' },
       ];
 
       icons.forEach((icon) => {
