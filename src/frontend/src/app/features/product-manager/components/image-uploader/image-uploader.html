@@ -1,0 +1,45 @@
+<div class="uploader-wrapper">
+  @if (!multiple) {
+    @if (previews.length === 0) {
+      <div class="dropzone single-dropzone" (click)="fileInput.click()">
+        @if (isBrowser) {
+          <mat-icon class="upload-icon" svgIcon="icon-upload"></mat-icon>
+        }
+        <app-sub-button label="Завантажити фото"></app-sub-button>
+      </div>
+    } @else {
+      <div class="preview-box single-preview">
+        <img [src]="previews[0].url" alt="Preview" />
+        <button class="remove-btn" (click)="removeImage(0)">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+    }
+  }
+
+  @if (multiple) {
+    <div class="gallery-grid">
+      @for (item of previews; track item.url; let i = $index) {
+        <div class="preview-box gallery-item">
+          <img [src]="item.url" alt="Preview" />
+          <button class="remove-btn" (click)="removeImage(i)">
+            <mat-icon>close</mat-icon>
+          </button>
+        </div>
+      }
+
+      <div class="dropzone gallery-add-btn" (click)="fileInput.click()">
+        <mat-icon class="add-icon">add</mat-icon>
+      </div>
+    </div>
+  }
+
+  <input
+    #fileInput
+    type="file"
+    accept="image/*"
+    [multiple]="multiple"
+    class="hidden-input"
+    (change)="onFileSelected($event)"
+  />
+</div>

@@ -3,10 +3,10 @@ import { RouterModule } from '@angular/router';
 import { Sidebar } from '../sidebar/sidebar';
 
 @Component({
-  selector: 'app-admin-layout',
+  selector: 'app-product-manager-layout',
   standalone: true,
   imports: [RouterModule, Sidebar],
-  templateUrl: './admin-layout.html',
-  styleUrl: './admin-layout.css',
+  templateUrl: './product-manager-layout.html',
+  styleUrl: './product-manager-layout.css',
 })
-export class AdminLayout {}
+export class ProductManagerLayout {}
