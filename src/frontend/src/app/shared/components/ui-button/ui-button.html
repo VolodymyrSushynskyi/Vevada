@@ -5,13 +5,13 @@
   [ngClass]="variant"
   (click)="onClick($event)"
 >
-  @if (icon && iconPosition === 'left') {
+  @if (isBrowser && icon && iconPosition === 'left') {
     <mat-icon class="btn-icon" [svgIcon]="icon"></mat-icon>
   }
 
   <span class="btn-label">{{ label }}</span>
 
-  @if (icon && iconPosition === 'right') {
+  @if (isBrowser && icon && iconPosition === 'right') {
     <mat-icon class="btn-icon" [svgIcon]="icon"></mat-icon>
   }
 </button>
