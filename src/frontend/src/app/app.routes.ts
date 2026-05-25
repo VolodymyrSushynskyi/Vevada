@@ -13,9 +13,9 @@ export const routes: Routes = [
     children: [{ path: '', component: Home }],
   },
   {
-    path: '',
+    path: 'admin',
     component: AdminLayout,
-    children: [{ path: 'admin/products', component: Products }],
+    children: [{ path: 'products', component: Products }],
   },
   { path: 'login', component: ClientAuth },
   {

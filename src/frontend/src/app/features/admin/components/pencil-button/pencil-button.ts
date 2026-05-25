@@ -10,5 +10,5 @@ import { UiIconButton } from '../../../../shared/components/ui-icon-button/ui-ic
 })
 export class PencilButton {
   @Input() disabled: boolean = false;
-  @Output() close = new EventEmitter<void>();
+  @Output() edit = new EventEmitter<void>();
 }

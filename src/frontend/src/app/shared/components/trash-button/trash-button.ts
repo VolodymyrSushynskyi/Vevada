@@ -10,5 +10,5 @@ import { UiIconButton } from '../ui-icon-button/ui-icon-button';
 })
 export class TrashButton {
   @Input() disabled: boolean = false;
-  @Output() close = new EventEmitter<void>();
+  @Output() trash = new EventEmitter<void>();
 }
