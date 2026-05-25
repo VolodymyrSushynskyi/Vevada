@@ -14,7 +14,7 @@ public class CatalogController : BaseApiController
     public async Task<IActionResult> GetCatalog([FromQuery] int page, [FromQuery] int pageSize, CancellationToken cancellationToken = default)
     {
         page = page < 1 ? 1 : page;
-        pageSize = pageSize > 10 ? 10 : pageSize;
+        pageSize = pageSize > 50 ? 50 : pageSize;
 
         var query = new GetCatalogQuery(page, pageSize);
         var result = await Mediator.Send(query, cancellationToken);
