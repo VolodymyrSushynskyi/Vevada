@@ -50,6 +50,12 @@
   color: var(--grey-600);
 }
 
+.custom-error-text {
+  color: var(--red);
+  margin-top: 6px;
+  line-height: 1.2;
+}
+
 .currency-prefix {
   display: flex;
   align-items: center;

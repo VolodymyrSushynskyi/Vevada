@@ -13,6 +13,15 @@ import { ImageUploader } from '../image-uploader/image-uploader';
 import { MainButton } from '../../../../shared/components/main-button/main-button';
 import { BackButton } from '../../../../shared/components/back-button/back-button';
 
+import {
+  ProductFormRules,
+  newProductLineValidator,
+} from '../../../../core/validators/product-manager/product-form.validator';
+import {
+  VALIDATION_MESSAGES,
+  VALIDATION_PRIORITY,
+} from '../../../../core/constants/validation-messages';
+
 @Component({
   selector: 'app-product-form',
   imports: [
@@ -49,16 +58,20 @@ export class ProductForm {
   private currentMainPhoto: File[] = [];
   private currentGallery: File[] = [];
 
-  form = new FormGroup({
-    productLineId: new FormControl('', Validators.required),
-    newProductLineName: new FormControl(''),
-    name: new FormControl('', Validators.required),
-    shortDescription: new FormControl(''),
-    fullDescription: new FormControl(''),
-    price: new FormControl<number | null>(null, [Validators.required, Validators.min(0)]),
-    sizes: new FormControl<string[]>([], Validators.required),
-    status: new FormControl('draft', Validators.required),
-  });
+  form = new FormGroup(
+    {
+      productLineId: new FormControl('', ProductFormRules.productLineId),
+      newProductLineName: new FormControl('', ProductFormRules.newProductLineName),
+      name: new FormControl('', ProductFormRules.name),
+      shortDescription: new FormControl('', ProductFormRules.shortDescription),
+      fullDescription: new FormControl('', ProductFormRules.fullDescription),
+      price: new FormControl<number | null>(null, ProductFormRules.price),
+      sizes: new FormControl<string[]>([], ProductFormRules.sizes),
+      status: new FormControl('draft', ProductFormRules.status),
+      mainPhoto: new FormControl<File[]>([], ProductFormRules.mainPhoto),
+    },
+    { validators: newProductLineValidator },
+  );
 
   get selectedSizes(): string[] {
     return this.form.get('sizes')?.value || [];
@@ -72,16 +85,38 @@ export class ProductForm {
 
   onMainPhotoChanged(files: File[]) {
     this.currentMainPhoto = files;
+    this.form.get('mainPhoto')?.setValue(files);
+    this.form.get('mainPhoto')?.markAsTouched();
   }
 
   onGalleryChanged(files: File[]) {
     this.currentGallery = files;
   }
 
+  getErrorMessage(controlName: string): string {
+    const control = this.form.get(controlName);
+    if (!control || !control.errors || !control.touched) return '';
+
+    for (const errorKey of VALIDATION_PRIORITY) {
+      if (control.hasError(errorKey)) {
+        return VALIDATION_MESSAGES[errorKey](control.errors[errorKey]);
+      }
+    }
+
+    const firstErrorKey = Object.keys(control.errors)[0];
+    if (VALIDATION_MESSAGES[firstErrorKey]) {
+      return VALIDATION_MESSAGES[firstErrorKey](control.errors[firstErrorKey]);
+    }
+    return 'Невірне значення';
+  }
+
   onSubmit() {
     if (this.form.valid) {
+      const formData = { ...this.form.value };
+      delete formData.mainPhoto;
+
       this.formSubmit.emit({
-        formData: this.form.value,
+        formData: formData,
         mainPhoto: this.currentMainPhoto,
         gallery: this.currentGallery,
       });

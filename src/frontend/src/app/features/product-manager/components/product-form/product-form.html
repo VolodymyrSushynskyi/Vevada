@@ -17,6 +17,12 @@
             <mat-option value="2">Колекція для виступів</mat-option>
             <mat-option value="new">Створити нову лінійку товарів</mat-option>
           </mat-select>
+
+          @if (form.get('productLineId')?.invalid) {
+            <mat-error class="text-body-2-regular">{{
+              getErrorMessage('productLineId')
+            }}</mat-error>
+          }
         </mat-form-field>
 
         @if (form.get('productLineId')?.value === 'new') {
@@ -26,6 +32,11 @@
               formControlName="newProductLineName"
               placeholder="Назва нової лінійки"
             />
+            @if (form.get('newProductLineName')?.invalid) {
+              <mat-error class="text-body-2-regular">{{
+                getErrorMessage('newProductLineName')
+              }}</mat-error>
+            }
           </mat-form-field>
         }
       </app-ui-card>
@@ -39,6 +50,10 @@
               formControlName="name"
               placeholder="Наприклад: Купальник для художньої гімнастики 'Діамант'"
             />
+
+            @if (form.get('name')?.invalid) {
+              <mat-error class="text-body-2-regular">{{ getErrorMessage('name') }}</mat-error>
+            }
           </mat-form-field>
         </div>
 
@@ -46,6 +61,11 @@
           <label class="custom-label text-small-regular">Короткий опис</label>
           <mat-form-field appearance="outline" class="w-100">
             <textarea matInput formControlName="shortDescription" rows="3"></textarea>
+            @if (form.get('shortDescription')?.invalid) {
+              <mat-error class="text-body-2-regular">{{
+                getErrorMessage('shortDescription')
+              }}</mat-error>
+            }
           </mat-form-field>
         </div>
 
@@ -53,6 +73,11 @@
           <label class="custom-label text-small-regular">Повний опис</label>
           <mat-form-field appearance="outline" class="w-100">
             <textarea matInput formControlName="fullDescription" rows="5"></textarea>
+            @if (form.get('fullDescription')?.invalid) {
+              <mat-error class="text-body-2-regular">{{
+                getErrorMessage('fullDescription')
+              }}</mat-error>
+            }
           </mat-form-field>
         </div>
       </app-ui-card>
@@ -66,6 +91,10 @@
           </div>
 
           <input matInput type="number" formControlName="price" placeholder="700,00" />
+
+          @if (form.get('price')?.invalid) {
+            <mat-error class="text-body-2-regular">{{ getErrorMessage('price') }}</mat-error>
+          }
         </mat-form-field>
       </app-ui-card>
 
@@ -96,6 +125,9 @@
             <mat-option value="146 (10-11 р.)">146 (10-11 р.)</mat-option>
             <mat-option value="152 (11-12 р.)">152 (11-12 р.)</mat-option>
           </mat-select>
+          @if (form.get('sizes')?.invalid) {
+            <mat-error class="text-body-2-regular">{{ getErrorMessage('sizes') }}</mat-error>
+          }
         </mat-form-field>
       </app-ui-card>
 
@@ -113,6 +145,12 @@
       <app-ui-card title="Головне фото*">
         <app-image-uploader [multiple]="false" (imagesChanged)="onMainPhotoChanged($event)">
         </app-image-uploader>
+
+        @if (form.get('mainPhoto')?.invalid) {
+          <div class="custom-error-text text-body-2-regular">
+            {{ getErrorMessage('mainPhoto') }}
+          </div>
+        }
       </app-ui-card>
 
       <app-ui-card title="Галерея товару">
