@@ -27,6 +27,19 @@ public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand,
             return HandlerResult<Guid>.Failure("The specified main image does not exist.");
         }
 
+        var distinctGalleryImageIds = request.GalleryImageIds?.Distinct().ToList() ?? new List<Guid>();
+
+        if (distinctGalleryImageIds.Any())
+        {
+            var existingImagesCount = await _dbContext.ImageAssets
+                .CountAsync(i => distinctGalleryImageIds.Contains(i.Id), cancellationToken);
+
+            if (existingImagesCount != distinctGalleryImageIds.Count)
+            {
+                return HandlerResult<Guid>.Failure("One or more specified gallery images do not exist.");
+            }
+        }
+
         Guid targetSeriesId;
 
         if (request.ProductSeriesId.HasValue)
@@ -60,15 +73,12 @@ public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand,
             MainImageId = request.MainImageId
         };
 
-        if (request.GalleryImageIds != null && request.GalleryImageIds.Any())
+        foreach (var imageId in distinctGalleryImageIds)
         {
-            foreach (var imageId in request.GalleryImageIds.Distinct())
+            product.GalleryImages.Add(new ProductGalleryImage
             {
-                product.GalleryImages.Add(new ProductGalleryImage
-                {
-                    ImageAssetId = imageId
-                });
-            }
+                ImageAssetId = imageId
+            });
         }
 
         _dbContext.Products.Add(product);

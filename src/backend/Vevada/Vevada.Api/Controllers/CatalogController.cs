@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Vevada.Business.Common;
 using Vevada.Business.Products.Queries;
 
 namespace Vevada.Api.Controllers;
@@ -11,10 +12,10 @@ public class CatalogController : BaseApiController
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetCatalog([FromQuery] int page, [FromQuery] int pageSize, CancellationToken cancellationToken = default)
+    public async Task<IActionResult> GetCatalog([FromQuery] int page = 1, [FromQuery] int pageSize = PagedResponse<object>.DefaultPageSize, CancellationToken cancellationToken = default)
     {
         page = page < 1 ? 1 : page;
-        pageSize = pageSize > 50 ? 50 : pageSize;
+        pageSize = pageSize < 1 ? 1 : pageSize > PagedResponse<object>.MaxPageSize ? PagedResponse<object>.MaxPageSize : pageSize;
 
         var query = new GetCatalogQuery(page, pageSize);
         var result = await Mediator.Send(query, cancellationToken);

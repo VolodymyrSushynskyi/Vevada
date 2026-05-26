@@ -7,6 +7,6 @@ namespace Vevada.Business.Products.Queries;
 
 public record GetAdminProductsQuery(
     int Page = 1,
-    int PageSize = 10,
+    int PageSize = PagedResponse<object>.DefaultPageSize,
     ProductStatus? Status = null
 ) : IRequest<HandlerResult<AdminProductListResponse>>;

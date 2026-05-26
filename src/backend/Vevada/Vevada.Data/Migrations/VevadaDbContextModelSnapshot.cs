@@ -195,7 +195,6 @@ namespace Vevada.Data.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("FullDescription")
-                        .IsRequired()
                         .HasMaxLength(1500)
                         .HasColumnType("character varying(1500)");
 
@@ -214,7 +213,6 @@ namespace Vevada.Data.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<string>("ShortDescription")
-                        .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("character varying(500)");
 

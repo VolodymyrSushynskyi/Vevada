@@ -12,8 +12,8 @@ using Vevada.Data;
 namespace Vevada.Data.Migrations
 {
     [DbContext(typeof(VevadaDbContext))]
-    [Migration("20260525154201_AddProductCatalog")]
-    partial class AddProductCatalog
+    [Migration("20260526164439_AddProductInfrastructure")]
+    partial class AddProductInfrastructure
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -198,7 +198,6 @@ namespace Vevada.Data.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("FullDescription")
-                        .IsRequired()
                         .HasMaxLength(1500)
                         .HasColumnType("character varying(1500)");
 
@@ -217,7 +216,6 @@ namespace Vevada.Data.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<string>("ShortDescription")
-                        .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("character varying(500)");
 

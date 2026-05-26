@@ -12,13 +12,16 @@ public class UpdateProductCommandValidator : AbstractValidator<UpdateProductComm
 
         RuleFor(x => x.Name)
             .NotEmpty().WithMessage(ValidationMessageBuilder.IsRequired("Product name"))
-            .MaximumLength(150).WithMessage(ValidationMessageBuilder.MaxLength("Product name", 150));
+            .MaximumLength(ProductValidationRules.MaxNameLength)
+            .WithMessage(ValidationMessageBuilder.MaxLength("Product name", ProductValidationRules.MaxNameLength));
 
         RuleFor(x => x.ShortDescription)
-            .MaximumLength(500).WithMessage(ValidationMessageBuilder.MaxLength("Short description", 500));
+            .MaximumLength(ProductValidationRules.MaxShortDescriptionLength)
+            .WithMessage(ValidationMessageBuilder.MaxLength("Short description", ProductValidationRules.MaxShortDescriptionLength));
 
         RuleFor(x => x.FullDescription)
-            .MaximumLength(1500).WithMessage(ValidationMessageBuilder.MaxLength("Full description", 1500));
+            .MaximumLength(ProductValidationRules.MaxFullDescriptionLength)
+            .WithMessage(ValidationMessageBuilder.MaxLength("Full description", ProductValidationRules.MaxFullDescriptionLength));
 
         RuleFor(x => x.Price)
             .GreaterThan(0).WithMessage(ValidationMessageBuilder.Custom("Price must be greater than zero."));
@@ -39,5 +42,15 @@ public class UpdateProductCommandValidator : AbstractValidator<UpdateProductComm
             .NotEmpty()
             .When(x => string.IsNullOrWhiteSpace(x.NewSeriesName))
             .WithMessage(ValidationMessageBuilder.Custom("An existing series must be selected if a new series name is not provided."));
+
+        RuleFor(x => x)
+            .Must(x =>
+            {
+                var hasProductSeriesId = x.ProductSeriesId.HasValue;
+                var hasNewSeriesName = !string.IsNullOrWhiteSpace(x.NewSeriesName);
+                return hasProductSeriesId != hasNewSeriesName;
+            })
+            .WithName("ProductSeries")
+            .WithMessage(ValidationMessageBuilder.Custom("Provide either an existing series ID or a new series name, but not both."));
     }
 }

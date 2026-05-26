@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Vevada.Business.Common;
 using Vevada.Business.Products.Commands;
 using Vevada.Business.Products.Queries;
 using Vevada.Data.Constants;
@@ -44,13 +45,13 @@ public class ProductsController : BaseApiController
 
     [HttpGet]
     public async Task<IActionResult> GetProducts(
-        [FromQuery] int page,
-        [FromQuery] int pageSize,
+        [FromQuery] int page = 1,
+        [FromQuery] int pageSize = PagedResponse<object>.DefaultPageSize,
         [FromQuery] ProductStatus? status = null,
         CancellationToken cancellationToken = default)
     {
         page = page < 1 ? 1 : page;
-        pageSize = pageSize > 50 ? 50 : pageSize;
+        pageSize = pageSize < 1 ? 1 : pageSize > PagedResponse<object>.MaxPageSize ? PagedResponse<object>.MaxPageSize : pageSize;
 
         var query = new GetAdminProductsQuery(page, pageSize, status);
         var result = await Mediator.Send(query, cancellationToken);

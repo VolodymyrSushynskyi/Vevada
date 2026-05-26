@@ -37,6 +37,19 @@ public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand,
             product.MainImageId = request.MainImageId;
         }
 
+        var requestImageIds = request.GalleryImageIds?.Distinct().ToList() ?? new List<Guid>();
+
+        if (requestImageIds.Any())
+        {
+            var existingImagesCount = await _dbContext.ImageAssets
+                .CountAsync(i => requestImageIds.Contains(i.Id), cancellationToken);
+
+            if (existingImagesCount != requestImageIds.Count)
+            {
+                return HandlerResult<bool>.Failure("One or more specified gallery images do not exist.");
+            }
+        }
+
         var oldSeriesId = product.ProductSeriesId;
         bool seriesChanged = false;
 
@@ -68,8 +81,6 @@ public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand,
         product.Price = request.Price;
         product.Status = request.Status;
         product.AvailableSizes = request.AvailableSizes;
-
-        var requestImageIds = request.GalleryImageIds?.Distinct().ToList() ?? new List<Guid>();
 
         var imagesToRemove = product.GalleryImages
             .Where(g => !requestImageIds.Contains(g.ImageAssetId))

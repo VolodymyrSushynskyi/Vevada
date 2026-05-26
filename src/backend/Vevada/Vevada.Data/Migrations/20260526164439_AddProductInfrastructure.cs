@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Vevada.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class AddProductCatalog : Migration
+    public partial class AddProductInfrastructure : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -32,8 +32,8 @@ namespace Vevada.Data.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     ProductSeriesId = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "character varying(150)", maxLength: 150, nullable: false),
-                    ShortDescription = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
-                    FullDescription = table.Column<string>(type: "character varying(1500)", maxLength: 1500, nullable: false),
+                    ShortDescription = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: true),
+                    FullDescription = table.Column<string>(type: "character varying(1500)", maxLength: 1500, nullable: true),
                     Price = table.Column<decimal>(type: "numeric(18,2)", nullable: false),
                     Status = table.Column<int>(type: "integer", nullable: false),
                     AvailableSizes = table.Column<int[]>(type: "integer[]", nullable: false),
