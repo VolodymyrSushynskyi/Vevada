@@ -1,5 +1,5 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, Input, Output, EventEmitter, Inject, PLATFORM_ID } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 
 @Component({
@@ -18,6 +18,12 @@ export class UiButton {
   @Input() type: 'button' | 'submit' = 'button';
 
   @Output() btnClick = new EventEmitter<Event>();
+
+  public isBrowser: boolean;
+
+  constructor(@Inject(PLATFORM_ID) platformId: Object) {
+    this.isBrowser = isPlatformBrowser(platformId);
+  }
 
   onClick(event: Event) {
     if (!this.disabled) {

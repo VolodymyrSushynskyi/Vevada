@@ -1,0 +1,102 @@
+.uploader-wrapper {
+  width: 100%;
+}
+
+.hidden-input {
+  display: none;
+}
+
+.dropzone {
+  border: 1px solid var(--grey-300);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background-color: var(--grey-50);
+  transition: all 0.2s ease;
+}
+
+.single-dropzone {
+  height: 240px;
+  gap: 16px;
+}
+
+.upload-icon {
+  font-size: 32px;
+  width: 32px;
+  height: 32px;
+  color: var(--grey-600);
+}
+
+.gallery-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.gallery-add-btn {
+  width: 80px;
+  height: 100px;
+  border-radius: 8px;
+}
+
+.add-icon {
+  color: var(--grey-600);
+}
+
+.preview-box {
+  position: relative;
+  border-radius: 10px;
+  border: 1px solid var(--grey-200);
+  overflow: hidden;
+  background: var(--white);
+}
+
+.preview-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.single-preview {
+  width: 100%;
+  height: 240px;
+  border-radius: 12px;
+}
+
+.gallery-item {
+  width: 80px;
+  height: 100px;
+}
+
+.remove-btn {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 24px;
+  height: 24px;
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 0;
+}
+
+.remove-btn mat-icon {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+  color: var(--grey-600);
+}
+
+.remove-btn:hover {
+  background: white;
+  transform: scale(1.05);
+}

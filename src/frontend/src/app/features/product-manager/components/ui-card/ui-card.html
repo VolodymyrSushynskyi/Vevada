@@ -1,0 +1,11 @@
+<div class="ui-card">
+  @if (title) {
+    <div class="ui-card-header">
+      <h3 class="ui-card-title text-body-1-bold">{{ title }}</h3>
+    </div>
+  }
+
+  <div class="ui-card-content">
+    <ng-content></ng-content>
+  </div>
+</div>

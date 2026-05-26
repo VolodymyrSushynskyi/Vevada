@@ -1,0 +1,89 @@
+.form-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.page-title {
+  margin: 0;
+  color: var(--grey-700);
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 310px;
+  gap: 35px;
+  align-items: start;
+}
+
+.w-100 {
+  width: 100%;
+}
+
+.mt-16 {
+  margin-top: 16px;
+}
+
+.input-group {
+  margin-bottom: 20px;
+}
+
+.input-group:last-child {
+  margin-bottom: 0;
+}
+
+.custom-label {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--grey-600);
+}
+
+.custom-error-text {
+  color: var(--red);
+  margin-top: 6px;
+  line-height: 1.2;
+}
+
+.currency-prefix {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--grey-200);
+  width: 48px;
+  height: auto;
+  min-height: 100%;
+  color: var(--grey-600);
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+}
+
+::ng-deep .price-field .mat-mdc-form-field-icon-prefix {
+  display: flex;
+  align-self: stretch !important;
+  align-items: stretch !important;
+  padding: 0 !important;
+}
+
+::ng-deep .price-field .mat-mdc-text-field-wrapper {
+  padding-left: 0 !important;
+}
+
+::ng-deep .price-field .mat-mdc-form-field-flex {
+  align-items: stretch !important;
+}
+
+::ng-deep .price-field .mat-mdc-form-field-infix {
+  padding-left: 16px !important;
+}
