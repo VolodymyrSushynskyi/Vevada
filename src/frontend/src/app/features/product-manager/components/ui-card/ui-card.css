@@ -1,0 +1,25 @@
+.ui-card {
+  background-color: var(--white);
+  border-radius: 10px;
+  margin-bottom: 35px;
+  overflow: hidden;
+  box-shadow: 4px 4px 20px rgba(0, 0, 0, 15%);
+}
+
+.ui-card-header {
+  padding: 20px 20px 14px 20px;
+}
+
+.ui-card-title {
+  margin: 0;
+  color: var(--grey-700);
+}
+
+.ui-card-content {
+  padding: 0 20px 14px 20px;
+}
+
+.ui-card-header:empty + .ui-card-content,
+.ui-card > .ui-card-content:first-child {
+  padding-top: 20px;
+}

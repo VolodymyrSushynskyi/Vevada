@@ -34,6 +34,9 @@ export class IconRegistration {
         { name: 'icon-pencil', path: 'icons/pencil.svg' },
         { name: 'icon-trash', path: 'icons/trash.svg' },
         { name: 'icon-sign-out', path: 'icons/sign-out.svg' },
+        { name: 'icon-upload', path: 'icons/upload.svg' },
+        { name: 'icon-plus-circle', path: 'icons/plus-circle.svg' },
+        { name: 'icon-hryvnia', path: 'icons/hryvnia.svg' },
       ];
 
       icons.forEach((icon) => {

@@ -5,6 +5,7 @@ export const VALIDATION_MESSAGES: Record<string, (err: any) => string> = {
   maxlength: (err) => `Максимум ${err.requiredLength} символів`,
   passwordMismatch: () => 'Паролі не співпадають',
   passwordComplexity: () => 'Пароль має містити великі та малі літери, цифри та спецсимвол',
+  requiredLineName: () => "Це поле обов'язкове",
 };
 
 export const VALIDATION_PRIORITY: string[] = [
@@ -14,4 +15,5 @@ export const VALIDATION_PRIORITY: string[] = [
   'maxlength',
   'passwordComplexity',
   'passwordMismatch',
+  'requiredLineName',
 ];
