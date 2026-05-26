@@ -1,11 +1,10 @@
 import { Component } from '@angular/core';
-import { UiCard } from '../../components/ui-card/ui-card';
-import { ImageUploader } from '../../components/image-uploader/image-uploader';
+import { ProductForm } from '../../components/product-form/product-form';
 
 @Component({
   selector: 'app-edit-product',
   standalone: true,
-  imports: [UiCard, ImageUploader],
+  imports: [ProductForm],
   templateUrl: './edit-product.html',
   styleUrl: './edit-product.css',
 })
