@@ -1,0 +1,27 @@
+<a [routerLink]="['/product', product.id]" class="product-card">
+  <div class="image-wrapper">
+    <img [src]="product.thumbnailUrl" [alt]="product.title" class="product-image" loading="lazy" />
+
+    <app-favorite-button
+      class="favorite-btn"
+      [isFavorite]="product.isFavorite"
+      (toggle)="onFavoriteClick($event)"
+    >
+    </app-favorite-button>
+  </div>
+
+  <div class="info-wrapper">
+    <div class="text-content">
+      <h3 class="product-title text-body-2-medium">{{ product.title }}</h3>
+      <div class="price-wrapper">
+        <span class="product-price text-body-1-bold">{{ product.price }}</span>
+        @if (isBrowser) {
+          <mat-icon svgIcon="icon-hryvnia" class="currency-icon"></mat-icon>
+        }
+      </div>
+    </div>
+
+    <app-cart-button (addToCart)="onAddToCartClick($event)" aria-label="Добавить в корзину">
+    </app-cart-button>
+  </div>
+</a>

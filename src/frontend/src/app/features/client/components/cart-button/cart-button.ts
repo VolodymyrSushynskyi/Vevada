@@ -11,5 +11,5 @@ import { UiIconButton } from '../../../../shared/components/ui-icon-button/ui-ic
 export class CartButton {
   @Input() disabled: boolean = false;
 
-  @Output() addToCart = new EventEmitter<void>();
+  @Output() addToCart = new EventEmitter<Event>();
 }

@@ -2,5 +2,5 @@
   icon="icon-cart"
   variant="ghost"
   [disabled]="disabled"
-  (btnClick)="addToCart.emit()"
+  (btnClick)="addToCart.emit($event)"
 ></app-ui-icon-button>

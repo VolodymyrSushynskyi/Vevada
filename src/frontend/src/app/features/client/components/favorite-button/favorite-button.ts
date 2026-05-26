@@ -12,5 +12,5 @@ export class FavoriteButton {
   @Input() isFavorite: boolean = false;
   @Input() disabled: boolean = false;
 
-  @Output() toggle = new EventEmitter<void>();
+  @Output() toggle = new EventEmitter<Event>();
 }
