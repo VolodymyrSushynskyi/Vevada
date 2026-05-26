@@ -3,7 +3,7 @@ import { AbstractControl, ValidationErrors, Validators } from '@angular/forms';
 export function newProductLineValidator(group: AbstractControl): ValidationErrors | null {
   const lineId = group.get('productLineId')?.value;
   const newNameControl = group.get('newProductLineName');
-  const existingErrors = newNameControl?.errors ?? null;
+  const existingErrors = newNameControl?.errors ?? {};
 
   if (lineId === 'new' && (!newNameControl?.value || newNameControl.value.trim() === '')) {
     newNameControl?.setErrors({ ...existingErrors, requiredLineName: true });
