@@ -1,0 +1,9 @@
+<app-ui-icon-button
+  icon="icon-heart"
+  [variant]="isFavorite ? 'outlined' : 'filled'"
+  [color]="isFavorite ? 'grey' : 'pink'"
+  height="40px"
+  width="40px"
+  iconSize="20px"
+  (btnClick)="toggle.emit()"
+></app-ui-icon-button>
