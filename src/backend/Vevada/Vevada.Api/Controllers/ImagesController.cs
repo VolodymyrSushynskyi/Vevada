@@ -6,7 +6,8 @@ using Vevada.Business.ImageProcessing.Commands;
 
 namespace Vevada.Api.Controllers;
 
-[Authorize]
+[Route("api/admin/images")]
+[Authorize(Roles = "ProductManager, SuperAdmin")]
 public class ImagesController : BaseApiController
 {
     public ImagesController(IMediator mediator) : base(mediator)
