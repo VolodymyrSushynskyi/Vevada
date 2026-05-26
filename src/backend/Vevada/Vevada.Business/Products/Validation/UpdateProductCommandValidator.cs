@@ -36,7 +36,8 @@ public class UpdateProductCommandValidator : AbstractValidator<UpdateProductComm
             .NotEmpty()
             .When(x => !x.ProductSeriesId.HasValue)
             .WithMessage(ValidationMessageBuilder.Custom("A new series name must be provided if an existing series is not selected."))
-            .MaximumLength(150).WithMessage(ValidationMessageBuilder.MaxLength("Series name", 150));
+            .MaximumLength(ProductValidationRules.MaxSeriesNameLength)
+            .WithMessage(ValidationMessageBuilder.MaxLength("Series name", ProductValidationRules.MaxSeriesNameLength));
 
         RuleFor(x => x.ProductSeriesId)
             .NotEmpty()
