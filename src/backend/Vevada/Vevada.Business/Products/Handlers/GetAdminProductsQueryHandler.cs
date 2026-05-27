@@ -30,7 +30,12 @@ public class GetAdminProductsQueryHandler : IRequestHandler<GetAdminProductsQuer
         var draftsCount = statusCounts.FirstOrDefault(x => x.Status == ProductStatus.Draft)?.Count ?? 0;
         var totalCount = statusCounts.Sum(x => x.Count);
 
-        var tabCounts = new ProductTabCountsDto(totalCount, publishedCount, draftsCount);
+        var tabCounts = new List<TabCountDto>
+        {
+            new TabCountDto("Total", totalCount),
+            new TabCountDto("Published", publishedCount),
+            new TabCountDto("Drafts", draftsCount)
+        };
 
         var filteredQuery = baseQuery;
         if (request.Status.HasValue)
