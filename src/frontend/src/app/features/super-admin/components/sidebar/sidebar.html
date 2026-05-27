@@ -1,0 +1,19 @@
+<aside class="sidebar-container">
+  <div class="logo-section">
+    <app-brand-logo-with-text
+      theme="dark"
+      textSize="64px"
+      iconSize="84px"
+    ></app-brand-logo-with-text>
+  </div>
+
+  <mat-nav-list class="nav-menu">
+    <a mat-list-item routerLink="/super-admin/add-users" routerLinkActive="active-link">
+      <span class="nav-text text-body-1-regular">Користувачі</span>
+    </a>
+  </mat-nav-list>
+
+  <div class="logout-section">
+    <app-sub-button label="Вихід" icon="icon-sign-out" iconPosition="left"></app-sub-button>
+  </div>
+</aside>

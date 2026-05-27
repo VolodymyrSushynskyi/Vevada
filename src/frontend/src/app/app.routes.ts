@@ -4,8 +4,10 @@ import { ClientAuth } from './features/auth/pages/client-auth/client-auth';
 import { AdminAuth } from './features/auth/pages/admin-auth/admin-auth';
 import { ClientLayout } from './features/client/components/client-layout/client-layout';
 import { ProductManagerLayout } from './features/product-manager/components/product-manager-layout/product-manager-layout';
+import { SuperAdminLayout } from './features/super-admin/components/super-admin-layout/super-admin-layout';
 import { Products } from './features/product-manager/pages/products/products';
 import { EditProduct } from './features/product-manager/pages/edit-product/edit-product';
+import { AddUsers } from './features/super-admin/pages/add-users/add-users';
 
 export const routes: Routes = [
   {
@@ -20,6 +22,11 @@ export const routes: Routes = [
       { path: 'products', component: Products },
       { path: 'edit', component: EditProduct },
     ],
+  },
+  {
+    path: 'super-admin',
+    component: SuperAdminLayout,
+    children: [{ path: 'add-users', component: AddUsers }],
   },
   { path: 'login', component: ClientAuth },
   {
