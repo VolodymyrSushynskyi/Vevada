@@ -67,7 +67,7 @@ public class CreateAdminAccountCommandHandler : IRequestHandler<CreateAdminAccou
                 await transaction.RollbackAsync(cancellationToken);
             }
 
-            return HandlerResult<int>.Failure("An error occurred during account creation. Transaction rolled back.");
+            return HandlerResult<int>.Failure("An error occurred during account creation.");
         }
     }
 }

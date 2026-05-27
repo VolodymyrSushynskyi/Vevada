@@ -30,6 +30,12 @@ public class DeleteAdminAccountCommandHandler : IRequestHandler<DeleteAdminAccou
             return HandlerResult<bool>.Failure("Cannot delete a SuperAdmin account.");
         }
 
+        var isClient = await _userManager.IsInRoleAsync(user, "Client");
+        if (isClient)
+        {
+            return HandlerResult<bool>.Failure("Cannot delete a Client account.");
+        }
+
         var result = await _userManager.DeleteAsync(user);
 
         if (!result.Succeeded)
