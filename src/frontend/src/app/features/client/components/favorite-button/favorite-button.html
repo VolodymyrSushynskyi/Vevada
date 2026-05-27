@@ -1,0 +1,10 @@
+<app-ui-icon-button
+  icon="icon-heart"
+  [variant]="isFavorite ? 'filled' : 'outlined'"
+  [color]="isFavorite ? 'pink' : 'grey'"
+  [disabled]="disabled"
+  height="40px"
+  width="40px"
+  iconSize="20px"
+  (btnClick)="toggle.emit($event)"
+></app-ui-icon-button>
