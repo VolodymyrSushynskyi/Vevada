@@ -77,6 +77,8 @@ export class AddUserDialog {
         password: this.userForm.value.password!,
         role: this.userForm.value.role!,
       };
+
+      this.dialogRef.close(userData);
     } else {
       this.userForm.markAllAsTouched();
     }
