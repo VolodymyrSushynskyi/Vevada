@@ -1,0 +1,75 @@
+<div class="dialog-container">
+  <div class="dialog-header">
+    <h2 class="text-h4-semi-bold">Створити користувача</h2>
+    <app-close-button class="close-btn" color="grey" (close)="closeDialog()"></app-close-button>
+  </div>
+
+  <mat-dialog-content class="dialog-content">
+    <form [formGroup]="userForm" (ngSubmit)="onSubmit()" class="form-grid" id="addUserForm">
+      <mat-form-field appearance="outline">
+        <mat-label>Ім'я</mat-label>
+        <input matInput formControlName="firstName" class="text-body-1-regular" />
+        <mat-error class="text-body-2-regular">{{ getErrorMessage('firstName') }}</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Пароль</mat-label>
+        <input
+          matInput
+          [type]="hidePassword ? 'password' : 'text'"
+          formControlName="password"
+          class="text-body-1-regular"
+        />
+        <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" type="button">
+          <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+        </button>
+        <mat-error class="text-body-2-regular">{{ getErrorMessage('password') }}</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Прізвище</mat-label>
+        <input matInput formControlName="lastName" class="text-body-1-regular" />
+        <mat-error class="text-body-2-regular">{{ getErrorMessage('lastName') }}</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Підтвердження паролю</mat-label>
+        <input
+          matInput
+          [type]="hideConfirmPassword ? 'password' : 'text'"
+          formControlName="confirmPassword"
+          class="text-body-1-regular"
+        />
+        <button
+          mat-icon-button
+          matSuffix
+          (click)="hideConfirmPassword = !hideConfirmPassword"
+          type="button"
+        >
+          <mat-icon>{{ hideConfirmPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+        </button>
+        <mat-error class="text-body-2-regular">{{ getErrorMessage('confirmPassword') }}</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Пошта</mat-label>
+        <input matInput type="email" formControlName="email" class="text-body-1-regular" />
+        <mat-error class="text-body-2-regular">{{ getErrorMessage('email') }}</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Роль</mat-label>
+        <mat-select formControlName="role" class="text-body-1-regular">
+          <mat-option value="producer">Виробник</mat-option>
+          <mat-option value="product-manager">Продукт менеджер</mat-option>
+          <mat-option value="analyst">Аналітик</mat-option>
+        </mat-select>
+        <mat-error class="text-body-2-regular">{{ getErrorMessage('role') }}</mat-error>
+      </mat-form-field>
+    </form>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="center" class="dialog-actions">
+    <app-main-button type="submit" label="Зберегти" (btnClick)="onSubmit()"> </app-main-button>
+  </mat-dialog-actions>
+</div>
