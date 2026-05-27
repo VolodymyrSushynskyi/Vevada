@@ -21,4 +21,9 @@
     <ProjectReference Include="..\Vevada.Data\Vevada.Data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Products\Constants\" />
+    <Folder Include="Products\Models\" />
+  </ItemGroup>
+
 </Project>

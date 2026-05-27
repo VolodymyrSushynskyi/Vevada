@@ -148,7 +148,7 @@ public class OrphanedImageCleanupService : BackgroundService
             var query = dbContext.ImageAssets
                 .Where(img => img.CreatedAt < cutoffTime && !failedImageIds.Contains(img.Id));
 
-            query = FilterToOnlyOrphans(query);
+            query = FilterToOnlyOrphans(dbContext, query);
 
             var batch = await query
                 .OrderBy(img => img.Id)
@@ -184,10 +184,10 @@ public class OrphanedImageCleanupService : BackgroundService
         }
     }
 
-    private IQueryable<ImageAsset> FilterToOnlyOrphans(IQueryable<ImageAsset> baseQuery)
+    private IQueryable<ImageAsset> FilterToOnlyOrphans(VevadaDbContext dbContext, IQueryable<ImageAsset> baseQuery)
     {
-        // Add additional conditions here if there are other entities that reference ImageAsset in the future
-        //return baseQuery.Where(img => !img.Products.Any());
-        return baseQuery;
+        return baseQuery.Where(img =>
+            !dbContext.Products.Any(p => p.MainImageId == img.Id) &&
+            !dbContext.ProductGalleryImages.Any(g => g.ImageAssetId == img.Id));
     }
 }

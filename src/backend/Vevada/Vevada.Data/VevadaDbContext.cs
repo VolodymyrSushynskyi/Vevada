@@ -9,8 +9,10 @@ namespace Vevada.Data;
 public class VevadaDbContext : IdentityDbContext<User, Role, int>
 {
     public DbSet<ClientDetails> ClientDetails { get; set; }
-
     public DbSet<ImageAsset> ImageAssets { get; set; }
+    public DbSet<Product> Products { get; set; }
+    public DbSet<ProductSeries> ProductSeries { get; set; }
+    public DbSet<ProductGalleryImage> ProductGalleryImages { get; set; }
 
     public VevadaDbContext(DbContextOptions<VevadaDbContext> options) : base(options)
     {

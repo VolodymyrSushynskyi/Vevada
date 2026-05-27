@@ -6,7 +6,7 @@ namespace Vevada.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class BaseApiController : ControllerBase
+public abstract class BaseApiController : ControllerBase
 {
     private readonly IMediator _mediator;
 
