@@ -26,7 +26,10 @@ export const routes: Routes = [
   {
     path: 'super-admin',
     component: SuperAdminLayout,
-    children: [{ path: 'add-users', component: AddUsers }],
+    children: [
+      { path: '', redirectTo: 'add-users', pathMatch: 'full' },
+      { path: 'add-users', component: AddUsers },
+    ],
   },
   { path: 'login', component: ClientAuth },
   {
