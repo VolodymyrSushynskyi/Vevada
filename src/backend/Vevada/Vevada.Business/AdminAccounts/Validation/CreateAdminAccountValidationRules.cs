@@ -11,13 +11,10 @@ public static class CreateAdminAccountValidationRules
     public const int MinLastNameLength = 3;
     public const int MaxLastNameLength = 50;
 
-    public const string ForbiddenRole = "SuperAdmin";
-
     public static readonly string[] AllowedRoles =
     {
         "Manufacturer",
         "ProductManager",
-        "Analyst",
-        "Manager"
+        "Analyst"
     };
 }

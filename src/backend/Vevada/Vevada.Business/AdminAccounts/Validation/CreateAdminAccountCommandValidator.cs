@@ -45,9 +45,8 @@ public class CreateAdminAccountCommandValidator : AbstractValidator<CreateAdminA
                 .WithMessage(ValidationMessageBuilder.MaxLength("LastName", CreateAdminAccountValidationRules.MaxLastNameLength));
 
         RuleFor(x => x.Role)
+            .Cascade(CascadeMode.Stop)
             .NotEmpty().WithMessage(ValidationMessageBuilder.IsRequired("Role"))
-            .Must(role => !role.Equals(CreateAdminAccountValidationRules.ForbiddenRole, StringComparison.OrdinalIgnoreCase))
-            .WithMessage("Cannot assign the SuperAdmin role to new accounts.")
             .Must(role => CreateAdminAccountValidationRules.AllowedRoles.Contains(role))
             .WithMessage("The provided role is not valid.");
     }
