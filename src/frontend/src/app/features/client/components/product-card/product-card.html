@@ -1,6 +1,6 @@
-<a [routerLink]="['/product', product.id]" class="product-card">
+<article class="product-card">
   <div class="image-wrapper">
-    <img [src]="product.thumbnailUrl" [alt]="product.title" class="product-image" loading="lazy" />
+    <img [src]="product.thumbnailUrl" [alt]="product.title" class="product-image" />
 
     <app-favorite-button
       class="favorite-btn"
@@ -12,7 +12,12 @@
 
   <div class="info-wrapper">
     <div class="text-content">
-      <h3 class="product-title text-body-2-medium">{{ product.title }}</h3>
+      <h3 class="product-title text-body-2-medium">
+        <a [routerLink]="['/', product.id]" class="stretched-link">
+          {{ product.title }}
+        </a>
+      </h3>
+
       <div class="price-wrapper">
         <span class="product-price text-body-1-bold">{{ product.price }}</span>
         @if (isBrowser) {
@@ -21,7 +26,8 @@
       </div>
     </div>
 
-    <app-cart-button (addToCart)="onAddToCartClick($event)" aria-label="Добавить в корзину">
-    </app-cart-button>
+    <div class="action-btn">
+      <app-cart-button (addToCart)="onAddToCartClick($event)"> </app-cart-button>
+    </div>
   </div>
-</a>
+</article>
