@@ -1,0 +1,26 @@
+.role-chip {
+  display: inline-block;
+  padding: 8px 16px;
+  border: 1px solid;
+  border-radius: 25px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.role-chip.manufacturer {
+  background-color: rgba(155, 155, 155, 0.1);
+  border-color: var(--grey-500);
+  color: var(--grey-400);
+}
+
+.role-chip.product-manager {
+  background-color: rgba(0, 107, 86, 0.1);
+  border-color: var(--green-200);
+  color: var(--green-200);
+}
+
+.role-chip.analyst {
+  background-color: rgba(0, 166, 225, 0.1);
+  border-color: var(--blue-50);
+  color: var(--grey-400);
+}

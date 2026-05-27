@@ -1,0 +1,54 @@
+<div class="page-container">
+  <div class="page-header">
+    <h1 class="text-h4-bold page-title">Користувачі</h1>
+    <app-main-button label="Додати користувача" (btnClick)="openAddUserDialog()"></app-main-button>
+  </div>
+
+  <mat-tab-group class="custom-tabs" (selectedTabChange)="onTabChange($event)">
+    <mat-tab label="Всі (5)"></mat-tab>
+    <mat-tab label="Виробники (2)"></mat-tab>
+    <mat-tab label="Менеджер (2)"></mat-tab>
+    <mat-tab label="Аналітик (1)"></mat-tab>
+  </mat-tab-group>
+
+  <div class="table-container">
+    <table mat-table [dataSource]="dataSource" class="users-table">
+      <ng-container matColumnDef="fullName">
+        <th mat-header-cell *matHeaderCellDef>ПІБ</th>
+        <td mat-cell *matCellDef="let user" class="text-body-1-regular">
+          {{ user.firstName }} {{ user.lastName }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef>Email</th>
+        <td mat-cell *matCellDef="let user" class="text-body-1-regular">
+          <a [href]="'mailto:' + user.email" class="email-link">{{ user.email }}</a>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="role">
+        <th mat-header-cell *matHeaderCellDef>Роль</th>
+        <td mat-cell *matCellDef="let user">
+          <app-role-chip [role]="user.role"></app-role-chip>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let user" class="actions-cell">
+          <app-trash-button (trash)="deleteUser(user.id)"></app-trash-button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell empty-table-message text-body-1-regular" colspan="4">
+          Немає користувачів для відображення у цій категорії
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>

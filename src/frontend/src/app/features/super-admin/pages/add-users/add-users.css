@@ -1,0 +1,86 @@
+.page-container {
+  box-sizing: border-box;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.page-title {
+  color: var(--grey-700);
+  margin: 0;
+}
+
+.custom-tabs {
+  margin-bottom: 34px;
+}
+
+.custom-tabs ::ng-deep .mat-mdc-tab .mdc-tab__text-label {
+  color: var(--grey-400);
+  padding: 0 24px;
+}
+
+.custom-tabs ::ng-deep .mat-mdc-tab.mdc-tab--active .mdc-tab__text-label {
+  color: var(--green-200);
+  font-weight: var(--font-weight-bold);
+}
+
+.custom-tabs ::ng-deep .mdc-tab-indicator__content--underline {
+  border-color: var(--green-200) !important;
+  border-top-width: 3px !important;
+}
+
+/* === СТИЛІ ТАБЛИЦІ === */
+.table-container {
+  background: var(--white);
+  border-radius: 10px;
+  border: 1px solid var(--grey-300);
+  overflow: hidden;
+}
+
+.users-table {
+  width: 100%;
+  background: transparent;
+}
+
+.users-table ::ng-deep th.mat-mdc-header-cell {
+  background-color: var(--grey-50);
+  color: var(--grey-600);
+  border-bottom: 1px solid var(--grey-300);
+  padding: 16px 30px;
+}
+
+.users-table ::ng-deep td.mat-mdc-cell {
+  padding: 12px 30px;
+  border-bottom: 1px solid var(--grey-200);
+  vertical-align: middle;
+}
+
+.users-table tr.mat-mdc-row:last-child .mat-mdc-cell {
+  border-bottom: none;
+}
+
+.email-link {
+  color: var(--grey-500);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.email-link:hover {
+  color: var(--green-200);
+}
+
+.actions-cell {
+  text-align: right;
+  width: 64px;
+  padding-right: 52px !important;
+}
+
+.empty-table-message {
+  text-align: center;
+  padding: 32px !important;
+  color: var(--grey-500);
+}
