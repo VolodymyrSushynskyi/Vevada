@@ -6,7 +6,7 @@
 * **Backend:** .NET 8 (C#) API structured with Clean Architecture and Feature-Sliced Design.
 * **Frontend:** Angular
 * **Database:** PostgreSQL 16
-* **Current Focus:** Infrastructure is fully deployed; transitioning back to core domain logic and feature slices.
+* **Current Focus:** Core domain logic and feature slices, specifically transitioning into e-commerce purchasing flows.
 
 ## 2. Infrastructure & Hosting
 * **Server:** Ubuntu VPS (IP: 95.169.204.46)
@@ -28,8 +28,10 @@
 * [x] **Code Quality:** Refactored complex SQL queries to mitigate injection risks (implemented Query Builder pattern).
 * [x] **DevOps:** CI/CD pipeline, VPS configuration, Dockerization, and reverse proxy setup are 100% complete.
 * [x] **DNS/SSL:** Custom domain configured with valid HTTPS certificates.
+* [x] **Product Domain (Core):** Implemented CQRS-driven product engine for the public catalog (paginated lists, sibling variations) and admin dashboard (CRUD operations, complex collection diffing, tab counts).
+* [x] **Image Management:** Built highly optimized static file serving (WebP), strict DB validation for image assets, and an automated background worker (`OrphanedImageCleanupService`) for safe cleanup.
 
 ## 5. Immediate Next Steps
+* **Shopping Cart (Basket):** Design and implement the customer cart functionality, deciding between standard PostgreSQL tables or Redis for high-speed temporary session storage.
 * **CORS Configuration:** Update the .NET API middleware to explicitly allow Cross-Origin Resource Sharing for `https://vevada.uk` so the Angular frontend can successfully communicate with `https://api.vevada.uk`.
 * **Testing:** Implement automated unit and integration tests (and wire them into the GitHub Actions pipeline).
-* **Feature Development:** Resume building out the next core feature slices in C# using Clean Architecture principles.
