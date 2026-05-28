@@ -66,4 +66,13 @@ public class ProductsController : BaseApiController
         var result = await Mediator.Send(query, cancellationToken);
         return HandleResult(result);
     }
+
+    [HttpGet("series-lookup")]
+    public async Task<IActionResult> GetSeriesLookup(CancellationToken cancellationToken)
+    {
+        var query = new GetSeriesLookupQuery();
+        var result = await Mediator.Send(query, cancellationToken);
+
+        return HandleResult(result);
+    }
 }
