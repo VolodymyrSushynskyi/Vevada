@@ -22,7 +22,7 @@ export const routes: Routes = [
     children: [
       { path: '', redirectTo: 'products', pathMatch: 'full' },
       { path: 'products', component: Products },
-      { path: 'edit-products', component: EditProduct },
+      { path: 'edit-products/:id', component: EditProduct },
       { path: 'add-products', component: AddProduct },
     ],
   },

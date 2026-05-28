@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, ChangeDetectorRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router, ActivatedRoute } from '@angular/router';
 import { forkJoin, of, switchMap } from 'rxjs';
@@ -20,17 +20,15 @@ export class EditProduct {
   private route = inject(ActivatedRoute); // Для получения ID из URL
   private toastService = inject(ToastService);
   private destroyRef = inject(DestroyRef);
+  private cdr = inject(ChangeDetectorRef);
 
-  // Сюда мы положим данные, чтобы передать их в <app-product-form [initialData]="productData">
   productData: any = null;
 
-  // Сохраняем текущие данные, чтобы использовать их, если пользователь не менял фото
   private currentProductId!: string;
   private existingMainImageId!: string;
   private existingGalleryImageIds: string[] = [];
 
   ngOnInit() {
-    // 1. Берем ID товара из адресной строки (например, /product-manager/products/edit/3fa85f64...)
     this.currentProductId = this.route.snapshot.paramMap.get('id') || '';
 
     if (!this.currentProductId) {
@@ -39,27 +37,31 @@ export class EditProduct {
       return;
     }
 
-    // 2. Загружаем данные товара с бекенда
     this.productService
       .getProductById(this.currentProductId)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
-        next: (product) => {
-          // Запоминаем старые ID картинок
-          this.existingMainImageId = product.mainImageId;
-          this.existingGalleryImageIds = product.galleryImageIds;
+        next: (product: any) => {
+          console.log('Дані товару для редагування:', product);
 
-          // Мапим данные бекенда в формат формы
+          this.existingMainImageId = product.mainImageId ?? product.MainImageId;
+          this.existingGalleryImageIds = product.galleryImageIds ?? product.GalleryImageIds ?? [];
+
+          const isPublished = product.status === 1;
+
           this.productData = {
-            productLineId: product.productSeriesId || 'new', // Тут зависит от логики твоего UI
+            productLineId: product.productSeriesId,
             name: product.name,
             shortDescription: product.shortDescription,
             fullDescription: product.fullDescription,
             price: product.price,
-            status: product.status === ProductStatus.Published ? 'published' : 'draft',
+            status: isPublished ? 'published' : 'draft',
             sizes: product.availableSizes,
-            // mainPhoto и gallery мы не мапим напрямую в File[], так как это старые картинки
+            mainImageId: this.existingMainImageId,
+            galleryImageIds: this.existingGalleryImageIds,
           };
+
+          this.cdr.detectChanges();
         },
         error: () => {
           this.toastService.showError('Не вдалося завантажити дані товару');

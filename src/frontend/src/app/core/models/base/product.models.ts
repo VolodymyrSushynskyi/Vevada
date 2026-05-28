@@ -17,25 +17,30 @@ export enum ProductSize {
   Size168 = 168,
 }
 
+export interface ProductSeriesDto {
+  id: string;
+  name: string;
+}
+
 export interface ProductTabCountsDto {
-  all: number;
+  total: number;
   published: number;
-  draft: number;
+  drafts: number;
 }
 
 export interface PagedResponse<T> {
-  data: T[];
-  totalRecords: number;
-  pageNumber: number;
+  items: T[];
+  totalCount: number;
+  page: number;
   pageSize: number;
 }
 
 export interface AdminProductListItemDto {
   id: string;
   name: string;
-  photoUrl: string;
+  mainImageId: string;
   status: ProductStatus;
-  date: string;
+  lastModified: string;
 }
 
 export interface AdminProductListResponse {

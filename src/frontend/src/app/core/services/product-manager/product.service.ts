@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import {
   AdminProductListResponse,
   AdminProductDetailsDto,
+  ProductSeriesDto,
   CreateProductCommand,
   UpdateProductCommand,
   ProductStatus,
@@ -14,8 +15,9 @@ import { environment } from '../../config/environment';
   providedIn: 'root',
 })
 export class ProductService {
-  private productsUrl = `${environment.apiUrl}/api/admin/products`;
-  private imagesUrl = `${environment.apiUrl}/api/admin/images`;
+  private productsUrl = `${environment.apiUrl}/admin/products`;
+  private imagesUrl = `${environment.apiUrl}/admin/images`;
+  private seriesUrl = `${environment.apiUrl}/admin/product-series`;
 
   constructor(private http: HttpClient) {}
 
@@ -32,11 +34,15 @@ export class ProductService {
   ): Observable<AdminProductListResponse> {
     let params = new HttpParams().set('page', page.toString()).set('pageSize', pageSize.toString());
 
-    if (status) {
-      params = params.set('status', status);
+    if (status !== undefined && status !== null) {
+      params = params.set('status', status.toString());
     }
 
     return this.http.get<AdminProductListResponse>(this.productsUrl, { params });
+  }
+
+  getProductSeries(): Observable<ProductSeriesDto[]> {
+    return this.http.get<ProductSeriesDto[]>(this.seriesUrl);
   }
 
   getProductById(id: string): Observable<AdminProductDetailsDto> {

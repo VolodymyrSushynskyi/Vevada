@@ -12,6 +12,7 @@ import { UiCard } from '../ui-card/ui-card';
 import { ImageUploader } from '../image-uploader/image-uploader';
 import { MainButton } from '../../../../shared/components/main-button/main-button';
 import { BackButton } from '../../../../shared/components/back-button/back-button';
+import { environment } from '../../../../core/config/environment';
 
 import {
   ProductFormRules,
@@ -44,13 +45,12 @@ export class ProductForm {
   private platformId = inject(PLATFORM_ID);
   isBrowser = isPlatformBrowser(this.platformId);
 
+  mainPhotoPreview: string | null = null;
+  galleryPhotosPreviews: string[] = [];
+
   @Input() pageTitle: string = 'Додати товар';
 
-  @Input() set initialData(data: any) {
-    if (data) {
-      this.form.patchValue(data);
-    }
-  }
+  @Input() initialData: any = null;
 
   @Output() formSubmit = new EventEmitter<{ formData: any; mainPhoto: File[]; gallery: File[] }>();
   @Output() goBack = new EventEmitter<void>();
@@ -127,6 +127,32 @@ export class ProductForm {
       return VALIDATION_MESSAGES[firstErrorKey](control.errors[firstErrorKey]);
     }
     return 'Невірне значення';
+  }
+
+  ngOnInit() {
+    if (this.initialData) {
+      // 1. Заповнюємо форму текстом
+      this.form.patchValue(this.initialData);
+
+      // 2. Знімаємо обов'язковість фотографії, оскільки вона вже є на сервері
+      if (this.initialData.mainImageId) {
+        this.form.get('mainPhoto')?.clearValidators();
+        this.form.get('mainPhoto')?.updateValueAndValidity();
+      }
+
+      // 3. Формуємо посилання для картинок
+      const baseUrl = environment.apiUrl.replace(/\/api$/, '');
+
+      if (this.initialData.mainImageId) {
+        this.mainPhotoPreview = `${baseUrl}/content/images/${this.initialData.mainImageId}-thumb.webp`;
+      }
+
+      if (this.initialData.galleryImageIds && this.initialData.galleryImageIds.length > 0) {
+        this.galleryPhotosPreviews = this.initialData.galleryImageIds.map(
+          (imageId: string) => `${baseUrl}/content/images/${imageId}-thumb.webp`,
+        );
+      }
+    }
   }
 
   onSubmit() {

@@ -142,7 +142,11 @@
 
     <div class="right-column">
       <app-ui-card title="Головне фото*">
-        <app-image-uploader [multiple]="false" (imagesChanged)="onMainPhotoChanged($event)">
+        <app-image-uploader
+          [multiple]="false"
+          [existingImages]="mainPhotoPreview"
+          (imagesChanged)="onMainPhotoChanged($event)"
+        >
         </app-image-uploader>
 
         @if (form.get('mainPhoto')?.invalid) {
@@ -153,7 +157,11 @@
       </app-ui-card>
 
       <app-ui-card title="Галерея товару">
-        <app-image-uploader [multiple]="true" (imagesChanged)="onGalleryChanged($event)">
+        <app-image-uploader
+          [multiple]="true"
+          [existingImages]="galleryPhotosPreviews"
+          (imagesChanged)="onGalleryChanged($event)"
+        >
         </app-image-uploader>
       </app-ui-card>
     </div>

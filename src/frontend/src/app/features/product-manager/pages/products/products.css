@@ -83,3 +83,16 @@
   font-size: var(--font-size-body-2);
   color: var(--grey-600);
 }
+
+.empty-table-cell {
+  text-align: center;
+  padding: 48px 24px;
+  border-bottom: none;
+}
+
+.empty-state-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--grey-500);
+}
