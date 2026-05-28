@@ -1,1 +1,7 @@
-<app-product-form></app-product-form>
+<app-product-form
+  pageTitle="Редагувати товар"
+  [initialData]="productData"
+  (formSubmit)="onFormSubmit($event)"
+  (goBack)="goBack()"
+>
+</app-product-form>

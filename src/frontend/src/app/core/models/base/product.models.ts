@@ -43,6 +43,20 @@ export interface AdminProductListResponse {
   tableData: PagedResponse<AdminProductListItemDto>;
 }
 
+export interface AdminProductDetailsDto {
+  id: string;
+  productSeriesId: string | null;
+  seriesName: string;
+  name: string;
+  shortDescription: string | null;
+  fullDescription: string | null;
+  price: number;
+  status: ProductStatus;
+  availableSizes: ProductSize[];
+  mainImageId: string;
+  galleryImageIds: string[];
+}
+
 export interface CreateProductCommand {
   productSeriesId?: string | null;
   newSeriesName?: string | null;

@@ -3,6 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import {
   AdminProductListResponse,
+  AdminProductDetailsDto,
   CreateProductCommand,
   UpdateProductCommand,
   ProductStatus,
@@ -36,6 +37,10 @@ export class ProductService {
     }
 
     return this.http.get<AdminProductListResponse>(this.productsUrl, { params });
+  }
+
+  getProductById(id: string): Observable<AdminProductDetailsDto> {
+    return this.http.get<AdminProductDetailsDto>(`${this.productsUrl}/${id}`);
   }
 
   createProduct(command: CreateProductCommand): Observable<string> {

@@ -120,10 +120,9 @@
               </mat-chip-set>
             </mat-select-trigger>
 
-            <mat-option value="134 (8-9 р.)">134 (8-9 р.)</mat-option>
-            <mat-option value="140 (9-10 р.)">140 (9-10 р.)</mat-option>
-            <mat-option value="146 (10-11 р.)">146 (10-11 р.)</mat-option>
-            <mat-option value="152 (11-12 р.)">152 (11-12 р.)</mat-option>
+            @for (size of availableSizes; track size.id) {
+              <mat-option [value]="size.id">{{ size.label }}</mat-option>
+            }
           </mat-select>
           @if (form.get('sizes')?.invalid) {
             <mat-error class="text-body-2-regular">{{ getErrorMessage('sizes') }}</mat-error>
