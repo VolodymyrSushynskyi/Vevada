@@ -8,6 +8,5 @@ public record CreateAdminAccountCommand(
     string FirstName,
     string LastName,
     string Password,
-    string ConfirmPassword,
     string Role
 ) : IRequest<HandlerResult<int>>;

@@ -43,7 +43,8 @@ public class CreateAdminAccountCommandHandler : IRequestHandler<CreateAdminAccou
             var roleResult = await _userManager.AddToRoleAsync(user, request.Role);
             if (!roleResult.Succeeded)
             {
-                throw new Exception("Role assignment failed.");
+                var errors = string.Join(", ", roleResult.Errors.Select(e => e.Description));
+                return HandlerResult<int>.Failure($"Role assignment failed: {errors}");
             }
 
             var adminDetails = new AdminDetails
@@ -67,7 +68,7 @@ public class CreateAdminAccountCommandHandler : IRequestHandler<CreateAdminAccou
                 await transaction.RollbackAsync(cancellationToken);
             }
 
-            return HandlerResult<int>.Failure("An error occurred during account creation.");
+            throw;
         }
     }
 }

@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Vevada.Business.AdminAccounts.DTOs;
 using Vevada.Business.AdminAccounts.Queries;
+using Vevada.Business.AdminAccounts.Validation;
 using Vevada.Business.Common;
 using Vevada.Data;
 
@@ -39,19 +40,29 @@ public class GetAdminAccountsQueryHandler : IRequestHandler<GetAdminAccountsQuer
             )
             .Where(x => x.role.Name != "SuperAdmin" && x.role.Name != "Client");
 
-        var roleCounts = await baseQuery
+        var dbRoleCounts = await baseQuery
             .GroupBy(x => x.role.Name)
-            .Select(g => new TabCountDto(g.Key!, g.Count()))
-            .ToListAsync(cancellationToken);
+            .Select(g => new { RoleName = g.Key, Count = g.Count() })
+            .ToDictionaryAsync(x => x.RoleName!, x => x.Count, cancellationToken);
 
-        var totalCount = roleCounts.Sum(x => x.Count);
+        var roleCounts = new List<TabCountDto>();
 
-        roleCounts.Insert(0, new TabCountDto("All", totalCount));
+        var totalCount = dbRoleCounts.Values.Sum();
+        roleCounts.Add(new TabCountDto("All", totalCount));
+
+        foreach (var allowedRole in CreateAdminAccountValidationRules.AllowedRoles)
+        {
+            var count = dbRoleCounts.GetValueOrDefault(allowedRole, 0);
+            roleCounts.Add(new TabCountDto(allowedRole, count));
+        }
 
         var filteredQuery = baseQuery;
-        if (!string.IsNullOrWhiteSpace(request.Role) && !request.Role.Equals("All", StringComparison.OrdinalIgnoreCase))
+        var requestedRole = request.Role?.Trim();
+
+        if (!string.IsNullOrWhiteSpace(requestedRole) && !requestedRole.Equals("All", StringComparison.OrdinalIgnoreCase))
         {
-            filteredQuery = filteredQuery.Where(x => x.role.Name == request.Role);
+            var normalizedRequestedRole = requestedRole.ToUpperInvariant();
+            filteredQuery = filteredQuery.Where(x => x.role.NormalizedName == normalizedRequestedRole);
         }
 
         var pagedTotalCount = await filteredQuery.CountAsync(cancellationToken);

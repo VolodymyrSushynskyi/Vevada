@@ -26,10 +26,6 @@ public class CreateAdminAccountCommandValidator : AbstractValidator<CreateAdminA
             .Matches("[0-9]")
                 .WithMessage(ValidationMessageBuilder.MustContain("Password", "a digit"));
 
-        RuleFor(x => x.ConfirmPassword)
-            .Equal(x => x.Password)
-            .WithMessage("The password and confirmation password do not match.");
-
         RuleFor(x => x.FirstName)
             .NotEmpty()
             .MinimumLength(CreateAdminAccountValidationRules.MinFirstNameLength)
