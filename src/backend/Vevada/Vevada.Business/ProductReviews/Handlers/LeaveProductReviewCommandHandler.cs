@@ -26,6 +26,14 @@ public class LeaveProductReviewCommandHandler : IRequestHandler<LeaveProductRevi
             return HandlerResult<int>.Failure("The specified product does not exist.");
         }
 
+        var hasClientDetails = await _dbContext.ClientDetails
+            .AnyAsync(cd => cd.UserId == request.UserId, cancellationToken);
+
+        if (!hasClientDetails)
+        {
+            return HandlerResult<int>.Failure("You must complete your profile details before leaving a review.");
+        }
+
         var existingReview = await _dbContext.ProductReviews
             .FirstOrDefaultAsync(pr => pr.ProductId == request.ProductId && pr.UserId == request.UserId, cancellationToken);
 

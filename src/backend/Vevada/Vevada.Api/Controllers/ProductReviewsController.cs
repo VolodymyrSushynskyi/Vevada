@@ -2,8 +2,10 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using Vevada.Business.Common;
 using Vevada.Business.ProductReviews.Commands;
 using Vevada.Business.ProductReviews.DTOs;
+using Vevada.Business.ProductReviews.Queries;
 
 namespace Vevada.Api.Controllers;
 
@@ -33,6 +35,22 @@ public class ProductReviewsController : BaseApiController
         );
 
         var result = await Mediator.Send(command, cancellationToken);
+
+        return HandleResult(result);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetReviews(
+        Guid productId,
+        [FromQuery] int page = 1,
+        [FromQuery] int pageSize = PagedResponse<object>.DefaultPageSize,
+        CancellationToken cancellationToken = default)
+    {
+        page = page < 1 ? 1 : page;
+        pageSize = pageSize < 1 ? 1 : pageSize > PagedResponse<object>.MaxPageSize ? PagedResponse<object>.MaxPageSize : pageSize;
+
+        var query = new GetProductReviewsQuery(productId, page, pageSize);
+        var result = await Mediator.Send(query, cancellationToken);
 
         return HandleResult(result);
     }
