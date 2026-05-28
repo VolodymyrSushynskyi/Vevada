@@ -1,11 +1,4 @@
-import {
-  Component,
-  OnInit,
-  inject,
-  DestroyRef,
-  PLATFORM_ID,
-  ChangeDetectorRef,
-} from '@angular/core';
+import { Component, inject, DestroyRef, PLATFORM_ID, ChangeDetectorRef } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
@@ -70,7 +63,6 @@ export class Products {
   ProductStatus = ProductStatus;
 
   ngOnInit() {
-    // Відкладаємо перший запит, щоб Angular встиг намалювати порожню сторінку
     setTimeout(() => {
       this.loadProducts();
     });
@@ -79,7 +71,6 @@ export class Products {
   loadProducts() {
     if (!isPlatformBrowser(this.platformId)) return;
 
-    // Скасовуємо попередній запит, якщо він ще не завершився
     if (this.productsSub) {
       this.productsSub.unsubscribe();
     }
@@ -89,7 +80,6 @@ export class Products {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (response: any) => {
-          // ОБОВ'ЯЗКОВО ховаємо всі оновлення даних у setTimeout
           setTimeout(() => {
             this.counts = {
               total: response.counts?.total ?? response.counts?.Total ?? 0,
@@ -101,7 +91,6 @@ export class Products {
             this.dataSource = tableData?.data ?? tableData?.Data ?? tableData?.items ?? [];
             this.totalCount = tableData?.totalCount ?? tableData?.TotalCount ?? 0;
 
-            // Примусово кажемо Angular застосувати ці зміни
             this.cdr.detectChanges();
           });
         },
@@ -111,6 +100,7 @@ export class Products {
         },
       });
   }
+
   onPageChange(event: PageEvent) {
     this.pageIndex = event.pageIndex;
     this.pageSize = event.pageSize;
@@ -128,7 +118,6 @@ export class Products {
 
     this.pageIndex = 0;
 
-    // Ховаємо очищення таблиці та новий запит у безпечний блок
     setTimeout(() => {
       this.dataSource = [];
       this.loadProducts();
