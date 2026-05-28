@@ -1,33 +1,53 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
-import { MainButton } from '../../../../shared/components/main-button/main-button';
-import { AuthService } from '../../../../core/services/auth/auth.service';
+import { Router } from '@angular/router';
+import { ProductCard } from '../../components/product-card/product-card';
+import { SessionService } from '../../../../core/services/auth/session.service';
+
+export interface ProductCardDto {
+  id: string;
+  title: string;
+  price: number;
+  thumbnailUrl: string;
+  isFavorite: boolean;
+}
 
 @Component({
   selector: 'app-home',
-  imports: [CommonModule, RouterLink, MainButton],
+  imports: [CommonModule, ProductCard],
   templateUrl: './home.html',
   styleUrl: './home.css',
 })
 export class Home {
-  private authService = inject(AuthService);
+  mockProduct = {
+    id: '123',
+    title: 'Тестовый купальник',
+    price: 1500,
+    thumbnailUrl: '/img/blue-leotard.jpg',
+    isFavorite: false,
+  };
 
-  authMessage: string | null = null;
-  isSuccess: boolean = false;
+  private router = inject(Router);
+  private sessionService = inject(SessionService);
 
-  testAuth() {
-    this.authService.checkAuthStatus().subscribe({
-      next: (response) => {
-        this.isSuccess = true;
-        this.authMessage = '✅ Ви успішно авторизовані! Сервер вас впізнав.';
-        console.log('Відповідь сервера:', response);
-      },
-      error: (err) => {
-        this.isSuccess = false;
-        this.authMessage = '❌ Помилка доступу. Будь ласка, увійдіть в акаунт.';
-        console.error('Помилка перевірки:', err);
-      },
-    });
+  handleFavoriteClick(clickedProduct: ProductCardDto) {
+    // 1. Проверяем авторизацию
+    if (!this.sessionService.isAuthenticated()) {
+      this.router.navigate(['/login']);
+      return;
+    }
+
+    this.mockProduct = {
+      ...this.mockProduct,
+      isFavorite: !this.mockProduct.isFavorite,
+    };
+  }
+
+  handleAddToCart(clickedProduct: ProductCardDto) {
+    if (!this.sessionService.isAuthenticated()) {
+      this.router.navigate(['/login']);
+      return;
+    }
+    console.log('Товар добавлен в корзину:', clickedProduct);
   }
 }
