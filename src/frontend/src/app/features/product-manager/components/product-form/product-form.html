@@ -1,7 +1,7 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form-wrapper">
   <div class="form-header">
     <div class="header-left">
-      <app-back-button></app-back-button>
+      <app-back-button (back)="goBack.emit()"></app-back-button>
       <h1 class="page-title text-h4-bold">{{ pageTitle }}</h1>
     </div>
 

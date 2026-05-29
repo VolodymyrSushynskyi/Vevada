@@ -6,6 +6,8 @@ import { ProductForm } from '../../components/product-form/product-form';
 import { ProductService } from '../../../../core/services/product-manager/product.service';
 import { ToastService } from '../../../../core/services/common/toast.service';
 import { UpdateProductCommand, ProductStatus } from '../../../../core/models/base/product.models';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmDialog } from '../../../../shared/components/confirm-dialog/confirm-dialog';
 
 @Component({
   selector: 'app-edit-product',
@@ -17,10 +19,11 @@ import { UpdateProductCommand, ProductStatus } from '../../../../core/models/bas
 export class EditProduct {
   private productService = inject(ProductService);
   private router = inject(Router);
-  private route = inject(ActivatedRoute); // Для получения ID из URL
+  private route = inject(ActivatedRoute);
   private toastService = inject(ToastService);
   private destroyRef = inject(DestroyRef);
   private cdr = inject(ChangeDetectorRef);
+  private dialog = inject(MatDialog);
 
   productData: any = null;
 
@@ -73,29 +76,24 @@ export class EditProduct {
   onFormSubmit(eventData: { formData: any; mainPhoto: File[]; gallery: File[] }) {
     const { formData, mainPhoto, gallery } = eventData;
 
-    // 3. Если пользователь добавил НОВОЕ фото — грузим его.
-    // Если массив пустой — берем СТАРЫЙ ID (this.existingMainImageId).
     const mainPhotoUpload$ =
       mainPhoto.length > 0
         ? this.productService.uploadImage(mainPhoto[0])
         : of(this.existingMainImageId);
 
-    // То же самое для галереи
     const galleryUploads$ =
       gallery.length > 0
         ? forkJoin(gallery.map((file) => this.productService.uploadImage(file)))
         : of(this.existingGalleryImageIds);
 
-    // Запускаем процесс
     forkJoin({
       mainId: mainPhotoUpload$,
       galleryIds: galleryUploads$,
     })
       .pipe(
         switchMap((imageResults) => {
-          // 4. Формируем команду UPDATE
           const command: UpdateProductCommand = {
-            id: this.currentProductId, // Обязательно передаем ID
+            id: this.currentProductId,
 
             productSeriesId: formData.productLineId === 'new' ? null : formData.productLineId,
             newSeriesName: formData.productLineId === 'new' ? formData.newProductLineName : null,
@@ -126,6 +124,18 @@ export class EditProduct {
   }
 
   goBack() {
-    this.router.navigate(['/product-manager/products']);
+    const dialogRef = this.dialog.open(ConfirmDialog, {
+      width: '400px',
+      disableClose: true,
+      data: {
+        title: 'Підтвердження виходу',
+        message: 'Якщо ви вийдете, всі незбережені зміни будуть втрачені. Ви дійсно хочете вийти?',
+        confirmText: 'Вийти',
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) this.router.navigate(['/product-manager/products']);
+    });
   }
 }

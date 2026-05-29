@@ -7,7 +7,9 @@ import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule, MatTabChangeEvent } from '@angular/material/tabs';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { Subscription } from 'rxjs';
+import { MatDialog } from '@angular/material/dialog';
 
+import { ConfirmDialog } from '../../../../shared/components/confirm-dialog/confirm-dialog';
 import { StatusChip } from '../../components/status-chip/status-chip';
 import { MainButton } from '../../../../shared/components/main-button/main-button';
 import { PencilButton } from '../../components/pencil-button/pencil-button';
@@ -46,6 +48,7 @@ export class Products {
   private router = inject(Router);
   private toastService = inject(ToastService);
   private destroyRef = inject(DestroyRef);
+  private dialog = inject(MatDialog);
 
   private productsSub?: Subscription;
 
@@ -133,17 +136,28 @@ export class Products {
   }
 
   deleteProduct(id: string) {
-    if (confirm('Ви впевнені, що хочете видалити цей товар?')) {
-      this.productService
-        .deleteProduct(id)
-        .pipe(takeUntilDestroyed(this.destroyRef))
-        .subscribe({
-          next: () => {
-            this.toastService.showSuccess('Товар успішно видалено');
-            this.loadProducts();
-          },
-          error: () => this.toastService.showError('Не вдалося видалити товар'),
-        });
-    }
+    const dialogRef = this.dialog.open(ConfirmDialog, {
+      width: '400px',
+      data: {
+        title: 'Видалення товару',
+        message: 'Ви впевнені, що хочете назавжди видалити цей товар?',
+        confirmText: 'Видалити',
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.productService
+          .deleteProduct(id)
+          .pipe(takeUntilDestroyed(this.destroyRef))
+          .subscribe({
+            next: () => {
+              this.toastService.showSuccess('Товар успішно видалено');
+              this.loadProducts();
+            },
+            error: () => this.toastService.showError('Не вдалося видалити товар'),
+          });
+      }
+    });
   }
 }
