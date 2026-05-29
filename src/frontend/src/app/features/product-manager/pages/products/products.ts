@@ -8,6 +8,7 @@ import { MatTabsModule, MatTabChangeEvent } from '@angular/material/tabs';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { Subscription } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { ConfirmDialog } from '../../../../shared/components/confirm-dialog/confirm-dialog';
 import { StatusChip } from '../../components/status-chip/status-chip';
@@ -37,6 +38,7 @@ import {
     PencilButton,
     TrashButton,
     ImageUrlPipe,
+    MatProgressSpinnerModule,
   ],
   templateUrl: './products.html',
   styleUrl: './products.css',
@@ -64,11 +66,10 @@ export class Products {
   counts: ProductTabCountsDto = { total: 0, published: 0, drafts: 0 };
 
   ProductStatus = ProductStatus;
+  isLoading = true;
 
   ngOnInit() {
-    setTimeout(() => {
-      this.loadProducts();
-    });
+    this.loadProducts();
   }
 
   loadProducts() {
@@ -78,34 +79,37 @@ export class Products {
       this.productsSub.unsubscribe();
     }
 
+    this.isLoading = true;
+
     this.productsSub = this.productService
       .getProducts(this.pageIndex + 1, this.pageSize, this.currentStatus)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (response: any) => {
-          setTimeout(() => {
-            const countsArray = response.counts ?? [];
+          const countsArray = response.counts ?? [];
 
-            const totalItem = countsArray.find((item: any) => item.key === 'Total');
-            const publishedItem = countsArray.find((item: any) => item.key === 'Published');
-            const draftsItem = countsArray.find((item: any) => item.key === 'Drafts');
+          const totalItem = countsArray.find((item: any) => item.key === 'Total');
+          const publishedItem = countsArray.find((item: any) => item.key === 'Published');
+          const draftsItem = countsArray.find((item: any) => item.key === 'Drafts');
 
-            this.counts = {
-              total: totalItem?.count ?? 0,
-              published: publishedItem?.count ?? 0,
-              drafts: draftsItem?.count ?? 0,
-            };
+          this.counts = {
+            total: totalItem?.count ?? 0,
+            published: publishedItem?.count ?? 0,
+            drafts: draftsItem?.count ?? 0,
+          };
 
-            const tableData = response.tableData;
-            this.dataSource = tableData?.items ?? [];
-            this.totalCount = tableData?.totalCount ?? 0;
+          const tableData = response.tableData;
+          this.dataSource = tableData?.items ?? [];
+          this.totalCount = tableData?.totalCount ?? 0;
 
-            this.cdr.detectChanges();
-          });
+          this.isLoading = false;
+          this.cdr.markForCheck();
         },
         error: (err) => {
           this.toastService.showError('Помилка при завантаженні списку товарів');
           console.error(err);
+          this.isLoading = false;
+          this.cdr.markForCheck();
         },
       });
   }
@@ -127,10 +131,8 @@ export class Products {
 
     this.pageIndex = 0;
 
-    setTimeout(() => {
-      this.dataSource = [];
-      this.loadProducts();
-    });
+    this.dataSource = [];
+    this.loadProducts();
   }
 
   navigateToAdd() {

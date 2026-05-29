@@ -82,7 +82,10 @@ public class TokenService : ITokenService
             ValidateIssuerSigningKey = true,
             IssuerSigningKey = new SymmetricSecurityKey(key),
             ValidateLifetime = false,
-            ValidAlgorithms = new[] { SecurityAlgorithm }
+            ValidAlgorithms = new[] { SecurityAlgorithm },
+
+            ValidIssuer = _jwtSettings.Issuer,
+            ValidAudience = _jwtSettings.Audience
         };
 
         var tokenHandler = new JsonWebTokenHandler();

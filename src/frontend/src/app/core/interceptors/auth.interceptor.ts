@@ -19,11 +19,14 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const sessionService = inject(SessionService);
 
   const isApiUrl = req.url.startsWith(environment.apiUrl);
+  // ИСПРАВЛЕНИЕ 1: Ищем правильный URL с дефисом
+  const isRefreshUrl = req.url.includes('/refresh-token');
   const hasAuthHeader = req.headers.has('Authorization');
   const token = isPlatformBrowser(platformId) ? localStorage.getItem('access_token') : null;
 
   let authReq = req;
-  if (token && isApiUrl && !hasAuthHeader) {
+
+  if (token && isApiUrl && !hasAuthHeader && !isRefreshUrl) {
     authReq = req.clone({
       setHeaders: { Authorization: `Bearer ${token}` },
     });
@@ -34,7 +37,8 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
       if (
         !(error instanceof HttpErrorResponse) ||
         error.status !== 401 ||
-        req.url.includes('/auth/refresh')
+        // ИСПРАВЛЕНИЕ 2: Ищем правильный URL здесь тоже
+        req.url.includes('/auth/refresh-token')
       ) {
         return throwError(() => error);
       }
@@ -61,8 +65,10 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
       if (refreshToken) {
         return authService.refreshToken(refreshToken).pipe(
-          switchMap((response: any) => {
+          switchMap((rawResponse: any) => {
             isRefreshing = false;
+
+            const response = rawResponse;
 
             sessionService.startSession(response);
             refreshTokenSubject.next(response.accessToken);

@@ -31,7 +31,7 @@ export class AuthService {
   refreshToken(refreshToken: string) {
     const accessToken = localStorage.getItem('access_token');
 
-    return this.http.post<AuthResponse>(`${this.API_URL}/refresh`, {
+    return this.http.post<AuthResponse>(`${this.API_URL}/refresh-token`, {
       accessToken: accessToken,
       refreshToken: refreshToken,
     });

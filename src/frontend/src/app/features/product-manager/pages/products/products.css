@@ -46,12 +46,18 @@
   color: var(--grey-600);
   border-bottom: 1px solid var(--grey-300);
   padding: 16px 30px;
+  text-align: center;
 }
 
 .product-table ::ng-deep td.mat-mdc-cell {
   padding: 12px 30px;
   border-bottom: 1px solid var(--grey-200);
   vertical-align: middle;
+  text-align: center;
+}
+
+.product-table ::ng-deep .mat-column-name {
+  width: 25%;
 }
 
 .product-img {
@@ -59,6 +65,8 @@
   height: 70px;
   object-fit: cover;
   display: block;
+  margin: 0 auto;
+  box-shadow: 4px 4px 20px rgba(0, 0, 0, 0.15);
 }
 
 .date-cell {
@@ -76,6 +84,7 @@
 .action-buttons {
   display: flex;
   gap: 8px;
+  justify-content: center;
 }
 
 .table-container ::ng-deep .mat-mdc-paginator {
@@ -95,4 +104,23 @@
   justify-content: center;
   align-items: center;
   color: var(--grey-500);
+}
+
+.loader-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10; /* Чтобы лоадер был поверх таблицы */
+  border-radius: 8px; /* Если у твоей таблицы есть скругления */
+}
+
+::ng-deep .loader-overlay mat-spinner circle,
+::ng-deep .loading-state mat-spinner circle {
+  stroke: var(--green-200) !important;
 }
