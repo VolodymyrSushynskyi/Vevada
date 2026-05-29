@@ -84,15 +84,21 @@ export class Products {
       .subscribe({
         next: (response: any) => {
           setTimeout(() => {
+            const countsArray = response.counts ?? [];
+
+            const totalItem = countsArray.find((item: any) => item.key === 'Total');
+            const publishedItem = countsArray.find((item: any) => item.key === 'Published');
+            const draftsItem = countsArray.find((item: any) => item.key === 'Drafts');
+
             this.counts = {
-              total: response.counts?.total ?? response.counts?.Total ?? 0,
-              published: response.counts?.published ?? response.counts?.Published ?? 0,
-              drafts: response.counts?.drafts ?? response.counts?.Drafts ?? 0,
+              total: totalItem?.count ?? 0,
+              published: publishedItem?.count ?? 0,
+              drafts: draftsItem?.count ?? 0,
             };
 
-            const tableData = response.tableData ?? response.TableData;
-            this.dataSource = tableData?.data ?? tableData?.Data ?? tableData?.items ?? [];
-            this.totalCount = tableData?.totalCount ?? tableData?.TotalCount ?? 0;
+            const tableData = response.tableData;
+            this.dataSource = tableData?.items ?? [];
+            this.totalCount = tableData?.totalCount ?? 0;
 
             this.cdr.detectChanges();
           });

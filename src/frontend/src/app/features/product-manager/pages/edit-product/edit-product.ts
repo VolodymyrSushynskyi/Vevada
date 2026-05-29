@@ -47,8 +47,8 @@ export class EditProduct {
         next: (product: any) => {
           console.log('Дані товару для редагування:', product);
 
-          this.existingMainImageId = product.mainImageId ?? product.MainImageId;
-          this.existingGalleryImageIds = product.galleryImageIds ?? product.GalleryImageIds ?? [];
+          this.existingMainImageId = product.mainImageId;
+          this.existingGalleryImageIds = product.galleryImageIds ?? [];
 
           const isPublished = product.status === 1;
 

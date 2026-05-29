@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output, inject, PLATFORM_ID } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
+import { ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
 
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -23,6 +23,8 @@ import {
   VALIDATION_PRIORITY,
 } from '../../../../core/constants/validation-messages';
 
+import { ProductService } from '../../../../core/services/product-manager/product.service';
+
 @Component({
   selector: 'app-product-form',
   imports: [
@@ -43,10 +45,13 @@ import {
 })
 export class ProductForm {
   private platformId = inject(PLATFORM_ID);
+  private productService = inject(ProductService);
+
   isBrowser = isPlatformBrowser(this.platformId);
 
   mainPhotoPreview: string | null = null;
   galleryPhotosPreviews: string[] = [];
+  productSeries: any[] = [];
 
   @Input() pageTitle: string = 'Додати товар';
 
@@ -131,28 +136,42 @@ export class ProductForm {
 
   ngOnInit() {
     if (this.initialData) {
-      // 1. Заповнюємо форму текстом
       this.form.patchValue(this.initialData);
 
-      // 2. Знімаємо обов'язковість фотографії, оскільки вона вже є на сервері
       if (this.initialData.mainImageId) {
         this.form.get('mainPhoto')?.clearValidators();
         this.form.get('mainPhoto')?.updateValueAndValidity();
       }
 
-      // 3. Формуємо посилання для картинок
       const baseUrl = environment.apiUrl.replace(/\/api$/, '');
-
       if (this.initialData.mainImageId) {
         this.mainPhotoPreview = `${baseUrl}/content/images/${this.initialData.mainImageId}-thumb.webp`;
       }
-
       if (this.initialData.galleryImageIds && this.initialData.galleryImageIds.length > 0) {
         this.galleryPhotosPreviews = this.initialData.galleryImageIds.map(
           (imageId: string) => `${baseUrl}/content/images/${imageId}-thumb.webp`,
         );
       }
     }
+
+    this.productService.getSeriesLookup().subscribe({
+      next: (response: any) => {
+        this.productSeries = response;
+
+        if (this.productSeries && this.productSeries.length > 0) {
+          if (!this.initialData) {
+            const firstId = this.productSeries[0].id;
+            this.form.get('productLineId')?.setValue(firstId);
+          } else {
+            const savedId = this.initialData.productLineId;
+            if (savedId) {
+              this.form.get('productLineId')?.setValue(savedId);
+            }
+          }
+        }
+      },
+      error: (err) => console.error('Помилка при завантаженні лінійок', err),
+    });
   }
 
   onSubmit() {

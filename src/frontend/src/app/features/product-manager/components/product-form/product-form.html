@@ -13,8 +13,11 @@
       <app-ui-card title="Лінійка товарів*">
         <mat-form-field appearance="outline" class="w-100">
           <mat-select formControlName="productLineId" placeholder="Оберіть лінійку">
-            <mat-option value="1">Грація</mat-option>
-            <mat-option value="2">Колекція для виступів</mat-option>
+            @for (series of productSeries; track series.id) {
+              <mat-option [value]="series.id ?? series.Id">
+                {{ series.name ?? series.Name }}
+              </mat-option>
+            }
             <mat-option value="new">Створити нову лінійку товарів</mat-option>
           </mat-select>
 

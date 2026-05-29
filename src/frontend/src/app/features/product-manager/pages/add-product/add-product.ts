@@ -6,6 +6,8 @@ import { ProductForm } from '../../components/product-form/product-form';
 import { ProductService } from '../../../../core/services/product-manager/product.service';
 import { ToastService } from '../../../../core/services/common/toast.service';
 import { CreateProductCommand, ProductStatus } from '../../../../core/models/base/product.models';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmDialog } from '../../../../shared/components/confirm-dialog/confirm-dialog';
 
 @Component({
   selector: 'app-add-product',
@@ -19,6 +21,7 @@ export class AddProduct {
   private router = inject(Router);
   private toastService = inject(ToastService);
   private destroyRef = inject(DestroyRef);
+  private dialog = inject(MatDialog);
 
   onFormSubmit(eventData: { formData: any; mainPhoto: File[]; gallery: File[] }) {
     const { formData, mainPhoto, gallery } = eventData;
@@ -64,6 +67,7 @@ export class AddProduct {
       )
       .subscribe({
         next: (resultId) => {
+          this.toastService.showError('Товар успішно додано');
           this.router.navigate(['/product-manager/products']);
         },
         error: (err) => {
@@ -73,6 +77,18 @@ export class AddProduct {
   }
 
   goBack() {
-    this.router.navigate(['/product-manager/products']);
+    const dialogRef = this.dialog.open(ConfirmDialog, {
+      width: '400px',
+      disableClose: true,
+      data: {
+        title: 'Підтвердження виходу',
+        message: 'Якщо ви вийдете, всі незбережені дані будуть втрачені. Ви дійсно хочете вийти?',
+        confirmText: 'Вийти',
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) this.router.navigate(['/product-manager/products']);
+    });
   }
 }

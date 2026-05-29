@@ -57,6 +57,10 @@ export class ProductService {
     return this.http.put<boolean>(`${this.productsUrl}/${id}`, command);
   }
 
+  getSeriesLookup() {
+    return this.http.get<any[]>(`${environment.apiUrl}/admin/products/series-lookup`);
+  }
+
   deleteProduct(id: string): Observable<boolean> {
     return this.http.delete<boolean>(`${this.productsUrl}/${id}`);
   }
