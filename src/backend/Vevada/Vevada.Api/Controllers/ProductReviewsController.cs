@@ -39,6 +39,23 @@ public class ProductReviewsController : BaseApiController
         return HandleResult(result);
     }
 
+    [HttpDelete]
+    [Authorize(Roles = "Client")]
+    public async Task<IActionResult> DeleteReview(Guid productId, CancellationToken cancellationToken)
+    {
+        var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+        if (!int.TryParse(userIdClaim, out var userId))
+        {
+            return Unauthorized(new { error = "Invalid user." });
+        }
+
+        var command = new DeleteProductReviewCommand(productId, userId);
+        var result = await Mediator.Send(command, cancellationToken);
+
+        return HandleResult(result);
+    }
+
     [HttpGet]
     public async Task<IActionResult> GetReviews(
         Guid productId,
