@@ -75,9 +75,7 @@ export class Products {
   loadProducts() {
     if (!isPlatformBrowser(this.platformId)) return;
 
-    if (this.productsSub) {
-      this.productsSub.unsubscribe();
-    }
+    this.productsSub?.unsubscribe();
 
     this.isLoading = true;
 

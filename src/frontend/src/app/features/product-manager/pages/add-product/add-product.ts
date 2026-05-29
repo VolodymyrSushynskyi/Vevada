@@ -26,11 +26,6 @@ export class AddProduct {
   onFormSubmit(eventData: { formData: any; mainPhoto: File[]; gallery: File[] }) {
     const { formData, mainPhoto, gallery } = eventData;
 
-    if (!mainPhoto || mainPhoto.length === 0) {
-      console.error("Головне фото обов'язкове!");
-      return;
-    }
-
     this.productService
       .uploadImage(mainPhoto[0])
       .pipe(
@@ -67,7 +62,7 @@ export class AddProduct {
       )
       .subscribe({
         next: (resultId) => {
-          this.toastService.showError('Товар успішно додано');
+          this.toastService.showSuccess('Товар успішно додано');
           this.router.navigate(['/product-manager/products']);
         },
         error: (err) => {

@@ -1,4 +1,12 @@
-import { Component, EventEmitter, Input, Output, inject, PLATFORM_ID } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  DestroyRef,
+  inject,
+  PLATFORM_ID,
+} from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
 
@@ -7,6 +15,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { UiCard } from '../ui-card/ui-card';
 import { ImageUploader } from '../image-uploader/image-uploader';
@@ -46,6 +55,7 @@ import { ProductService } from '../../../../core/services/product-manager/produc
 export class ProductForm {
   private platformId = inject(PLATFORM_ID);
   private productService = inject(ProductService);
+  destroyRef = inject(DestroyRef);
 
   isBrowser = isPlatformBrowser(this.platformId);
 
@@ -154,24 +164,27 @@ export class ProductForm {
       }
     }
 
-    this.productService.getSeriesLookup().subscribe({
-      next: (response: any) => {
-        this.productSeries = response;
+    this.productService
+      .getSeriesLookup()
+      .pipe(takeUntilDestroyed(this.destroyRef)) // <-- Магия автоматической отписки
+      .subscribe({
+        next: (response: any) => {
+          this.productSeries = response;
 
-        if (this.productSeries && this.productSeries.length > 0) {
-          if (!this.initialData) {
-            const firstId = this.productSeries[0].id;
-            this.form.get('productLineId')?.setValue(firstId);
-          } else {
-            const savedId = this.initialData.productLineId;
-            if (savedId) {
-              this.form.get('productLineId')?.setValue(savedId);
+          if (this.productSeries?.length > 0) {
+            if (!this.initialData) {
+              const firstId = this.productSeries[0].id;
+              this.form.get('productLineId')?.setValue(firstId);
+            } else {
+              const savedId = this.initialData.productLineId;
+              if (savedId) {
+                this.form.get('productLineId')?.setValue(savedId);
+              }
             }
           }
-        }
-      },
-      error: (err) => console.error('Помилка при завантаженні лінійок', err),
-    });
+        },
+        error: (err) => console.error('Помилка при завантаженні лінійок', err),
+      });
   }
 
   onSubmit() {

@@ -19,8 +19,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const sessionService = inject(SessionService);
 
   const isApiUrl = req.url.startsWith(environment.apiUrl);
-  // ИСПРАВЛЕНИЕ 1: Ищем правильный URL с дефисом
-  const isRefreshUrl = req.url.includes('/refresh-token');
+  const isRefreshUrl = req.url.includes('/auth/refresh-token');
   const hasAuthHeader = req.headers.has('Authorization');
   const token = isPlatformBrowser(platformId) ? localStorage.getItem('access_token') : null;
 
@@ -37,7 +36,6 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
       if (
         !(error instanceof HttpErrorResponse) ||
         error.status !== 401 ||
-        // ИСПРАВЛЕНИЕ 2: Ищем правильный URL здесь тоже
         req.url.includes('/auth/refresh-token')
       ) {
         return throwError(() => error);
