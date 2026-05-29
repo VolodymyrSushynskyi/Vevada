@@ -3,6 +3,6 @@
 namespace Vevada.Business.Products.DTOs;
 
 public record AdminProductListResponse(
-    ProductTabCountsDto Counts,
+    List<TabCountDto> Counts,
     PagedResponse<AdminProductListItemDto> TableData
 );

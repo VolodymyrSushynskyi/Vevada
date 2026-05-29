@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Vevada.Data.Constants;
@@ -15,12 +16,18 @@ public class UserSeeder : ISeeder
     private readonly UserManager<User> _userManager;
     private readonly IConfiguration _configuration;
     private readonly ILogger<UserSeeder> _logger;
+    private readonly VevadaDbContext _dbContext;
 
-    public UserSeeder(UserManager<User> userManager, IConfiguration configuration, ILogger<UserSeeder> logger)
+    public UserSeeder(
+        UserManager<User> userManager,
+        IConfiguration configuration,
+        ILogger<UserSeeder> logger,
+        VevadaDbContext dbContext)
     {
         _userManager = userManager;
         _configuration = configuration;
         _logger = logger;
+        _dbContext = dbContext;
     }
 
     public async Task<int> SeedAsync()
@@ -50,6 +57,7 @@ public class UserSeeder : ISeeder
         var existingUser = await _userManager.FindByEmailAsync(email);
         if (existingUser != null)
         {
+            await EnsureAdminDetailsExist(existingUser.Id);
             return 0;
         }
 
@@ -76,6 +84,26 @@ public class UserSeeder : ISeeder
             throw new InvalidOperationException($"Failed to assign super admin role: {errors}");
         }
 
+        await EnsureAdminDetailsExist(adminUser.Id);
+
         return 1;
+    }
+
+    private async Task EnsureAdminDetailsExist(int userId)
+    {
+        var detailsExist = await _dbContext.AdminDetails.AnyAsync(ad => ad.UserId == userId);
+
+        if (!detailsExist)
+        {
+            var superAdminDetails = new AdminDetails
+            {
+                UserId = userId,
+                FirstName = "System",
+                LastName = "Administrator"
+            };
+
+            await _dbContext.AdminDetails.AddAsync(superAdminDetails);
+            await _dbContext.SaveChangesAsync();
+        }
     }
 }
