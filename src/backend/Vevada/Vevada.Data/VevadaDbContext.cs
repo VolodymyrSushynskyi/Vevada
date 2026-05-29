@@ -13,6 +13,7 @@ public class VevadaDbContext : IdentityDbContext<User, Role, int>
     public DbSet<Product> Products { get; set; }
     public DbSet<ProductSeries> ProductSeries { get; set; }
     public DbSet<ProductGalleryImage> ProductGalleryImages { get; set; }
+    public DbSet<AdminDetails> AdminDetails { get; set; }
 
     public DbSet<ProductReview> ProductReviews { get; set; }
 
