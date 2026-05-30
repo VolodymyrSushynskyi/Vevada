@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using Vevada.Business.Orders.Commands;
 using Vevada.Business.Orders.DTOs;
+using Vevada.Business.Orders.Queries;
 
 namespace Vevada.Api.Controllers;
 
@@ -16,15 +17,6 @@ public class AdminOrderController : BaseApiController
     }
 
     private int GetAdminId() => int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
-
-    //[HttpGet("available")]
-    //public async Task<IActionResult> GetAvailableOrders(CancellationToken cancellationToken)
-    //{
-    //    //var query = new GetAvailableOrdersQuery();
-    //    //var result = await Mediator.Send(query, cancellationToken);
-
-    //    //return HandleResult(result);
-    //}
 
     [HttpPost("{orderId:int}/assign")]
     public async Task<IActionResult> AssignOrder([FromRoute] int orderId, CancellationToken cancellationToken)
@@ -43,6 +35,15 @@ public class AdminOrderController : BaseApiController
     {
         var command = new UpdateManufacturerOrderStatusCommand(GetAdminId(), orderId, request.NewStatus);
         var result = await Mediator.Send(command, cancellationToken);
+
+        return HandleResult(result);
+    }
+
+    [HttpGet("available")]
+    public async Task<IActionResult> GetAvailableOrders(CancellationToken cancellationToken)
+    {
+        var query = new GetAvailableManufacturerOrdersQuery();
+        var result = await Mediator.Send(query, cancellationToken);
 
         return HandleResult(result);
     }
