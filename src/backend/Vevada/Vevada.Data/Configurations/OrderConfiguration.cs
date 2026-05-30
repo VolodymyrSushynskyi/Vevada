@@ -23,5 +23,10 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
             .WithOne(x => x.Order)
             .HasForeignKey(x => x.OrderId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasOne(x => x.AssignedManufacturer)
+            .WithMany()
+            .HasForeignKey(x => x.AssignedManufacturerId)
+            .OnDelete(DeleteBehavior.SetNull);
     }
 }
