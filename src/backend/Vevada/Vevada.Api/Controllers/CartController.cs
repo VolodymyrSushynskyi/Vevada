@@ -14,7 +14,7 @@ public class CartController : BaseApiController
 
     private int GetUserId() => int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
 
-    [HttpPost("items")]
+    [HttpPost
     public async Task<IActionResult> AddItem([FromBody] AddCartItemDto request, CancellationToken cancellationToken)
     {
         var command = new AddCartItemCommand(
@@ -28,7 +28,7 @@ public class CartController : BaseApiController
         return HandleResult(result);
     }
 
-    [HttpPut("items/{cartItemId:int}")]
+    [HttpPut("{cartItemId:int}")]
     public async Task<IActionResult> UpdateItemQuantity(
     [FromRoute] int cartItemId,
     [FromBody] UpdateCartItemQuantityDto request,
@@ -39,6 +39,15 @@ public class CartController : BaseApiController
             cartItemId,
             request.Quantity);
 
+        var result = await Mediator.Send(command, cancellationToken);
+
+        return HandleResult(result);
+    }
+
+    [HttpDelete("{cartItemId:int}")]
+    public async Task<IActionResult> RemoveItem([FromRoute] int cartItemId, CancellationToken cancellationToken)
+    {
+        var command = new RemoveCartItemCommand(GetUserId(), cartItemId);
         var result = await Mediator.Send(command, cancellationToken);
 
         return HandleResult(result);
