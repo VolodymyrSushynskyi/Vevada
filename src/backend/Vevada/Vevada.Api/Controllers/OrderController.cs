@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using Vevada.Business.Orders.Commands;
+using Vevada.Business.Orders.Queries;
 
 namespace Vevada.Api.Controllers;
 
@@ -21,6 +22,22 @@ public class OrderController : BaseApiController
         var command = new PlaceOrderCommand(GetUserId());
         var result = await Mediator.Send(command, cancellationToken);
 
+        return HandleResult(result);
+    }
+
+    [HttpGet("active")]
+    public async Task<IActionResult> GetActiveOrders(CancellationToken cancellationToken)
+    {
+        var query = new GetActiveOrdersQuery(GetUserId());
+        var result = await Mediator.Send(query, cancellationToken);
+        return HandleResult(result);
+    }
+
+    [HttpGet("history")]
+    public async Task<IActionResult> GetOrderHistory(CancellationToken cancellationToken)
+    {
+        var query = new GetOrderHistoryQuery(GetUserId());
+        var result = await Mediator.Send(query, cancellationToken);
         return HandleResult(result);
     }
 }
