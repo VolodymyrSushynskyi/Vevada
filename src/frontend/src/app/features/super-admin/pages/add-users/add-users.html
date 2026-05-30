@@ -5,10 +5,9 @@
   </div>
 
   <mat-tab-group class="custom-tabs" (selectedTabChange)="onTabChange($event)">
-    <mat-tab label="Всі (5)"></mat-tab>
-    <mat-tab label="Виробники (2)"></mat-tab>
-    <mat-tab label="Менеджер (2)"></mat-tab>
-    <mat-tab label="Аналітик (1)"></mat-tab>
+    @for (tab of tabCounts; track tab.key) {
+      <mat-tab [label]="roleLabels[tab.key] + ' (' + tab.count + ')'"></mat-tab>
+    }
   </mat-tab-group>
 
   <div class="table-container">
@@ -50,5 +49,15 @@
         </td>
       </tr>
     </table>
+
+    <mat-paginator
+      class="custom-paginator"
+      [length]="totalCount"
+      [pageSize]="pageSize"
+      [pageIndex]="currentPage - 1"
+      hidePageSize="true"
+      (page)="onPageChange($event)"
+    >
+    </mat-paginator>
   </div>
 </div>
