@@ -1,11 +1,14 @@
-﻿namespace Vevada.Business.Carts.DTOs;
+﻿using Vevada.Data.Constants;
+
+namespace Vevada.Business.Carts.DTOs;
 
 public record CartItemDto(
-    int Id,
+    int CartItemId,
     Guid ProductId,
     string ProductName,
-    int Size,
-    int Quantity,
+    ProductSize Size,
     decimal UnitPrice,
-    Guid? MainImageId
+    int Quantity,
+    Guid ImageId,
+    bool IsAvailable
 );

@@ -4,6 +4,7 @@ using Vevada.Business.Carts.DTOs;
 using Vevada.Business.Carts.Queries;
 using Vevada.Business.Common;
 using Vevada.Data;
+using Vevada.Data.Constants;
 
 namespace Vevada.Business.Carts.Handlers;
 
@@ -20,30 +21,30 @@ public class GetCartQueryHandler : IRequestHandler<GetCartQuery, HandlerResult<C
     {
         var cart = await _context.Carts
             .AsNoTracking()
-            .Include(c => c.Items)
-                .ThenInclude(i => i.Product)
-            .FirstOrDefaultAsync(c => c.UserId == request.UserId, cancellationToken);
+            .Where(c => c.UserId == request.UserId)
+            .Select(c => new CartDto(
+                c.Id,
+                c.Items.Select(i => new CartItemDto(
+                    i.Id,
+                    i.ProductId,
+                    i.Product.Name,
+                    i.Size,
+                    i.Product.Price,
+                    i.Quantity,
+                    i.Product.MainImage.Id,
+                    i.Product.Status == ProductStatus.Published && i.Product.AvailableSizes.Contains(i.Size)
+                )).ToList(),
+                c.Items
+                    .Where(i => i.Product.Status == ProductStatus.Published && i.Product.AvailableSizes.Contains(i.Size))
+                    .Sum(i => i.Product.Price * i.Quantity)
+            ))
+            .FirstOrDefaultAsync(cancellationToken);
 
-        if (cart == null || !cart.Items.Any())
+        if (cart == null)
         {
-            return HandlerResult<CartDto>.Success(new CartDto(0, 0m, new List<CartItemDto>()));
+            return HandlerResult<CartDto>.Success(new CartDto(0, new List<CartItemDto>(), 0m));
         }
 
-        var items = cart.Items.Select(i => new CartItemDto(
-            i.Id,
-            i.ProductId,
-            i.Product.Name,
-            i.Size,
-            i.Quantity,
-            i.Product.Price,
-            i.Product.MainImageId
-        )).ToList();
-
-        var totalItems = items.Sum(i => i.Quantity);
-        var subtotal = items.Sum(i => i.Quantity * i.UnitPrice);
-
-        var dto = new CartDto(totalItems, subtotal, items);
-
-        return HandlerResult<CartDto>.Success(dto);
+        return HandlerResult<CartDto>.Success(cart);
     }
 }
