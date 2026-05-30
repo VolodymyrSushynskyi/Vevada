@@ -1,4 +1,6 @@
-﻿namespace Vevada.Data.Entities;
+﻿using Vevada.Data.Constants;
+
+namespace Vevada.Data.Entities;
 
 public class CartItem
 {
@@ -10,6 +12,6 @@ public class CartItem
     public Guid ProductId { get; set; }
     public virtual Product Product { get; set; } = null!;
 
-    public int Size { get; set; }
+    public ProductSize Size { get; set; }
     public int Quantity { get; set; }
 }

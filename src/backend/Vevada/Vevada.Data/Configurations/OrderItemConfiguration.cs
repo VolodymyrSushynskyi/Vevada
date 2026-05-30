@@ -18,6 +18,9 @@ public class OrderItemConfiguration : IEntityTypeConfiguration<OrderItem>
             .HasColumnType("numeric(18,2)")
             .IsRequired();
 
+        builder.Property(x => x.Size)
+            .IsRequired();
+
         builder.Property(x => x.Quantity)
             .IsRequired();
 

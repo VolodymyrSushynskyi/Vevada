@@ -1,4 +1,6 @@
-﻿namespace Vevada.Data.Entities;
+﻿using Vevada.Data.Constants;
+
+namespace Vevada.Data.Entities;
 
 public class OrderItem
 {
@@ -11,8 +13,7 @@ public class OrderItem
     public virtual Product? Product { get; set; }
 
     public string ProductName { get; set; } = string.Empty;
-    public int Size { get; set; }
+    public ProductSize Size { get; set; }
     public int Quantity { get; set; }
-
     public decimal UnitPrice { get; set; }
 }

@@ -14,6 +14,9 @@ public class CartItemConfiguration : IEntityTypeConfiguration<CartItem>
             .IsRequired()
             .HasDefaultValue(1);
 
+        builder.Property(x => x.Size)
+            .IsRequired();
+
         builder.HasOne(x => x.Product)
             .WithMany()
             .HasForeignKey(x => x.ProductId)
