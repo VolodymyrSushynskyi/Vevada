@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using Vevada.Business.Orders.Commands;
+using Vevada.Business.Orders.DTOs;
 
 namespace Vevada.Api.Controllers;
 
@@ -29,6 +30,18 @@ public class AdminOrderController : BaseApiController
     public async Task<IActionResult> AssignOrder([FromRoute] int orderId, CancellationToken cancellationToken)
     {
         var command = new AssignManufacturerOrderCommand(GetAdminId(), orderId);
+        var result = await Mediator.Send(command, cancellationToken);
+
+        return HandleResult(result);
+    }
+
+    [HttpPut("{orderId:int}/status")]
+    public async Task<IActionResult> UpdateOrderStatus(
+        [FromRoute] int orderId,
+        [FromBody] UpdateManufacturerOrderStatusRequest request,
+        CancellationToken cancellationToken)
+    {
+        var command = new UpdateManufacturerOrderStatusCommand(GetAdminId(), orderId, request.NewStatus);
         var result = await Mediator.Send(command, cancellationToken);
 
         return HandleResult(result);
