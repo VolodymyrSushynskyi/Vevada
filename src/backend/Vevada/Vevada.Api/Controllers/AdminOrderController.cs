@@ -47,4 +47,13 @@ public class AdminOrderController : BaseApiController
 
         return HandleResult(result);
     }
+
+    [HttpGet("active")]
+    public async Task<IActionResult> GetActiveOrders(CancellationToken cancellationToken)
+    {
+        var query = new GetManufacturerActiveOrdersQuery(GetAdminId());
+        var result = await Mediator.Send(query, cancellationToken);
+
+        return HandleResult(result);
+    }
 }
