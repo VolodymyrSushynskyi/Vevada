@@ -11,6 +11,12 @@
   </mat-tab-group>
 
   <div class="table-container">
+    @if (isLoading) {
+      <div class="loader-overlay">
+        <mat-spinner diameter="48"></mat-spinner>
+      </div>
+    }
+
     <table mat-table [dataSource]="dataSource" class="users-table">
       <ng-container matColumnDef="fullName">
         <th mat-header-cell *matHeaderCellDef>ПІБ</th>

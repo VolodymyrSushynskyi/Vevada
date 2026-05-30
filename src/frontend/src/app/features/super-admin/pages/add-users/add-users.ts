@@ -13,6 +13,7 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { ConfirmDialog } from '../../../../shared/components/confirm-dialog/confirm-dialog';
 import { AddUserDialog } from '../../components/add-user-dialog/add-user-dialog';
@@ -47,6 +48,7 @@ export interface User {
     MatTableModule,
     MatTabsModule,
     MatPaginatorModule,
+    MatProgressSpinnerModule,
     MainButton,
     TrashButton,
     RoleChip,
@@ -61,6 +63,8 @@ export class AddUsers implements OnInit {
   private toastService = inject(ToastService);
   private dialog = inject(MatDialog);
   private platformId = inject(PLATFORM_ID);
+
+  isLoading: boolean = true;
 
   displayedColumns: string[] = ['fullName', 'email', 'role', 'actions'];
   readonly roleLabels: Record<string, string> = {
@@ -97,6 +101,9 @@ export class AddUsers implements OnInit {
     this.currentPage = page;
     this.pageSize = pageSize;
 
+    this.isLoading = true;
+    this.cdr.markForCheck();
+
     this.accountsService
       .getAccounts(page, pageSize, role)
       .pipe(takeUntilDestroyed(this.destroyRef))
@@ -105,11 +112,14 @@ export class AddUsers implements OnInit {
           this.dataSource.data = response.tableData.items;
           this.totalCount = response.tableData.totalCount;
           this.tabCounts = response.counts;
+
+          this.isLoading = false;
           this.cdr.markForCheck();
         },
         error: (err) => {
           this.toastService.showError('Помилка при завантаженні списку користувачів');
           console.error(err);
+          this.isLoading = false;
           this.cdr.markForCheck();
         },
       });

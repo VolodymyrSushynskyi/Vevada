@@ -116,8 +116,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 10; /* Чтобы лоадер был поверх таблицы */
-  border-radius: 8px; /* Если у твоей таблицы есть скругления */
+  z-index: 10;
+  border-radius: 8px;
 }
 
 ::ng-deep .loader-overlay mat-spinner circle,
