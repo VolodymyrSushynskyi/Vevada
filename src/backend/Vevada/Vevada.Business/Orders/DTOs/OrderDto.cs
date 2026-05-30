@@ -8,5 +8,6 @@ public record OrderDto(
     OrderStatus Status,
     decimal TotalAmount,
     int TotalItems,
+    bool CancellationRequested,
     List<OrderItemDto> Items
 );

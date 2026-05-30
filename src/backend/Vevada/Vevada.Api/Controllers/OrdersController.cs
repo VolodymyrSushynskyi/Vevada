@@ -8,9 +8,9 @@ using Vevada.Business.Orders.Queries;
 namespace Vevada.Api.Controllers;
 
 [Authorize(Roles ="Client")]
-public class OrderController : BaseApiController
+public class OrdersController : BaseApiController
 {
-    public OrderController(IMediator mediator) : base(mediator)
+    public OrdersController(IMediator mediator) : base(mediator)
     {
     }
 
@@ -38,6 +38,15 @@ public class OrderController : BaseApiController
     {
         var query = new GetOrderHistoryQuery(GetUserId());
         var result = await Mediator.Send(query, cancellationToken);
+        return HandleResult(result);
+    }
+
+    [HttpPost("{orderId:int}/request-cancellation")]
+    public async Task<IActionResult> RequestCancellation([FromRoute] int orderId, CancellationToken cancellationToken)
+    {
+        var command = new RequestOrderCancellationCommand(GetUserId(), orderId);
+        var result = await Mediator.Send(command, cancellationToken);
+
         return HandleResult(result);
     }
 }

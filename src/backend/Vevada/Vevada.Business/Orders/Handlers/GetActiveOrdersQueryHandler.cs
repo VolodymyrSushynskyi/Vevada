@@ -34,6 +34,7 @@ public class GetActiveOrdersQueryHandler : IRequestHandler<GetActiveOrdersQuery,
                 o.Status,
                 o.Items.Sum(i => i.UnitPrice * i.Quantity),
                 o.Items.Sum(i => i.Quantity),
+                o.CancellationRequested,
                 o.Items.Select(i => new OrderItemDto(
                     i.ProductName,
                     i.Size,
