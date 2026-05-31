@@ -18,6 +18,7 @@ public class VevadaDbContext : IdentityDbContext<User, Role, int>
     public DbSet<CartItem> CartItems { get; set; }
     public DbSet<Order> Orders { get; set; }
     public DbSet<OrderItem> OrderItems { get; set; }
+    public DbSet<FavoriteItem> FavoriteItems { get; set; }
 
     public VevadaDbContext(DbContextOptions<VevadaDbContext> options) : base(options)
     {
