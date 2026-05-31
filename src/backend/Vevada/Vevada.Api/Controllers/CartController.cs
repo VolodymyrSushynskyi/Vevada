@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using Vevada.Business.Carts.Commands;
@@ -7,6 +8,7 @@ using Vevada.Business.Carts.Queries;
 
 namespace Vevada.Api.Controllers;
 
+[Authorize(Roles = "Client")]
 public class CartController : BaseApiController
 {
     public CartController(IMediator mediator) : base(mediator)
@@ -31,9 +33,9 @@ public class CartController : BaseApiController
 
     [HttpPut("{cartItemId:int}")]
     public async Task<IActionResult> UpdateItemQuantity(
-    [FromRoute] int cartItemId,
-    [FromBody] UpdateCartItemQuantityDto request,
-    CancellationToken cancellationToken)
+        [FromRoute] int cartItemId,
+        [FromBody] UpdateCartItemQuantityDto request,
+        CancellationToken cancellationToken)
     {
         var command = new UpdateCartItemQuantityCommand(
             GetUserId(),
