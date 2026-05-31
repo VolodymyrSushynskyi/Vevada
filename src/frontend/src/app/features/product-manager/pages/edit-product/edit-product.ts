@@ -74,18 +74,24 @@ export class EditProduct {
       });
   }
 
-  onFormSubmit(eventData: { formData: any; mainPhoto: File[]; gallery: File[] }) {
-    const { formData, mainPhoto, gallery } = eventData;
+  onFormSubmit(eventData: {
+    formData: any;
+    mainPhoto: File[];
+    gallery: File[];
+    retainedMainPhotoId: string | null;
+    retainedGalleryIds: string[];
+  }) {
+    const { formData, mainPhoto, gallery, retainedMainPhotoId, retainedGalleryIds } = eventData;
 
     const mainPhotoUpload$ =
       mainPhoto.length > 0
         ? this.productService.uploadImage(mainPhoto[0])
-        : of(this.existingMainImageId);
+        : of(retainedMainPhotoId);
 
     const galleryUploads$ =
       gallery.length > 0
         ? forkJoin(gallery.map((file) => this.productService.uploadImage(file)))
-        : of(this.existingGalleryImageIds);
+        : of([]);
 
     forkJoin({
       mainId: mainPhotoUpload$,
@@ -93,9 +99,10 @@ export class EditProduct {
     })
       .pipe(
         switchMap((imageResults) => {
+          const finalGalleryIds = [...retainedGalleryIds, ...imageResults.galleryIds];
+
           const command: UpdateProductCommand = {
             id: this.currentProductId,
-
             productSeriesId: formData.productLineId === 'new' ? null : formData.productLineId,
             newSeriesName: formData.productLineId === 'new' ? formData.newProductLineName : null,
             name: formData.name,
@@ -104,8 +111,8 @@ export class EditProduct {
             price: formData.price,
             status: formData.status === 'published' ? ProductStatus.Published : ProductStatus.Draft,
             availableSizes: formData.sizes,
-            mainImageId: imageResults.mainId,
-            galleryImageIds: imageResults.galleryIds,
+            mainImageId: imageResults.mainId as string,
+            galleryImageIds: finalGalleryIds,
           };
 
           return this.productService.updateProduct(this.currentProductId, command);

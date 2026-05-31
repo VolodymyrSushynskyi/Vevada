@@ -16,15 +16,12 @@
   margin-bottom: 60px;
 }
 
-/* Адаптив под мобильные устройства */
-@media (max-width: 991px) {
-  .product-layout {
-    grid-template-columns: 1fr;
-  }
+.gallery-column {
+  margin-left: 40px;
 }
 
 .error-state {
   text-align: center;
   padding: 80px 0;
-  color: #666;
+  color: var(--grey-600);
 }

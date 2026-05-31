@@ -17,11 +17,12 @@ import { ProductDetailsDto } from '../../../../core/models/catalog-product.model
 import { ProductInfo } from '../../components/product-info/product-info';
 import { SizeSelector } from '../../components/size-selector/size-selector';
 import { ToastService } from '../../../../core/services/common/toast.service';
+import { ProductGallery } from '../../components/product-gallery/product-gallery';
 
 @Component({
   selector: 'app-product-details',
   standalone: true,
-  imports: [CommonModule, MatProgressSpinnerModule, ProductInfo],
+  imports: [CommonModule, MatProgressSpinnerModule, ProductInfo, ProductGallery],
   templateUrl: './product-details.html',
   styleUrl: './product-details.css',
 })

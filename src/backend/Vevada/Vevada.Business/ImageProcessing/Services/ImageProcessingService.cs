@@ -18,8 +18,8 @@ public class ImageProcessingService : IImageProcessingService
     private const string ThumbSuffix = "-thumb.webp";
     private const string FullSuffix = "-full.webp";
 
-    private const int MaxPixelWidth = 4096;
-    private const int MaxPixelHeight = 4096;
+    private const int MaxPixelWidth = 6000;
+    private const int MaxPixelHeight = 6000;
 
     public ImageProcessingService(IOptions<ImageSettings> options, ILogger<ImageProcessingService> logger)
     {
