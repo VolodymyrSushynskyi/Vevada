@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { CatalogProductDto } from '../../models/catalog-product.models';
+import { CatalogProductDto, ProductDetailsDto } from '../../models/catalog-product.models';
 import { PagedResponse } from '../../models/common.models';
 import { environment } from '../../config/environment';
 
@@ -18,5 +18,9 @@ export class CatalogService {
       .set('pageSize', pageSize.toString());
 
     return this.http.get<PagedResponse<CatalogProductDto>>(this.apiUrl, { params });
+  }
+
+  getProductById(id: string): Observable<{ data: ProductDetailsDto }> {
+    return this.http.get<{ data: ProductDetailsDto }>(`${this.apiUrl}/${id}`);
   }
 }
