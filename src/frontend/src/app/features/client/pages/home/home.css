@@ -6,18 +6,35 @@
 }
 
 .hero-banner {
+  position: relative;
   box-sizing: border-box;
   width: 100%;
   height: 600px;
-  background-color: var(--grey-100);
   display: flex;
   align-items: center;
-  padding: 0 20px;
   margin-bottom: 64px;
+  padding: 0 80px;
+  overflow: hidden;
+
+  background-image: url('/img/hero-bg.jpg');
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
 }
 
 .hero-content {
-  max-width: 500px;
+  position: relative;
+  z-index: 2;
+  max-width: 600px;
+}
+
+.hero-gymnast-img {
+  position: absolute;
+  right: 60px;
+  bottom: -110px;
+  height: 120%;
+  z-index: 1;
+  object-fit: contain;
 }
 
 .hero-content h1 {
@@ -71,7 +88,6 @@
   padding: 10px !important;
 }
 
-/* Настраиваем расстояние между двумя стрелочками */
 ::ng-deep .mat-mdc-paginator-range-actions {
   gap: 32px;
 }
