@@ -8,10 +8,11 @@ import {
 } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { CommonModule } from '@angular/common';
-import { HttpErrorResponse } from '@angular/common/http';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { MatDialog } from '@angular/material/dialog';
 
+import { SizeSelector } from '../../components/size-selector/size-selector';
 import { CatalogGrid } from '../../components/catalog-grid/catalog-grid';
 import { CatalogService } from '../../../../core/services/client/catalog.service';
 import { CatalogProductDto } from '../../../../core/models/catalog-product.models';
@@ -30,6 +31,7 @@ export class Home implements OnInit {
   private cdr = inject(ChangeDetectorRef);
   private toastService = inject(ToastService);
   private platformId = inject(PLATFORM_ID);
+  private dialog = inject(MatDialog);
 
   products: CatalogProductDto[] = [];
   isLoading = true;
@@ -77,7 +79,17 @@ export class Home implements OnInit {
   }
 
   handleAddToCart(product: CatalogProductDto): void {
-    console.log('Товар выбран для корзины, нужно открыть сайднав с размерами:', product.name);
+    const dialogRef = this.dialog.open(SizeSelector, {
+      width: '400px',
+      data: { productId: product.id },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        console.log(`Товар ${result.productId} з розміром ${result.size} відправлено в кошик!`);
+        this.toastService.showSuccess('Товар додано до кошика!');
+      }
+    });
   }
 
   handleToggleFavorite(product: CatalogProductDto): void {

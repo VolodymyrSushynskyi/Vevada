@@ -1,0 +1,20 @@
+<div class="dialog-header">
+  <h2 mat-dialog-title class="text-h3 m-0">Оберіть розмір</h2>
+  <app-close-button color="grey" class="close-btn" (close)="close()"></app-close-button>
+</div>
+
+<mat-dialog-content class="dialog-content">
+  @if (isLoading) {
+    <div class="loader-container">
+      <mat-spinner diameter="40" class="custom-spinner"></mat-spinner>
+    </div>
+  } @else if (productDetails) {
+    <mat-chip-listbox aria-label="Вибір розміру" class="custom-chip-list">
+      @for (size of productDetails.availableSizes; track size) {
+        <mat-chip-option (click)="onSizeSelected(size)">
+          {{ size }}
+        </mat-chip-option>
+      }
+    </mat-chip-listbox>
+  }
+</mat-dialog-content>

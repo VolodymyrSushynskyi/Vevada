@@ -58,6 +58,10 @@
 
 .product-table ::ng-deep .mat-column-name {
   width: 25%;
+  max-width: 250px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .product-img {
