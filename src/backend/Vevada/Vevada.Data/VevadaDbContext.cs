@@ -15,6 +15,8 @@ public class VevadaDbContext : IdentityDbContext<User, Role, int>
     public DbSet<ProductGalleryImage> ProductGalleryImages { get; set; }
     public DbSet<AdminDetails> AdminDetails { get; set; }
 
+    public DbSet<ProductReview> ProductReviews { get; set; }
+
     public VevadaDbContext(DbContextOptions<VevadaDbContext> options) : base(options)
     {
     }
