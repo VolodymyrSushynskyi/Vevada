@@ -1,0 +1,41 @@
+<section class="product-page container">
+  @if (isLoading) {
+    <div class="loader-container">
+      <mat-spinner diameter="50"></mat-spinner>
+    </div>
+  } @else if (product) {
+    <div class="product-layout">
+      <div class="gallery-column">
+        <div
+          style="
+            background: #f5f5f5;
+            height: 500px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #888;
+          "
+        >
+          Тут буде ProductGalleryComponent
+        </div>
+      </div>
+
+      <div class="info-column">
+        <app-product-info
+          [product]="product"
+          (addToCart)="onAddToCart()"
+          (toggleFavorite)="onToggleFavorite()"
+          (openSizeGuide)="onOpenSizeGuide()"
+        >
+        </app-product-info>
+      </div>
+    </div>
+
+    <div class="reviews-section"></div>
+  } @else {
+    <div class="error-state">
+      <h2>Товар не знайдено</h2>
+    </div>
+  }
+</section>

@@ -37,6 +37,7 @@ export class IconRegistration {
         { name: 'icon-upload', path: 'icons/upload.svg' },
         { name: 'icon-plus-circle', path: 'icons/plus-circle.svg' },
         { name: 'icon-hryvnia', path: 'icons/hryvnia.svg' },
+        { name: 'icon-caret-right', path: 'icons/caret-right.svg' },
       ];
 
       icons.forEach((icon) => {

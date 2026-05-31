@@ -1,0 +1,30 @@
+.product-page {
+  padding: 40px 0;
+}
+
+.loader-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+}
+
+.product-layout {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 60px;
+  margin-bottom: 60px;
+}
+
+/* Адаптив под мобильные устройства */
+@media (max-width: 991px) {
+  .product-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.error-state {
+  text-align: center;
+  padding: 80px 0;
+  color: #666;
+}

@@ -1,0 +1,85 @@
+<div class="product-info-container">
+  <h1 class="title text-h4-semi-bold">{{ product.name }}</h1>
+  <p class="price text-subtitle-1-bold">{{ product.price }} грн</p>
+
+  @if (product.designVariations && product.designVariations.length > 0) {
+    <div class="design-variations">
+      <p class="subtitle text-body-1-light">Варіанти дизайну</p>
+
+      <div class="variations-list">
+        @for (variation of product.designVariations; track variation.id) {
+          <a
+            class="variation-item"
+            [class.active-variation]="variation.id === product.id"
+            [routerLink]="variation.id === product.id ? null : ['/product', variation.id]"
+          >
+            <img
+              [src]="variation.mainImageId | imageUrl: 'thumb'"
+              [alt]="'Варіант ' + product.name"
+            />
+          </a>
+        }
+      </div>
+    </div>
+  }
+
+  @if (product.availableSizes && product.availableSizes.length > 0) {
+    <div class="sizes-section">
+      <div class="sizes-header">
+        <p class="subtitle text-body-2-regular">Розмір:</p>
+
+        <button type="button" class="size-guide-btn" (click)="openSizeGuide.emit()">
+          <span class="text-small-regular">Довідка розмірів</span>
+          <mat-icon svgIcon="icon-caret-right"></mat-icon>
+        </button>
+      </div>
+
+      <div class="sizes-list">
+        @for (size of product.availableSizes; track size) {
+          <div class="size-chip text-small-regular">{{ size }}</div>
+        }
+      </div>
+    </div>
+  }
+
+  @if (product.shortDescription || product.fullDescription) {
+    <div class="description-block">
+      <p class="subtitle text-body-2-regular">Опис</p>
+
+      <div class="description-text">
+        <div
+          class="text-body-2-regular"
+          [innerHTML]="product.shortDescription ?? product.fullDescription"
+        ></div>
+
+        @if (isDescriptionExpanded && product.shortDescription && product.fullDescription) {
+          <div
+            class="full-description text-body-2-regular"
+            [innerHTML]="product.fullDescription"
+          ></div>
+        }
+      </div>
+
+      @if (product.shortDescription && product.fullDescription) {
+        <button
+          type="button"
+          class="toggle-description-btn text-small-regular"
+          (click)="toggleDescription()"
+        >
+          {{ isDescriptionExpanded ? 'Згорнути' : 'Більше' }}
+        </button>
+      }
+    </div>
+  }
+
+  <app-horizontal-list gap="16px" align="center" justify="center">
+    <div class="cart-btn-wrapper">
+      <app-main-button label="Додати в кошик" (btnClick)="addToCart.emit()"> </app-main-button>
+    </div>
+
+    <div class="fav-btn-wrapper">
+      <app-favorite-button [isFavorite]="isFavorite" (toggle)="toggleFavorite.emit()">
+      </app-favorite-button>
+    </div>
+  </app-horizontal-list>
+</div>
