@@ -1,7 +1,7 @@
 <section class="product-page container">
   @if (isLoading) {
-    <div class="loader-container">
-      <mat-spinner diameter="50"></mat-spinner>
+    <div class="loader-overlay">
+      <mat-spinner diameter="48"></mat-spinner>
     </div>
   } @else if (product) {
     <div class="product-layout">

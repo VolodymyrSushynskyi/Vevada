@@ -18,6 +18,7 @@ import { ProductInfo } from '../../components/product-info/product-info';
 import { SizeSelector } from '../../components/size-selector/size-selector';
 import { ToastService } from '../../../../core/services/common/toast.service';
 import { ProductGallery } from '../../components/product-gallery/product-gallery';
+import { SizeGuideDialog } from '../../components/size-guide/size-guide';
 
 @Component({
   selector: 'app-product-details',
@@ -93,6 +94,11 @@ export class ProductDetails implements OnInit {
   }
 
   onOpenSizeGuide(): void {
-    console.log('Відкриваємо модалку з розмірною сіткою');
+    this.dialog.open(SizeGuideDialog, {
+      width: '1100px',
+      maxHeight: '95vh',
+      maxWidth: '95vw',
+      autoFocus: false,
+    });
   }
 }
