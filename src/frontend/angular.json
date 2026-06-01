@@ -19,7 +19,7 @@
           "options": {
             "prerender": {
               "discoverRoutes": false,
-              "routesFile": "routes.txt"
+              "routes": ["/"]
             },
             "browser": "src/main.ts",
             "tsConfig": "tsconfig.app.json",
