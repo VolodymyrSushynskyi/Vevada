@@ -1,9 +1,15 @@
 vevada.uk {
+    # Tell Caddy to use a self-signed cert since Cloudflare handles the public one
+    tls internal
+    
     # Route traffic to the Angular Nginx container
     reverse_proxy vevada-frontend:80
 }
 
 api.vevada.uk {
+    # Tell Caddy to use a self-signed cert since Cloudflare handles the public one
+    tls internal
+    
     # Route traffic to the .NET 8 API container
     reverse_proxy vevada-api:8080
 }
