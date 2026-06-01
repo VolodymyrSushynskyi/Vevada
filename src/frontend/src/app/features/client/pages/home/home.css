@@ -1,8 +1,93 @@
-.page-container {
+.catalog-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.hero-banner {
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  height: 600px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 64px;
+  padding: 0 80px;
+  overflow: hidden;
+
+  background-image: url('/img/hero-bg.jpg');
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 600px;
+}
+
+.hero-gymnast-img {
+  position: absolute;
+  right: 60px;
+  bottom: -110px;
+  height: 120%;
+  z-index: 1;
+  object-fit: contain;
+}
+
+.hero-content h1 {
+  margin-bottom: 16px;
+  color: var(--green-200);
+}
+
+.catalog-section {
+  width: 100%;
+  max-width: 1200px;
+  padding: 0 16px;
+  margin-bottom: 80px;
+}
+
+.section-title {
+  margin-bottom: 54px;
+  color: var(--green-200);
+}
+
+.text-center {
+  text-align: center;
+}
+
+.pagination-wrapper {
   display: flex;
   justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  width: 100%;
-  background-color: var(--grey-50);
+  margin-top: 52px;
+}
+
+::ng-deep .mat-mdc-paginator-container {
+  justify-content: center !important;
+}
+
+::ng-deep .mat-mdc-paginator-range-actions {
+  gap: 16px;
+}
+
+::ng-deep .mat-mdc-paginator-range-label {
+  display: none !important;
+}
+
+::ng-deep .mat-mdc-paginator-icon {
+  width: 36px !important;
+  height: 36px !important;
+}
+
+::ng-deep .mat-mdc-paginator-navigation-previous,
+::ng-deep .mat-mdc-paginator-navigation-next {
+  width: 56px !important;
+  height: 56px !important;
+  padding: 10px !important;
+}
+
+::ng-deep .mat-mdc-paginator-range-actions {
+  gap: 32px;
 }

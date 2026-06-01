@@ -1,0 +1,18 @@
+<div class="catalog-container relative-container">
+  @if (isLoading) {
+    <div class="loader-overlay">
+      <mat-spinner diameter="50" class="custom-spinner"></mat-spinner>
+    </div>
+  }
+
+  <div class="catalog-grid">
+    @for (product of products; track product.id) {
+      <app-product-card
+        [product]="product"
+        (addToCart)="addToCart.emit($event)"
+        (toggleFavorite)="toggleFavorite.emit($event)"
+      >
+      </app-product-card>
+    }
+  </div>
+</div>
