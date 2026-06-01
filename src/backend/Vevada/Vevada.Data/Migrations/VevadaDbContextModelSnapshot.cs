@@ -194,9 +194,10 @@ namespace Vevada.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CartId");
-
                     b.HasIndex("ProductId");
+
+                    b.HasIndex("CartId", "ProductId", "Size")
+                        .IsUnique();
 
                     b.ToTable("CartItems");
                 });

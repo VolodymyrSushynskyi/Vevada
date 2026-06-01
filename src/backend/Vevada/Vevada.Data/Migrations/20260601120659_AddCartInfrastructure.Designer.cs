@@ -12,7 +12,7 @@ using Vevada.Data;
 namespace Vevada.Data.Migrations
 {
     [DbContext(typeof(VevadaDbContext))]
-    [Migration("20260530140043_AddCartInfrastructure")]
+    [Migration("20260601120659_AddCartInfrastructure")]
     partial class AddCartInfrastructure
     {
         /// <inheritdoc />
@@ -197,9 +197,10 @@ namespace Vevada.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CartId");
-
                     b.HasIndex("ProductId");
+
+                    b.HasIndex("CartId", "ProductId", "Size")
+                        .IsUnique();
 
                     b.ToTable("CartItems");
                 });

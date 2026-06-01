@@ -114,9 +114,10 @@ namespace Vevada.Data.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_CartItems_CartId",
+                name: "IX_CartItems_CartId_ProductId_Size",
                 table: "CartItems",
-                column: "CartId");
+                columns: new[] { "CartId", "ProductId", "Size" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_CartItems_ProductId",

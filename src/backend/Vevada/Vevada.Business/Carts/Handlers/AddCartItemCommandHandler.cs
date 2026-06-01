@@ -28,7 +28,7 @@ public class AddCartItemCommandHandler : IRequestHandler<AddCartItemCommand, Han
 
         if (!isProductValid)
         {
-            return HandlerResult<int>.Failure("Product not found.");
+            return HandlerResult<int>.Failure("Product not found, or it is no longer available for purchase.");
         }
 
         var cart = await _context.Carts
