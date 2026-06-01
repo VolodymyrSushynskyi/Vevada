@@ -58,6 +58,10 @@
 
 .product-table ::ng-deep .mat-column-name {
   width: 25%;
+  max-width: 250px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .product-img {
@@ -116,13 +120,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-<<<<<<< HEAD
   z-index: 10;
   border-radius: 8px;
-=======
-  z-index: 10; /* Чтобы лоадер был поверх таблицы */
-  border-radius: 8px; /* Если у твоей таблицы есть скругления */
->>>>>>> main
 }
 
 ::ng-deep .loader-overlay mat-spinner circle,

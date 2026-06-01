@@ -1,0 +1,39 @@
+:host {
+  display: block;
+  background-color: var(--white);
+  border-radius: 16px;
+}
+
+.dialog-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--grey-100);
+}
+
+.m-0 {
+  margin: 0;
+}
+
+.dialog-content {
+  padding: 24px;
+  min-height: 100px;
+}
+
+.close-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 10px;
+}
+
+.loader-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 0;
+}
+
+::ng-deep .custom-spinner circle {
+  stroke: var(--green-200) !important;
+}

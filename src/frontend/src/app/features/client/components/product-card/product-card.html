@@ -1,10 +1,14 @@
 <article class="product-card">
   <div class="image-wrapper">
-    <img [src]="product.thumbnailUrl" [alt]="product.title" class="product-image" />
+    <img
+      [src]="product.mainImageId | imageUrl: 'thumb'"
+      [alt]="product.name"
+      class="product-image"
+    />
 
     <app-favorite-button
       class="favorite-btn"
-      [isFavorite]="product.isFavorite"
+      [isFavorite]="false"
       (toggle)="onFavoriteClick($event)"
     >
     </app-favorite-button>
@@ -14,7 +18,7 @@
     <div class="text-content">
       <h3 class="product-title text-body-2-medium">
         <a [routerLink]="['/', product.id]" class="stretched-link">
-          {{ product.title }}
+          {{ product.name }}
         </a>
       </h3>
 

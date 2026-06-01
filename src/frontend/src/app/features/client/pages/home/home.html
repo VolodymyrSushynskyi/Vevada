@@ -1,1 +1,33 @@
+<section class="catalog-page">
+  <div class="hero-banner">
+    <div class="hero-content">
+      <h1 class="text-h2">Купальники для<br />художньої гімнастики</h1>
+      <p class="text-h4-semi-bold">Купальники створені з любов'ю до краси<br />та гармонії руху</p>
+    </div>
 
+    <img src="/img/gymnast.png" alt="Гімнастка у стрибку" class="hero-gymnast-img" />
+  </div>
+
+  <div class="catalog-section container">
+    <h2 class="section-title text-h2 text-center">Каталог</h2>
+
+    <app-catalog-grid
+      [products]="products"
+      [isLoading]="isLoading"
+      (addToCart)="handleAddToCart($event)"
+      (toggleFavorite)="handleToggleFavorite($event)"
+    >
+    </app-catalog-grid>
+
+    <div class="pagination-wrapper">
+      <mat-paginator
+        [length]="totalRecords"
+        [pageSize]="pageSize"
+        [pageIndex]="pageIndex"
+        [hidePageSize]="true"
+        (page)="onPageChange($event)"
+      >
+      </mat-paginator>
+    </div>
+  </div>
+</section>
