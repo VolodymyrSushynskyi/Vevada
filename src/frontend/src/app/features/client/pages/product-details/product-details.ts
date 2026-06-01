@@ -20,10 +20,12 @@ import { ToastService } from '../../../../core/services/common/toast.service';
 import { ProductGallery } from '../../components/product-gallery/product-gallery';
 import { SizeGuideDialog } from '../../components/size-guide/size-guide';
 
+import { StarRating } from '../../../../shared/components/star-rating/star-rating';
+
 @Component({
   selector: 'app-product-details',
   standalone: true,
-  imports: [CommonModule, MatProgressSpinnerModule, ProductInfo, ProductGallery],
+  imports: [CommonModule, MatProgressSpinnerModule, ProductInfo, ProductGallery, StarRating],
   templateUrl: './product-details.html',
   styleUrl: './product-details.css',
 })
