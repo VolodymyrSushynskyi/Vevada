@@ -13,5 +13,7 @@ public record ProductDetailsDto(
     List<ProductSize> AvailableSizes,
     Guid MainImageId,
     List<Guid> GalleryImageIds,
-    List<ProductVariationDto> DesignVariations
+    List<ProductVariationDto> DesignVariations,
+    double AverageRating,
+    int TotalReviews
 );

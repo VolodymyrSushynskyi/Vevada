@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Vevada.Business.Common;
 using Vevada.Business.Favorites.Commands;
 using Vevada.Data;
+using Vevada.Data.Constants;
 using Vevada.Data.Entities;
 
 namespace Vevada.Business.Favorites.Handlers;
@@ -30,7 +31,7 @@ public class ToggleFavoriteCommandHandler : IRequestHandler<ToggleFavoriteComman
         }
 
         var productExists = await _context.Products
-            .AnyAsync(p => p.Id == request.ProductId, cancellationToken);
+            .AnyAsync(p => p.Id == request.ProductId && p.Status == ProductStatus.Published, cancellationToken);
 
         if (!productExists)
         {
