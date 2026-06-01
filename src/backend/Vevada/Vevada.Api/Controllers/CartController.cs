@@ -33,9 +33,9 @@ public class CartController : BaseApiController
 
     [HttpPut("{cartItemId:int}")]
     public async Task<IActionResult> UpdateItemQuantity(
-        [FromRoute] int cartItemId,
-        [FromBody] UpdateCartItemQuantityDto request,
-        CancellationToken cancellationToken)
+    [FromRoute] int cartItemId,
+    [FromBody] UpdateCartItemQuantityDto request,
+    CancellationToken cancellationToken)
     {
         var command = new UpdateCartItemQuantityCommand(
             GetUserId(),

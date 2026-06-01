@@ -36,7 +36,7 @@ public class GetManufacturerActiveOrdersQueryHandler : IRequestHandler<GetManufa
                     i.Size,
                     i.UnitPrice,
                     i.Quantity,
-                    i.Product != null ? i.Product.MainImage.Id : null
+                    i.Product != null ? i.Product.MainImageId : null
                 )).ToList()
             ))
             .ToListAsync(cancellationToken);

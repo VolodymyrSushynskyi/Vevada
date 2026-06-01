@@ -31,7 +31,7 @@ public class GetCartQueryHandler : IRequestHandler<GetCartQuery, HandlerResult<C
                     i.Size,
                     i.Product.Price,
                     i.Quantity,
-                    i.Product.MainImage.Id,
+                    i.Product.MainImageId,
                     i.Product.Status == ProductStatus.Published && i.Product.AvailableSizes.Contains(i.Size)
                 )).ToList(),
                 c.Items

@@ -7,7 +7,7 @@ using Vevada.Business.Orders.Queries;
 
 namespace Vevada.Api.Controllers;
 
-[Authorize(Roles ="Client")]
+[Authorize(Roles = "Client")]
 public class OrdersController : BaseApiController
 {
     public OrdersController(IMediator mediator) : base(mediator)

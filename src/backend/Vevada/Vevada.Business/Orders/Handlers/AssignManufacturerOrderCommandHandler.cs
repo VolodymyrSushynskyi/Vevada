@@ -17,22 +17,16 @@ public class AssignManufacturerOrderCommandHandler : IRequestHandler<AssignManuf
 
     public async Task<HandlerResult<bool>> Handle(AssignManufacturerOrderCommand request, CancellationToken cancellationToken)
     {
-        var order = await _context.Orders
-            .FirstOrDefaultAsync(o => o.Id == request.OrderId, cancellationToken);
+        var rowsAffected = await _context.Orders
+            .Where(o => o.Id == request.OrderId && o.AssignedManufacturerId == null)
+            .ExecuteUpdateAsync(setters => setters
+                .SetProperty(o => o.AssignedManufacturerId, request.AdminId),
+                cancellationToken);
 
-        if (order == null)
+        if (rowsAffected == 0)
         {
-            return HandlerResult<bool>.Failure("Order not found.");
+            return HandlerResult<bool>.Failure("Order not found or has already been claimed by another manufacturer.");
         }
-
-        if (order.AssignedManufacturerId != null)
-        {
-            return HandlerResult<bool>.Failure("This order has already been claimed by another manufacturer.");
-        }
-
-        order.AssignedManufacturerId = request.AdminId;
-
-        await _context.SaveChangesAsync(cancellationToken);
 
         return HandlerResult<bool>.Success(true);
     }

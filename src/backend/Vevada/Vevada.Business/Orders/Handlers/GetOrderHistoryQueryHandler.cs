@@ -26,7 +26,7 @@ public class GetOrderHistoryQueryHandler : IRequestHandler<GetOrderHistoryQuery,
             .Where(o => o.UserId == request.UserId)
             .Where(o =>
                 (o.Status == OrderStatus.Completed || o.Status == OrderStatus.Cancelled) &&
-                o.CreatedAt < cutoff)
+                ((o.UpdatedAt ?? o.CreatedAt) < cutoff))
             .OrderByDescending(o => o.CreatedAt)
             .Select(o => new OrderDto(
                 o.Id,
@@ -40,7 +40,7 @@ public class GetOrderHistoryQueryHandler : IRequestHandler<GetOrderHistoryQuery,
                     i.Size,
                     i.UnitPrice,
                     i.Quantity,
-                    i.Product != null ? i.Product.MainImage.Id : null
+                    i.Product != null ? i.Product.MainImageId : null
                 )).ToList()
             ))
             .ToListAsync(cancellationToken);
