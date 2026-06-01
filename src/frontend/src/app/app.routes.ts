@@ -7,6 +7,7 @@ import { ProductManagerLayout } from './features/product-manager/components/prod
 import { SuperAdminLayout } from './features/super-admin/components/super-admin-layout/super-admin-layout';
 import { Products } from './features/product-manager/pages/products/products';
 import { EditProduct } from './features/product-manager/pages/edit-product/edit-product';
+import { AddProduct } from './features/product-manager/pages/add-product/add-product';
 import { AddUsers } from './features/super-admin/pages/add-users/add-users';
 
 export const routes: Routes = [
@@ -19,8 +20,10 @@ export const routes: Routes = [
     path: 'product-manager',
     component: ProductManagerLayout,
     children: [
+      { path: '', redirectTo: 'products', pathMatch: 'full' },
       { path: 'products', component: Products },
-      { path: 'edit', component: EditProduct },
+      { path: 'edit-products/:id', component: EditProduct },
+      { path: 'add-products', component: AddProduct },
     ],
   },
   {

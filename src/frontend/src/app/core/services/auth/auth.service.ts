@@ -28,6 +28,15 @@ export class AuthService {
     return this.http.post<void>(`${this.API_URL}/logout`, {});
   }
 
+  refreshToken(refreshToken: string) {
+    const accessToken = localStorage.getItem('access_token');
+
+    return this.http.post<AuthResponse>(`${this.API_URL}/refresh-token`, {
+      accessToken: accessToken,
+      refreshToken: refreshToken,
+    });
+  }
+
   checkAuthStatus(): Observable<string> {
     return this.http.get(this.API_URL, { responseType: 'text' });
   }

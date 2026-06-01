@@ -1,20 +1,41 @@
 <div class="page-header">
   <h1 class="page-title text-h4-bold">Товари</h1>
-  <app-main-button label="Додати товар" variant="primary"></app-main-button>
+  <app-main-button
+    label="Додати товар"
+    variant="primary"
+    (click)="navigateToAdd()"
+  ></app-main-button>
 </div>
 
-<mat-tab-group class="custom-tabs" animationDuration="0ms">
-  <mat-tab class="text-body-1-regular" label="Всі (49)"></mat-tab>
-  <mat-tab class="text-body-1-regular" label="Опубліковані (30)"></mat-tab>
-  <mat-tab class="text-body-1-regular" label="Чернетки (6)"></mat-tab>
+<mat-tab-group
+  class="custom-tabs"
+  animationDuration="0ms"
+  (selectedTabChange)="onTabChange($event)"
+>
+  <mat-tab class="text-body-1-regular" [label]="'Всі (' + counts.total + ')'"></mat-tab>
+  <mat-tab
+    class="text-body-1-regular"
+    [label]="'Опубліковані (' + counts.published + ')'"
+  ></mat-tab>
+  <mat-tab class="text-body-1-regular" [label]="'Чернетки (' + counts.drafts + ')'"></mat-tab>
 </mat-tab-group>
 
 <div class="table-container">
+  @if (isLoading) {
+    <div class="loader-overlay">
+      <mat-spinner diameter="48"></mat-spinner>
+    </div>
+  }
+
   <table mat-table [dataSource]="dataSource" class="product-table">
     <ng-container matColumnDef="photo">
       <th mat-header-cell *matHeaderCellDef class="text-small-medium">Фото</th>
       <td mat-cell *matCellDef="let element">
-        <img [src]="element.photoUrl" class="product-img" alt="Фото товару" />
+        <img
+          [src]="element.mainImageId | imageUrl: 'thumb'"
+          class="product-img"
+          alt="Фото товару"
+        />
       </td>
     </ng-container>
 
@@ -28,7 +49,9 @@
     <ng-container matColumnDef="status">
       <th mat-header-cell *matHeaderCellDef class="text-small-medium">Статус</th>
       <td mat-cell *matCellDef="let element">
-        <app-status-chip [status]="element.status"></app-status-chip>
+        <app-status-chip
+          [status]="element.status === ProductStatus.Published ? 'published' : 'draft'"
+        ></app-status-chip>
       </td>
     </ng-container>
 
@@ -36,9 +59,11 @@
       <th mat-header-cell *matHeaderCellDef class="text-small-medium">Останнє змінено</th>
       <td mat-cell *matCellDef="let element" class="date-cell">
         <span class="date-status text-small-regular">
-          {{ element.status === 'published' ? 'Опубліковано' : 'Остання зміна' }} </span
+          {{ element.status === ProductStatus.Published ? 'Опубліковано' : 'Остання зміна' }} </span
         ><br />
-        <span class="date-time text-small-regular">{{ element.date }}</span>
+        <span class="date-time text-small-regular">
+          {{ element.lastModified | date: 'dd.MM.yyyy о HH:mm' }}
+        </span>
       </td>
     </ng-container>
 
@@ -46,15 +71,30 @@
       <th mat-header-cell *matHeaderCellDef class="text-small-medium">Дії</th>
       <td mat-cell *matCellDef="let element">
         <div class="action-buttons">
-          <app-pencil-button></app-pencil-button>
-          <app-trash-button></app-trash-button>
+          <app-pencil-button (click)="navigateToEdit(element.id)"></app-pencil-button>
+          <app-trash-button (click)="deleteProduct(element.id)"></app-trash-button>
         </div>
       </td>
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+    <tr class="mat-row" *matNoDataRow>
+      <td class="mat-cell empty-table-cell" [attr.colspan]="displayedColumns.length">
+        <div class="empty-state-content">
+          <span class="text-body-1-regular">Немає товарів</span>
+        </div>
+      </td>
+    </tr>
   </table>
 
-  <mat-paginator [length]="49" [pageSize]="10" hidePageSize="true"></mat-paginator>
+  <mat-paginator
+    [length]="totalCount"
+    [pageSize]="pageSize"
+    [pageIndex]="pageIndex"
+    hidePageSize="true"
+    (page)="onPageChange($event)"
+  >
+  </mat-paginator>
 </div>

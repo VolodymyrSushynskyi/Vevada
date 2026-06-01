@@ -1,0 +1,15 @@
+<h2 mat-dialog-title>{{ data.title }}</h2>
+
+<mat-dialog-content>
+  <p class="text-body-1-regular" style="margin-top: 10px">
+    {{ data.message }}
+  </p>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end" class="custom-actions">
+  <app-sub-button [label]="data.cancelText || 'Скасувати'" (btnClick)="onCancel()">
+  </app-sub-button>
+
+  <app-main-button [label]="data.confirmText || 'Підтвердити'" (btnClick)="onConfirm()">
+  </app-main-button>
+</mat-dialog-actions>
