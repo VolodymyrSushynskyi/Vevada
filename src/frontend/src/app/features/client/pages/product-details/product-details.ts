@@ -19,13 +19,12 @@ import { SizeSelector } from '../../components/size-selector/size-selector';
 import { ToastService } from '../../../../core/services/common/toast.service';
 import { ProductGallery } from '../../components/product-gallery/product-gallery';
 import { SizeGuideDialog } from '../../components/size-guide/size-guide';
-
-import { StarRating } from '../../../../shared/components/star-rating/star-rating';
+import { ProductReviews } from '../../components/product-reviews/product-reviews';
 
 @Component({
   selector: 'app-product-details',
   standalone: true,
-  imports: [CommonModule, MatProgressSpinnerModule, ProductInfo, ProductGallery, StarRating],
+  imports: [CommonModule, MatProgressSpinnerModule, ProductInfo, ProductGallery, ProductReviews],
   templateUrl: './product-details.html',
   styleUrl: './product-details.css',
 })

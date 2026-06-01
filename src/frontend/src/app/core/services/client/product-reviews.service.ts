@@ -15,7 +15,7 @@ export class ProductRewiewsService {
   getReviews(
     productId: string,
     page: number = 1,
-    pageSize: number = 10,
+    pageSize: number = 3,
   ): Observable<PagedResponse<ProductReviewDto>> {
     const params = new HttpParams()
       .set('page', page.toString())
