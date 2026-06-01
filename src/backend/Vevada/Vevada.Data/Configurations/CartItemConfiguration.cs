@@ -10,6 +10,9 @@ public class CartItemConfiguration : IEntityTypeConfiguration<CartItem>
     {
         builder.HasKey(x => x.Id);
 
+        builder.HasIndex(x => new { x.CartId, x.ProductId, x.Size })
+            .IsUnique();
+
         builder.Property(x => x.Quantity)
             .IsRequired()
             .HasDefaultValue(1);
