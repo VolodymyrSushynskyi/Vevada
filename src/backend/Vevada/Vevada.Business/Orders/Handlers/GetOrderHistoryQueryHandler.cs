@@ -23,6 +23,7 @@ public class GetOrderHistoryQueryHandler : IRequestHandler<GetOrderHistoryQuery,
 
         var orders = await _context.Orders
             .AsNoTracking()
+            .Where(o => o.UserId == request.UserId)
             .Where(o =>
                 (o.Status == OrderStatus.Completed || o.Status == OrderStatus.Cancelled) &&
                 ((o.UpdatedAt ?? o.CreatedAt) < cutoff))
@@ -39,7 +40,7 @@ public class GetOrderHistoryQueryHandler : IRequestHandler<GetOrderHistoryQuery,
                     i.Size,
                     i.UnitPrice,
                     i.Quantity,
-                    i.Product != null ? i.Product.MainImage.Id : null
+                    i.Product != null ? i.Product.MainImageId : null
                 )).ToList()
             ))
             .ToListAsync(cancellationToken);
