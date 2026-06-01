@@ -21,6 +21,8 @@ export class LoginForm {
   private sessionService = inject(SessionService);
   private router = inject(Router);
 
+  isSubmitting = false;
+
   loginForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [Validators.required]),
@@ -28,6 +30,8 @@ export class LoginForm {
 
   onSubmit() {
     if (this.loginForm.valid) {
+      this.isSubmitting = true;
+
       const credentials = {
         email: this.loginForm.value.email!,
         password: this.loginForm.value.password!,
@@ -35,10 +39,12 @@ export class LoginForm {
 
       this.authService.login(credentials).subscribe({
         next: (response) => {
+          this.isSubmitting = false;
           this.sessionService.startSession(response);
           this.router.navigate(['/']);
         },
         error: (err) => {
+          this.isSubmitting = false;
           this.toastService.showError(err.error?.message || 'Виникла помилка при вході');
         },
       });

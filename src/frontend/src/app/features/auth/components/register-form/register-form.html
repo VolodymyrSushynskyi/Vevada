@@ -44,7 +44,12 @@
       ></app-ui-input>
 
       <div class="action-btn">
-        <app-main-button type="submit" label="Зареєструватися"></app-main-button>
+        <app-main-button
+          type="submit"
+          label="Зареєструватися"
+          [disabled]="registerForm.invalid || isSubmitting"
+        >
+        </app-main-button>
       </div>
     </div>
   </form>

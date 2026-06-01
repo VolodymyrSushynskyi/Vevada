@@ -11,17 +11,10 @@
     <a mat-list-item routerLink="/product-manager/products" routerLinkActive="active-link">
       <span class="nav-text text-body-1-regular">Товари</span>
     </a>
-
-    <a mat-list-item routerLink="/admin/login" routerLinkActive="active-link">
-      <span class="nav-text text-body-1-regular">Допомога</span>
-    </a>
-
-    <a mat-list-item routerLink="/admin/login" routerLinkActive="active-link">
-      <span class="nav-text text-body-1-regular">Індивідуальні замовлення</span>
-    </a>
   </mat-nav-list>
 
   <div class="logout-section">
-    <app-sub-button label="Вихід" icon="icon-sign-out" iconPosition="left"></app-sub-button>
+    <app-sub-button label="Вихід" icon="icon-sign-out" iconPosition="left" (btnClick)="onLogout()">
+    </app-sub-button>
   </div>
 </aside>

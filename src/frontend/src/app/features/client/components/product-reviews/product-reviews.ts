@@ -4,6 +4,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { RouterModule } from '@angular/router';
 
 import { StarRating } from '../../../../shared/components/star-rating/star-rating';
 import { MainButton } from '../../../../shared/components/main-button/main-button';
@@ -13,12 +14,14 @@ import { ToastService } from '../../../../core/services/common/toast.service';
 
 import { ProductRewiewsService } from '../../../../core/services/client/product-reviews.service';
 import { ProductReviewDto } from '../../../../core/models/product-reviews.models';
+import { SessionService } from '../../../../core/services/auth/session.service';
 
 @Component({
   selector: 'app-product-reviews',
   standalone: true,
   imports: [
     CommonModule,
+    RouterModule,
     MatDividerModule,
     MatDialogModule,
     MatProgressSpinnerModule,
@@ -37,6 +40,9 @@ export class ProductReviews implements OnInit {
   private destroyRef = inject(DestroyRef);
   private cdr = inject(ChangeDetectorRef);
   private toastService = inject(ToastService);
+  private sessionService = inject(SessionService);
+
+  isUserAuthenticated = false;
 
   currentPage = 1;
   pageSize = 3;
@@ -46,6 +52,8 @@ export class ProductReviews implements OnInit {
   isLoading = true;
 
   ngOnInit(): void {
+    this.isUserAuthenticated = this.sessionService.isAuthenticated();
+
     if (this.productId) {
       this.loadReviews();
     }

@@ -24,8 +24,12 @@ export class AddProduct {
   private destroyRef = inject(DestroyRef);
   private dialog = inject(MatDialog);
 
+  isSubmitting = false;
+
   onFormSubmit(eventData: { formData: any; mainPhoto: File[]; gallery: File[] }) {
     const { formData, mainPhoto, gallery } = eventData;
+
+    this.isSubmitting = true;
 
     this.productService
       .uploadImage(mainPhoto[0])
@@ -63,10 +67,12 @@ export class AddProduct {
       )
       .subscribe({
         next: (resultId) => {
+          this.isSubmitting = false;
           this.toastService.showSuccess('Товар успішно додано');
           this.router.navigate(['/product-manager/products']);
         },
         error: (err) => {
+          this.isSubmitting = false;
           this.toastService.showError('Помилка при створенні товару');
         },
       });

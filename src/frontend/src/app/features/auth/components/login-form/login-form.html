@@ -12,7 +12,8 @@
     ></app-ui-input>
 
     <div class="action-btn">
-      <app-main-button label="Увійти" type="submit"></app-main-button>
+      <app-main-button label="Увійти" type="submit" [disabled]="loginForm.invalid || isSubmitting">
+      </app-main-button>
     </div>
   </form>
 </div>

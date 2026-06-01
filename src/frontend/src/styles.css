@@ -1,6 +1,10 @@
 @import 'app/theme/palette.css';
 @import 'app/theme/typography.css';
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   font-family: 'Inter', sans-serif;
   margin: 0;

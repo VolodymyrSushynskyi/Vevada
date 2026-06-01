@@ -32,6 +32,8 @@ export class EditProduct {
   private existingMainImageId!: string;
   private existingGalleryImageIds: string[] = [];
 
+  isSubmitting = false;
+
   ngOnInit() {
     this.currentProductId = this.route.snapshot.paramMap.get('id') || '';
 
@@ -83,6 +85,8 @@ export class EditProduct {
   }) {
     const { formData, mainPhoto, gallery, retainedMainPhotoId, retainedGalleryIds } = eventData;
 
+    this.isSubmitting = true;
+
     const mainPhotoUpload$ =
       mainPhoto.length > 0
         ? this.productService.uploadImage(mainPhoto[0])
@@ -121,10 +125,12 @@ export class EditProduct {
       )
       .subscribe({
         next: () => {
+          this.isSubmitting = false;
           this.toastService.showSuccess('Товар успішно оновлено!');
           this.router.navigate(['/product-manager/products']);
         },
         error: (err) => {
+          this.isSubmitting = false;
           this.toastService.showError('Помилка при оновленні товару');
           console.error(err);
         },

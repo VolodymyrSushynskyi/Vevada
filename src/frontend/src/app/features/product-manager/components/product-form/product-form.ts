@@ -68,8 +68,8 @@ export class ProductForm {
   productSeries: any[] = [];
 
   @Input() pageTitle: string = 'Додати товар';
-
   @Input() initialData: any = null;
+  @Input() isSubmitting: boolean = false;
 
   @Output() formSubmit = new EventEmitter<{
     formData: any;
