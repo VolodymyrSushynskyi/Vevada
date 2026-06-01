@@ -21,9 +21,9 @@ import { ProductService } from '../../../../core/services/product-manager/produc
 import { ToastService } from '../../../../core/services/common/toast.service';
 import {
   AdminProductListItemDto,
-  ProductStatus,
   ProductTabCountsDto,
-} from '../../../../core/models/base/product.models';
+} from '../../../../core/models/product.models';
+import { ProductStatus } from '../../../../core/constants/product-status';
 
 @Component({
   selector: 'app-products',

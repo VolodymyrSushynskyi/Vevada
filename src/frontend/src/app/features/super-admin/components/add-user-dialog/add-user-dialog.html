@@ -60,9 +60,9 @@
       <mat-form-field appearance="outline">
         <mat-label>Роль</mat-label>
         <mat-select formControlName="role" class="text-body-1-regular">
-          <mat-option value="manufacturer">Виробник</mat-option>
-          <mat-option value="product-manager">Продукт менеджер</mat-option>
-          <mat-option value="analyst">Аналітик</mat-option>
+          <mat-option [value]="roles.Manufacturer">Виробник</mat-option>
+          <mat-option [value]="roles.ProductManager">Продукт менеджер</mat-option>
+          <mat-option [value]="roles.Analyst">Аналітик</mat-option>
         </mat-select>
         <mat-error class="text-body-2-regular">{{ getErrorMessage('role') }}</mat-error>
       </mat-form-field>

@@ -1,21 +1,6 @@
-export enum ProductStatus {
-  Draft = 0,
-  Published = 1,
-}
-
-export enum ProductSize {
-  Size98 = 98,
-  Size110 = 110,
-  Size116 = 116,
-  Size122 = 122,
-  Size128 = 128,
-  Size134 = 134,
-  Size140 = 140,
-  Size146 = 146,
-  Size152 = 152,
-  Size160 = 160,
-  Size168 = 168,
-}
+import { PagedResponse } from './common.models';
+import { ProductStatus } from '../constants/product-status';
+import { ProductSize } from '../constants/product-size';
 
 export interface ProductSeriesDto {
   id: string;
@@ -26,13 +11,6 @@ export interface ProductTabCountsDto {
   total: number;
   published: number;
   drafts: number;
-}
-
-export interface PagedResponse<T> {
-  items: T[];
-  totalCount: number;
-  page: number;
-  pageSize: number;
 }
 
 export interface AdminProductListItemDto {

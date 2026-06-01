@@ -17,6 +17,7 @@ import {
   VALIDATION_MESSAGES,
   VALIDATION_PRIORITY,
 } from '../../../../core/constants/validation-messages';
+import { AppRoles } from '../../../../core/constants/roles';
 
 @Component({
   selector: 'app-add-user-dialog',
@@ -39,6 +40,7 @@ import {
 export class AddUserDialog {
   private dialogRef = inject(MatDialogRef<AddUserDialog>);
   private toastService = inject(ToastService);
+  readonly roles = AppRoles;
 
   hidePassword = true;
   hideConfirmPassword = true;
@@ -50,7 +52,7 @@ export class AddUserDialog {
       email: new FormControl('', RegisterClientRules.email),
       password: new FormControl('', RegisterClientRules.password),
       confirmPassword: new FormControl('', RegisterClientRules.password),
-      role: new FormControl('analyst', [Validators.required]),
+      role: new FormControl(this.roles.Analyst, [Validators.required]),
     },
     { validators: passwordMatchValidator },
   );
