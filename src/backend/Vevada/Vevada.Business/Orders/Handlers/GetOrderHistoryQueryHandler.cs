@@ -23,10 +23,9 @@ public class GetOrderHistoryQueryHandler : IRequestHandler<GetOrderHistoryQuery,
 
         var orders = await _context.Orders
             .AsNoTracking()
-            .Where(o => o.UserId == request.UserId)
             .Where(o =>
                 (o.Status == OrderStatus.Completed || o.Status == OrderStatus.Cancelled) &&
-                o.CreatedAt < cutoff)
+                ((o.UpdatedAt ?? o.CreatedAt) < cutoff))
             .OrderByDescending(o => o.CreatedAt)
             .Select(o => new OrderDto(
                 o.Id,
