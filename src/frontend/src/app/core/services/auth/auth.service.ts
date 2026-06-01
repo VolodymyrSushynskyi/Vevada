@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { LoginRequest, RegisterRequest, AuthResponse } from '../../models/base/auth.models';
+import { LoginRequest, RegisterRequest, AuthResponse } from '../../models/auth.models';
 import { environment } from '../../config/environment';
 
 @Injectable({

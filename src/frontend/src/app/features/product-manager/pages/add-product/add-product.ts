@@ -5,7 +5,8 @@ import { forkJoin, of, switchMap } from 'rxjs';
 import { ProductForm } from '../../components/product-form/product-form';
 import { ProductService } from '../../../../core/services/product-manager/product.service';
 import { ToastService } from '../../../../core/services/common/toast.service';
-import { CreateProductCommand, ProductStatus } from '../../../../core/models/base/product.models';
+import { CreateProductCommand } from '../../../../core/models/product.models';
+import { ProductStatus } from '../../../../core/constants/product-status';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialog } from '../../../../shared/components/confirm-dialog/confirm-dialog';
 

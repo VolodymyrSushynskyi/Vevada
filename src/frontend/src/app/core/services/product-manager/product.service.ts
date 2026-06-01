@@ -7,8 +7,8 @@ import {
   ProductSeriesDto,
   CreateProductCommand,
   UpdateProductCommand,
-  ProductStatus,
-} from '../../models/base/product.models';
+} from '../../models/product.models';
+import { ProductStatus } from '../../constants/product-status';
 import { environment } from '../../config/environment';
 
 @Injectable({
