@@ -14,6 +14,10 @@ public class VevadaDbContext : IdentityDbContext<User, Role, int>
     public DbSet<ProductSeries> ProductSeries { get; set; }
     public DbSet<ProductGalleryImage> ProductGalleryImages { get; set; }
     public DbSet<AdminDetails> AdminDetails { get; set; }
+    public DbSet<Cart> Carts { get; set; }
+    public DbSet<CartItem> CartItems { get; set; }
+    public DbSet<Order> Orders { get; set; }
+    public DbSet<OrderItem> OrderItems { get; set; }
 
     public VevadaDbContext(DbContextOptions<VevadaDbContext> options) : base(options)
     {
