@@ -22,7 +22,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ProductReviews\Queries\" />
     <Folder Include="Products\Constants\" />
     <Folder Include="Products\Models\" />
   </ItemGroup>
