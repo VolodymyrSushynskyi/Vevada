@@ -49,6 +49,7 @@ export class ImageUploader {
   }
 
   @Output() imagesChanged = new EventEmitter<File[]>();
+  @Output() existingImagesChanged = new EventEmitter<string[]>();
 
   onFileSelected(event: Event) {
     const input = event.target as HTMLInputElement;
@@ -91,7 +92,9 @@ export class ImageUploader {
     const onlyNewFiles = this.previews
       .filter((p) => p.file !== undefined)
       .map((p) => p.file as File);
-
     this.imagesChanged.emit(onlyNewFiles);
+
+    const retainedUrls = this.previews.filter((p) => p.file === undefined).map((p) => p.url);
+    this.existingImagesChanged.emit(retainedUrls);
   }
 }

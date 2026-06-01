@@ -1,0 +1,56 @@
+.dialog-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 32px 24px 0px 24px;
+}
+
+.dialog-header h2 {
+  margin: 0;
+  color: var(--grey-700);
+}
+
+.close-btn {
+  position: absolute;
+  right: 32px;
+  top: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.size-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 8px;
+  min-width: 600px;
+}
+
+.size-table th,
+.size-table td {
+  padding: 12px 4px;
+  text-align: center;
+  vertical-align: middle;
+  border: none;
+  border-radius: 2px;
+}
+
+.size-table thead th,
+.size-table tbody th {
+  background-color: var(--green-100);
+  color: var(--white);
+  font-weight: 500;
+}
+.size-table tbody td {
+  background-color: var(--grey-50);
+  color: var(--grey-700);
+}
+
+.size-table tbody tr:hover td {
+  background-color: var(--grey-100);
+}

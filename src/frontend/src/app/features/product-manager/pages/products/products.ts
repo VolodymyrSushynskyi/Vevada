@@ -1,7 +1,6 @@
 import { Component, inject, DestroyRef, PLATFORM_ID, ChangeDetectorRef } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Router } from '@angular/router';
 import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule, MatTabChangeEvent } from '@angular/material/tabs';

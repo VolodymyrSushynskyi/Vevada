@@ -1,0 +1,58 @@
+<div class="reviews-container">
+  <div class="reviews-header">
+    <h3 class="text-h4-bold">Відгуки про товар</h3>
+
+    @if (!isLoading && reviews.length > 0) {
+      <div class="overall-rating">
+        <app-star-rating [rating]="averageRating" size="32px"></app-star-rating>
+        <span class="rating-score text-h4-bold">{{ averageRating | number: '1.1-1' }}</span>
+        <span class="rating-count text-body-2-regular">({{ totalReviews }} відгуків)</span>
+      </div>
+    }
+  </div>
+
+  @if (isLoading) {
+    <div class="loader-overlay">
+      <mat-spinner diameter="48"></mat-spinner>
+    </div>
+  } @else {
+    <div class="reviews-list">
+      @if (reviews.length === 0) {
+        <p class="empty-reviews-text text-body-1-regular">
+          Ще немає відгуків. Станьте першим, хто оцінить цей товар!
+        </p>
+      }
+
+      @for (review of reviews; track review.id) {
+        <div class="review-item">
+          <div class="review-meta">
+            <app-star-rating [rating]="review.rating" size="24px"></app-star-rating>
+            <span class="review-date text-small-regular">{{
+              review.createdAt | date: 'dd.MM.yyyy'
+            }}</span>
+          </div>
+
+          <div class="review-content">
+            <h4 class="reviewer-name text-body-1-regular">{{ review.customerName }}</h4>
+            @if (review.comment) {
+              <p class="review-text text-body-2-regular">{{ review.comment }}</p>
+            }
+          </div>
+        </div>
+        <mat-divider></mat-divider>
+      }
+    </div>
+  }
+
+  <div class="reviews-actions">
+    @if (totalReviews > 3 && reviews.length < totalReviews) {
+      <app-sub-button
+        label="Інші відгуки"
+        icon="icon-plus-circle"
+        iconPosition="right"
+        (btnClick)="loadMoreReviews()"
+      ></app-sub-button>
+    }
+    <app-main-button label="Залишити відгук" (btnClick)="openAddReviewModal()"></app-main-button>
+  </div>
+</div>

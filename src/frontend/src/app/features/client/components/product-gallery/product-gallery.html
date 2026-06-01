@@ -1,0 +1,26 @@
+<div class="gallery-container">
+  <div class="thumbnails-column">
+    @for (imgId of allImages; track imgId) {
+      <button
+        type="button"
+        class="thumbnail-btn"
+        [class.active]="imgId === activeImageId"
+        (click)="setActiveImage(imgId)"
+      >
+        <img [src]="imgId | imageUrl: 'thumb'" alt="Мініатюра купальника" />
+      </button>
+    }
+  </div>
+
+  <div class="main-image-column">
+    @if (allImages.length > 1) {
+      <button class="nav-btn prev-btn" (click)="prevImage()">❮</button>
+    }
+
+    <img [src]="activeImageId | imageUrl: 'full'" alt="Купальник" class="main-image" />
+
+    @if (allImages.length > 1) {
+      <button class="nav-btn next-btn" (click)="nextImage()">❯</button>
+    }
+  </div>
+</div>

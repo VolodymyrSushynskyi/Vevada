@@ -149,14 +149,9 @@
           [multiple]="false"
           [existingImages]="mainPhotoPreview"
           (imagesChanged)="onMainPhotoChanged($event)"
+          (existingImagesChanged)="onExistingMainPhotoChanged($event)"
         >
         </app-image-uploader>
-
-        @if (form.get('mainPhoto')?.invalid) {
-          <div class="custom-error-text text-body-2-regular">
-            {{ getErrorMessage('mainPhoto') }}
-          </div>
-        }
       </app-ui-card>
 
       <app-ui-card title="Галерея товару">
@@ -164,6 +159,7 @@
           [multiple]="true"
           [existingImages]="galleryPhotosPreviews"
           (imagesChanged)="onGalleryChanged($event)"
+          (existingImagesChanged)="onExistingGalleryChanged($event)"
         >
         </app-image-uploader>
       </app-ui-card>
