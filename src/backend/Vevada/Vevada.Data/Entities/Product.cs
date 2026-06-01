@@ -22,6 +22,7 @@ public class Product : IAuditableEntity
     public ImageAsset MainImage { get; set; } = null!;
 
     public ICollection<ProductGalleryImage> GalleryImages { get; set; } = new List<ProductGalleryImage>();
+    public ICollection<ProductReview> Reviews { get; set; } = new List<ProductReview>();
 
     public DateTimeOffset CreatedAt { get; set; }
     public DateTimeOffset? UpdatedAt { get; set; }

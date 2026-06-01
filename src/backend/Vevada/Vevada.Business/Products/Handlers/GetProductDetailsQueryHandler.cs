@@ -33,14 +33,15 @@ public class GetProductDetailsQueryHandler : IRequestHandler<GetProductDetailsQu
                 p.AvailableSizes,
                 p.MainImageId,
                 p.GalleryImages.OrderBy(g => g.ImageAssetId).Select(g => g.ImageAssetId).ToList(),
-
                 p.ProductSeries.Products
                     .Where(sibling => sibling.Status == ProductStatus.Published)
                     .Select(sibling => new ProductVariationDto(
                         sibling.Id,
                         sibling.MainImageId
                     ))
-                    .ToList()
+                    .ToList(),
+                p.Reviews.Any() ? Math.Round(p.Reviews.Average(r => (double)r.Rating), 1) : 0,
+                p.Reviews.Count()
             ))
             .FirstOrDefaultAsync(cancellationToken);
 

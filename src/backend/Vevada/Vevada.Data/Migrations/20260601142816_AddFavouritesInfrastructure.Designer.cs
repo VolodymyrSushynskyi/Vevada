@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Vevada.Data;
@@ -11,9 +12,11 @@ using Vevada.Data;
 namespace Vevada.Data.Migrations
 {
     [DbContext(typeof(VevadaDbContext))]
-    partial class VevadaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260601142816_AddFavouritesInfrastructure")]
+    partial class AddFavouritesInfrastructure
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -418,46 +421,6 @@ namespace Vevada.Data.Migrations
                     b.ToTable("ProductGalleryImages");
                 });
 
-            modelBuilder.Entity("Vevada.Data.Entities.ProductReview", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Comment")
-                        .HasMaxLength(1000)
-                        .HasColumnType("character varying(1000)");
-
-                    b.Property<DateTimeOffset>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid>("ProductId")
-                        .HasColumnType("uuid");
-
-                    b.Property<int>("Rating")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTimeOffset?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.HasIndex("ProductId", "UserId")
-                        .IsUnique();
-
-                    b.ToTable("ProductReviews", t =>
-                        {
-                            t.HasCheckConstraint("CK_ProductReview_Rating", "\"Rating\" >= 1 AND \"Rating\" <= 5");
-                        });
-                });
-
             modelBuilder.Entity("Vevada.Data.Entities.ProductSeries", b =>
                 {
                     b.Property<Guid>("Id")
@@ -788,25 +751,6 @@ namespace Vevada.Data.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("Vevada.Data.Entities.ProductReview", b =>
-                {
-                    b.HasOne("Vevada.Data.Entities.Product", "Product")
-                        .WithMany("Reviews")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Vevada.Data.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Product");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("Vevada.Data.Entities.Cart", b =>
                 {
                     b.Navigation("Items");
@@ -820,8 +764,6 @@ namespace Vevada.Data.Migrations
             modelBuilder.Entity("Vevada.Data.Entities.Product", b =>
                 {
                     b.Navigation("GalleryImages");
-
-                    b.Navigation("Reviews");
                 });
 
             modelBuilder.Entity("Vevada.Data.Entities.ProductSeries", b =>
