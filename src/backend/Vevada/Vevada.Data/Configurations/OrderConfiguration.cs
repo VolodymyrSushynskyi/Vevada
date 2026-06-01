@@ -10,6 +10,10 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
     {
         builder.HasKey(x => x.Id);
 
+        builder.Property(x => x.CancellationRequested)
+            .IsRequired()
+            .HasDefaultValue(false);
+
         builder.HasOne(x => x.User)
             .WithMany()
             .HasForeignKey(x => x.UserId)
@@ -19,5 +23,10 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
             .WithOne(x => x.Order)
             .HasForeignKey(x => x.OrderId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasOne(x => x.AssignedManufacturer)
+            .WithMany()
+            .HasForeignKey(x => x.AssignedManufacturerId)
+            .OnDelete(DeleteBehavior.SetNull);
     }
 }
