@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Vevada.Data;
@@ -11,9 +12,11 @@ using Vevada.Data;
 namespace Vevada.Data.Migrations
 {
     [DbContext(typeof(VevadaDbContext))]
-    partial class VevadaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260601124123_AddOrderAssignment")]
+    partial class AddOrderAssignment
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -142,7 +145,7 @@ namespace Vevada.Data.Migrations
 
                     b.HasKey("UserId");
 
-                    b.ToTable("AdminDetails", (string)null);
+                    b.ToTable("AdminDetails");
                 });
 
             modelBuilder.Entity("Vevada.Data.Entities.Cart", b =>
@@ -224,28 +227,7 @@ namespace Vevada.Data.Migrations
 
                     b.HasKey("UserId");
 
-                    b.ToTable("ClientDetails", (string)null);
-                });
-
-            modelBuilder.Entity("Vevada.Data.Entities.FavoriteItem", b =>
-                {
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer");
-
-                    b.Property<Guid>("ProductId")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTimeOffset>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTimeOffset?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.HasKey("UserId", "ProductId");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("FavoriteItems");
+                    b.ToTable("ClientDetails");
                 });
 
             modelBuilder.Entity("Vevada.Data.Entities.ImageAsset", b =>
@@ -276,7 +258,7 @@ namespace Vevada.Data.Migrations
                     b.HasIndex("Hash")
                         .IsUnique();
 
-                    b.ToTable("ImageAssets", (string)null);
+                    b.ToTable("ImageAssets");
                 });
 
             modelBuilder.Entity("Vevada.Data.Entities.Order", b =>
@@ -400,7 +382,7 @@ namespace Vevada.Data.Migrations
 
                     b.HasIndex("ProductSeriesId");
 
-                    b.ToTable("Products", (string)null);
+                    b.ToTable("Products");
                 });
 
             modelBuilder.Entity("Vevada.Data.Entities.ProductGalleryImage", b =>
@@ -415,7 +397,7 @@ namespace Vevada.Data.Migrations
 
                     b.HasIndex("ImageAssetId");
 
-                    b.ToTable("ProductGalleryImages", (string)null);
+                    b.ToTable("ProductGalleryImages");
                 });
 
             modelBuilder.Entity("Vevada.Data.Entities.ProductSeries", b =>
@@ -437,7 +419,7 @@ namespace Vevada.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ProductSeries", (string)null);
+                    b.ToTable("ProductSeries");
                 });
 
             modelBuilder.Entity("Vevada.Data.Entities.Role", b =>
@@ -651,25 +633,6 @@ namespace Vevada.Data.Migrations
                         .HasForeignKey("Vevada.Data.Entities.ClientDetails", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Vevada.Data.Entities.FavoriteItem", b =>
-                {
-                    b.HasOne("Vevada.Data.Entities.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Vevada.Data.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Product");
 
                     b.Navigation("User");
                 });

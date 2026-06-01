@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="ProductReviews\**" />
+    <EmbeddedResource Remove="ProductReviews\**" />
+    <None Remove="ProductReviews\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="16.0.0" />
     <PackageReference Include="FluentValidation" Version="12.1.1" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.1" />
@@ -22,7 +28,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ProductReviews\Queries\" />
     <Folder Include="Products\Constants\" />
     <Folder Include="Products\Models\" />
   </ItemGroup>
