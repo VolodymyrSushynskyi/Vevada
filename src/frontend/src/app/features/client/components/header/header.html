@@ -21,6 +21,7 @@
           iconSize="24px"
           width="44px"
           height="44px"
+          (btnClick)="handleProtectedAction('/')"
         ></app-ui-icon-button>
         <app-ui-icon-button
           icon="icon-cart"
@@ -28,13 +29,14 @@
           width="44px"
           height="44px"
           [badgeCount]="cartItemsCount"
+          (btnClick)="handleProtectedAction('/')"
         ></app-ui-icon-button>
         <app-ui-icon-button
           icon="icon-user"
           iconSize="24px"
           width="44px"
           height="44px"
-          (btnClick)="onUserIconClick()"
+          (btnClick)="handleProtectedAction('/')"
         ></app-ui-icon-button>
       </app-horizontal-list>
     </div>

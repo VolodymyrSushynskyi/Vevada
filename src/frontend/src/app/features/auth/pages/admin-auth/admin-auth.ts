@@ -22,6 +22,8 @@ export class AdminAuth {
   private sessionService = inject(SessionService);
   private router = inject(Router);
 
+  isSubmitting = false;
+
   adminAuthForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [Validators.required]),
@@ -29,6 +31,8 @@ export class AdminAuth {
 
   onSubmit() {
     if (this.adminAuthForm.valid) {
+      this.isSubmitting = true;
+
       const credentials = {
         email: this.adminAuthForm.value.email!,
         password: this.adminAuthForm.value.password!,
@@ -36,10 +40,12 @@ export class AdminAuth {
 
       this.authService.loginAdmin(credentials).subscribe({
         next: (response) => {
+          this.isSubmitting = false;
           this.sessionService.startSession(response);
           this.navigateByRole(response.role);
         },
         error: (err) => {
+          this.isSubmitting = false;
           this.toastService.showError(err.error?.message || 'Виникла помилка при вході');
         },
       });

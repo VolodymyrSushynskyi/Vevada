@@ -1,2 +1,7 @@
-<app-product-form pageTitle="Додати товар" (formSubmit)="onFormSubmit($event)" (goBack)="goBack()">
+<app-product-form
+  pageTitle="Додати товар"
+  [isSubmitting]="isSubmitting"
+  (formSubmit)="onFormSubmit($event)"
+  (goBack)="goBack()"
+>
 </app-product-form>

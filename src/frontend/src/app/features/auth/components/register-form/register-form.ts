@@ -26,6 +26,8 @@ export class RegisterForm {
   private sessionService = inject(SessionService);
   private router = inject(Router);
 
+  isSubmitting = false;
+
   registerForm = new FormGroup(
     {
       firstName: new FormControl('', RegisterClientRules.firstName),
@@ -61,6 +63,8 @@ export class RegisterForm {
 
   onSubmit() {
     if (this.registerForm.valid) {
+      this.isSubmitting = true;
+
       const userData = {
         firstName: this.registerForm.value.firstName!,
         lastName: this.registerForm.value.lastName!,
@@ -71,10 +75,12 @@ export class RegisterForm {
 
       this.authService.register(userData).subscribe({
         next: (response) => {
+          this.isSubmitting = false;
           this.sessionService.startSession(response);
           this.router.navigate(['/']);
         },
         error: (err) => {
+          this.isSubmitting = false;
           this.toastService.showError(err.error?.message || 'Виникла помилка при реєстрації');
         },
       });

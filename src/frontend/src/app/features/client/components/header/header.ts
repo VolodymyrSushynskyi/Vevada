@@ -18,11 +18,11 @@ export class Header {
 
   public cartItemsCount: number = 0;
 
-  public onUserIconClick(): void {
+  public handleProtectedAction(targetRoute: string): void {
     const isLoggedIn = this.sessionService.isAuthenticated();
 
     if (isLoggedIn) {
-      this.router.navigate(['/']);
+      this.router.navigate([targetRoute]);
     } else {
       this.router.navigate(['/login']);
     }

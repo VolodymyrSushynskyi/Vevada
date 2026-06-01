@@ -17,7 +17,12 @@
       ></app-ui-input>
 
       <div class="actions">
-        <app-main-button type="submit" label="Увійти"></app-main-button>
+        <app-main-button
+          type="submit"
+          label="Увійти"
+          [disabled]="adminAuthForm.invalid || isSubmitting"
+        >
+        </app-main-button>
       </div>
     </form>
   </div>
