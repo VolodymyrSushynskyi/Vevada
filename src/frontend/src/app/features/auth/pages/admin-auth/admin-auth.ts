@@ -51,7 +51,7 @@ export class AdminAuth {
   private navigateByRole(role: string) {
     switch (role) {
       case 'SuperAdmin':
-        this.router.navigate(['/']);
+        this.router.navigate(['/super-admin']);
         break;
       case 'Analyst':
         this.router.navigate(['/analyst']);

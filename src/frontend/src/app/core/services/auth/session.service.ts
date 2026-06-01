@@ -21,11 +21,11 @@ export class SessionService {
   startSession(response: AuthResponse): void {
     if (isPlatformBrowser(this.platformId)) {
       localStorage.setItem('access_token', response.accessToken);
+
       if (response.refreshToken) {
         localStorage.setItem('refresh_token', response.refreshToken);
-      } else {
-        localStorage.removeItem('refresh_token');
       }
+
       localStorage.setItem('user_email', response.email);
       localStorage.setItem('user_role', response.role);
     }

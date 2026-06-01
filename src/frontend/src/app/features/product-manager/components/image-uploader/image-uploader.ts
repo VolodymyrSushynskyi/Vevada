@@ -34,6 +34,20 @@ export class ImageUploader {
   previews: PreviewImage[] = [];
 
   @Input() multiple = false;
+
+  // ДОДАНО: Механізм для отримання існуючих картинок ззовні
+  @Input() set existingImages(urls: string | string[] | null) {
+    if (!urls || (Array.isArray(urls) && urls.length === 0)) {
+      return;
+    }
+
+    const urlArray = Array.isArray(urls) ? urls : [urls];
+    this.previews = urlArray.map((url) => ({ url: url }));
+
+    // Сигналізуємо Ангуляру, що дані змінилися і треба показати картинки
+    this.cdr.detectChanges();
+  }
+
   @Output() imagesChanged = new EventEmitter<File[]>();
 
   onFileSelected(event: Event) {

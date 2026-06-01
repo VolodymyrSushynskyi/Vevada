@@ -1,1 +1,13 @@
-<app-product-form></app-product-form>
+@if (productData) {
+  <app-product-form
+    pageTitle="Редагувати товар"
+    [initialData]="productData"
+    (formSubmit)="onFormSubmit($event)"
+    (goBack)="goBack()"
+  >
+  </app-product-form>
+} @else {
+  <div class="loading-state">
+    <p class="text-body-1-regular">Завантаження даних товару...</p>
+  </div>
+}

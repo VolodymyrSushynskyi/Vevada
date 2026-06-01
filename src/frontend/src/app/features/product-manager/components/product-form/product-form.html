@@ -1,7 +1,7 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form-wrapper">
   <div class="form-header">
     <div class="header-left">
-      <app-back-button></app-back-button>
+      <app-back-button (back)="goBack.emit()"></app-back-button>
       <h1 class="page-title text-h4-bold">{{ pageTitle }}</h1>
     </div>
 
@@ -13,8 +13,11 @@
       <app-ui-card title="Лінійка товарів*">
         <mat-form-field appearance="outline" class="w-100">
           <mat-select formControlName="productLineId" placeholder="Оберіть лінійку">
-            <mat-option value="1">Грація</mat-option>
-            <mat-option value="2">Колекція для виступів</mat-option>
+            @for (series of productSeries; track series.id) {
+              <mat-option [value]="series.id ?? series.Id">
+                {{ series.name ?? series.Name }}
+              </mat-option>
+            }
             <mat-option value="new">Створити нову лінійку товарів</mat-option>
           </mat-select>
 
@@ -120,10 +123,9 @@
               </mat-chip-set>
             </mat-select-trigger>
 
-            <mat-option value="134 (8-9 р.)">134 (8-9 р.)</mat-option>
-            <mat-option value="140 (9-10 р.)">140 (9-10 р.)</mat-option>
-            <mat-option value="146 (10-11 р.)">146 (10-11 р.)</mat-option>
-            <mat-option value="152 (11-12 р.)">152 (11-12 р.)</mat-option>
+            @for (size of availableSizes; track size.id) {
+              <mat-option [value]="size.id">{{ size.label }}</mat-option>
+            }
           </mat-select>
           @if (form.get('sizes')?.invalid) {
             <mat-error class="text-body-2-regular">{{ getErrorMessage('sizes') }}</mat-error>
@@ -143,7 +145,11 @@
 
     <div class="right-column">
       <app-ui-card title="Головне фото*">
-        <app-image-uploader [multiple]="false" (imagesChanged)="onMainPhotoChanged($event)">
+        <app-image-uploader
+          [multiple]="false"
+          [existingImages]="mainPhotoPreview"
+          (imagesChanged)="onMainPhotoChanged($event)"
+        >
         </app-image-uploader>
 
         @if (form.get('mainPhoto')?.invalid) {
@@ -154,7 +160,11 @@
       </app-ui-card>
 
       <app-ui-card title="Галерея товару">
-        <app-image-uploader [multiple]="true" (imagesChanged)="onGalleryChanged($event)">
+        <app-image-uploader
+          [multiple]="true"
+          [existingImages]="galleryPhotosPreviews"
+          (imagesChanged)="onGalleryChanged($event)"
+        >
         </app-image-uploader>
       </app-ui-card>
     </div>
