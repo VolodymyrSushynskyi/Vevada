@@ -142,7 +142,7 @@ namespace Vevada.Data.Migrations
 
                     b.HasKey("UserId");
 
-                    b.ToTable("AdminDetails");
+                    b.ToTable("AdminDetails", (string)null);
                 });
 
             modelBuilder.Entity("Vevada.Data.Entities.ClientDetails", b =>
@@ -167,7 +167,7 @@ namespace Vevada.Data.Migrations
 
                     b.HasKey("UserId");
 
-                    b.ToTable("ClientDetails");
+                    b.ToTable("ClientDetails", (string)null);
                 });
 
             modelBuilder.Entity("Vevada.Data.Entities.ImageAsset", b =>
@@ -198,7 +198,7 @@ namespace Vevada.Data.Migrations
                     b.HasIndex("Hash")
                         .IsUnique();
 
-                    b.ToTable("ImageAssets");
+                    b.ToTable("ImageAssets", (string)null);
                 });
 
             modelBuilder.Entity("Vevada.Data.Entities.Product", b =>
@@ -248,7 +248,7 @@ namespace Vevada.Data.Migrations
 
                     b.HasIndex("ProductSeriesId");
 
-                    b.ToTable("Products");
+                    b.ToTable("Products", (string)null);
                 });
 
             modelBuilder.Entity("Vevada.Data.Entities.ProductGalleryImage", b =>
@@ -263,47 +263,7 @@ namespace Vevada.Data.Migrations
 
                     b.HasIndex("ImageAssetId");
 
-                    b.ToTable("ProductGalleryImages");
-                });
-
-            modelBuilder.Entity("Vevada.Data.Entities.ProductReview", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Comment")
-                        .HasMaxLength(1000)
-                        .HasColumnType("character varying(1000)");
-
-                    b.Property<DateTimeOffset>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid>("ProductId")
-                        .HasColumnType("uuid");
-
-                    b.Property<int>("Rating")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTimeOffset?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.HasIndex("ProductId", "UserId")
-                        .IsUnique();
-
-                    b.ToTable("ProductReviews", t =>
-                        {
-                            t.HasCheckConstraint("CK_ProductReview_Rating", "\"Rating\" >= 1 AND \"Rating\" <= 5");
-                        });
+                    b.ToTable("ProductGalleryImages", (string)null);
                 });
 
             modelBuilder.Entity("Vevada.Data.Entities.ProductSeries", b =>
@@ -325,7 +285,7 @@ namespace Vevada.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ProductSeries");
+                    b.ToTable("ProductSeries", (string)null);
                 });
 
             modelBuilder.Entity("Vevada.Data.Entities.Role", b =>
@@ -551,30 +511,9 @@ namespace Vevada.Data.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("Vevada.Data.Entities.ProductReview", b =>
-                {
-                    b.HasOne("Vevada.Data.Entities.Product", "Product")
-                        .WithMany("Reviews")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Vevada.Data.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Product");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("Vevada.Data.Entities.Product", b =>
                 {
                     b.Navigation("GalleryImages");
-
-                    b.Navigation("Reviews");
                 });
 
             modelBuilder.Entity("Vevada.Data.Entities.ProductSeries", b =>
