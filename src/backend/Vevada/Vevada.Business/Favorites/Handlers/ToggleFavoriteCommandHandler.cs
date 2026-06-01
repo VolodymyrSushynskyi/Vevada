@@ -18,9 +18,9 @@ public class ToggleFavoriteCommandHandler : IRequestHandler<ToggleFavoriteComman
 
     public async Task<HandlerResult<bool>> Handle(ToggleFavoriteCommand request, CancellationToken cancellationToken)
     {
-        var existingFavorite = await _context.FavoriteItems
-            .FirstOrDefaultAsync(f => f.UserId == request.UserId && f.ProductId == request.ProductId, cancellationToken);
-
+        var existingFavorite = await _context.FavoriteItems.FindAsync(
+            new object?[] { request.UserId, request.ProductId },
+            cancellationToken);
         if (existingFavorite != null)
         {
             _context.FavoriteItems.Remove(existingFavorite);

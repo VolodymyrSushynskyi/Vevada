@@ -8,6 +8,6 @@ public class ToggleFavoriteCommandValidator : AbstractValidator<ToggleFavoriteCo
     public ToggleFavoriteCommandValidator()
     {
         RuleFor(x => x.ProductId)
-            .NotEmpty().WithMessage("Invalid Product ID.");
+            .NotEmpty().WithMessage("Invalid product ID.");
     }
 }
