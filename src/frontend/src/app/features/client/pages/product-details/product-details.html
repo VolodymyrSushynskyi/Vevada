@@ -1,0 +1,47 @@
+<section class="product-page container">
+  @if (isLoading) {
+    <div class="loader-overlay">
+      <mat-spinner diameter="48"></mat-spinner>
+    </div>
+  } @else if (product) {
+    <div class="product-layout">
+      <div class="gallery-column">
+        <app-product-gallery
+          [mainImageId]="product.mainImageId"
+          [galleryImageIds]="product.galleryImageIds"
+        >
+        </app-product-gallery>
+      </div>
+
+      <div class="info-column">
+        <app-product-info
+          [product]="product"
+          (addToCart)="onAddToCart()"
+          (toggleFavorite)="onToggleFavorite()"
+          (openSizeGuide)="onOpenSizeGuide()"
+        >
+        </app-product-info>
+      </div>
+    </div>
+
+    <div class="reviews-section">
+      @if (isLoading) {
+        <div class="loader-overlay">
+          <mat-spinner diameter="48"></mat-spinner>
+        </div>
+      } @else if (product) {
+        <div class="product-layout"></div>
+
+        <app-product-reviews [productId]="product.id"></app-product-reviews>
+      } @else {
+        <div class="error-state">
+          <h2>Товар не знайдено</h2>
+        </div>
+      }
+    </div>
+  } @else {
+    <div class="error-state">
+      <h2>Товар не знайдено</h2>
+    </div>
+  }
+</section>

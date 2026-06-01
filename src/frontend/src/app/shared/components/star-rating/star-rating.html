@@ -1,0 +1,33 @@
+<div class="star-rating-container" [class.is-interactive]="!readonly">
+  @for (star of stars; track $index) {
+    <div
+      class="star-wrapper"
+      [style.width]="size"
+      [style.height]="size"
+      (click)="onRate($index + 1)"
+      [attr.aria-label]="'Оцінити на ' + ($index + 1)"
+      [attr.role]="readonly ? null : 'button'"
+    >
+      <svg viewBox="0 0 24 24" class="star-svg" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <clipPath [id]="'star-clip-' + uniqueId + '-' + $index + '-' + star.fillPercentage">
+            <rect x="0" y="0" [attr.width]="star.fillPercentage + '%'" height="100%" />
+          </clipPath>
+        </defs>
+
+        <path
+          class="star-bg"
+          d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"
+        />
+
+        <path
+          class="star-fill"
+          [attr.clip-path]="
+            'url(#star-clip-' + uniqueId + '-' + $index + '-' + star.fillPercentage + ')'
+          "
+          d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"
+        />
+      </svg>
+    </div>
+  }
+</div>

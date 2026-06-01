@@ -1,0 +1,38 @@
+.star-rating-container {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px; /* Відстань між зірками */
+}
+
+.star-wrapper {
+  position: relative;
+  display: inline-block;
+  outline: none;
+}
+
+/* Якщо компонент інтерактивний - показуємо курсор */
+.star-rating-container.is-interactive .star-wrapper {
+  cursor: pointer;
+  transition: transform 0.1s ease;
+}
+
+/* Легкий ефект при наведенні на інтерактивну зірку */
+.star-rating-container.is-interactive .star-wrapper:hover {
+  transform: scale(1.1);
+}
+
+.star-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Колір порожньої зірки (світло-сірий) */
+.star-bg {
+  fill: var(--grey-200, #e0e0e0);
+}
+
+/* Колір заповненої зірки (жовтий, як на макеті) */
+.star-fill {
+  fill: #ffb400;
+}

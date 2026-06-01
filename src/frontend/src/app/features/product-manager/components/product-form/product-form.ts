@@ -55,6 +55,10 @@ import { ProductService } from '../../../../core/services/product-manager/produc
 export class ProductForm {
   private platformId = inject(PLATFORM_ID);
   private productService = inject(ProductService);
+
+  private retainedMainPhotoId: string | null = null;
+  private retainedGalleryIds: string[] = [];
+
   destroyRef = inject(DestroyRef);
 
   isBrowser = isPlatformBrowser(this.platformId);
@@ -67,7 +71,13 @@ export class ProductForm {
 
   @Input() initialData: any = null;
 
-  @Output() formSubmit = new EventEmitter<{ formData: any; mainPhoto: File[]; gallery: File[] }>();
+  @Output() formSubmit = new EventEmitter<{
+    formData: any;
+    mainPhoto: File[];
+    gallery: File[];
+    retainedMainPhotoId: string | null;
+    retainedGalleryIds: string[];
+  }>();
   @Output() goBack = new EventEmitter<void>();
 
   private currentMainPhoto: File[] = [];
@@ -120,7 +130,13 @@ export class ProductForm {
   onMainPhotoChanged(files: File[]) {
     this.currentMainPhoto = files;
     this.form.get('mainPhoto')?.setValue(files);
-    this.form.get('mainPhoto')?.markAsTouched();
+
+    if (files.length > 0 || this.retainedMainPhotoId) {
+      this.form.get('mainPhoto')?.clearValidators();
+    } else {
+      this.form.get('mainPhoto')?.setValidators(ProductFormRules.mainPhoto);
+    }
+    this.form.get('mainPhoto')?.updateValueAndValidity();
   }
 
   onGalleryChanged(files: File[]) {
@@ -147,6 +163,9 @@ export class ProductForm {
   ngOnInit() {
     if (this.initialData) {
       this.form.patchValue(this.initialData);
+
+      this.retainedMainPhotoId = this.initialData.mainImageId || null;
+      this.retainedGalleryIds = this.initialData.galleryImageIds || [];
 
       if (this.initialData.mainImageId) {
         this.form.get('mainPhoto')?.clearValidators();
@@ -187,15 +206,42 @@ export class ProductForm {
       });
   }
 
+  private extractIdFromUrl(url: string): string | null {
+    const match = url.match(/\/images\/(.+?)-thumb\.webp/);
+    return match ? match[1] : null;
+  }
+
+  onExistingMainPhotoChanged(urls: string[]) {
+    if (urls.length === 0) {
+      this.retainedMainPhotoId = null;
+      // Якщо видалили старе фото і не додали нове - робимо поле невалідним
+      if (this.currentMainPhoto.length === 0) {
+        this.form.get('mainPhoto')?.setValidators(ProductFormRules.mainPhoto);
+        this.form.get('mainPhoto')?.updateValueAndValidity();
+      }
+    } else {
+      this.retainedMainPhotoId = this.extractIdFromUrl(urls[0]);
+    }
+  }
+
+  onExistingGalleryChanged(urls: string[]) {
+    this.retainedGalleryIds = urls
+      .map((url) => this.extractIdFromUrl(url))
+      .filter((id) => id !== null) as string[];
+  }
+
   onSubmit() {
     if (this.form.valid) {
       const formData = { ...this.form.value };
       delete formData.mainPhoto;
 
+      // Відправляємо всі дані батьківському компоненту
       this.formSubmit.emit({
         formData: formData,
         mainPhoto: this.currentMainPhoto,
         gallery: this.currentGallery,
+        retainedMainPhotoId: this.retainedMainPhotoId,
+        retainedGalleryIds: this.retainedGalleryIds,
       });
     } else {
       this.form.markAllAsTouched();
