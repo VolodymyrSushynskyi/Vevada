@@ -8,7 +8,7 @@ import { environment } from '../config/environment';
 export class ImageUrlPipe implements PipeTransform {
   transform(imageId: string | null | undefined, suffix: string = 'full'): string {
     if (!imageId) {
-      return 'public/img/placeholder.png';
+      return '../../../../../public/img/placeholder.png';
     }
 
     const baseUrl = environment.apiUrl.replace(/\/api$/, '');

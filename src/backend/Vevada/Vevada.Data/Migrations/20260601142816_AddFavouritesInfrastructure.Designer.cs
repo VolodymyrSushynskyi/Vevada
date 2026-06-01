@@ -12,8 +12,8 @@ using Vevada.Data;
 namespace Vevada.Data.Migrations
 {
     [DbContext(typeof(VevadaDbContext))]
-    [Migration("20260529113702_AddReviewInfrastructure")]
-    partial class AddReviewInfrastructure
+    [Migration("20260601142816_AddFavouritesInfrastructure")]
+    partial class AddFavouritesInfrastructure
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -148,6 +148,63 @@ namespace Vevada.Data.Migrations
                     b.ToTable("AdminDetails");
                 });
 
+            modelBuilder.Entity("Vevada.Data.Entities.Cart", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTimeOffset?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("Carts");
+                });
+
+            modelBuilder.Entity("Vevada.Data.Entities.CartItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CartId")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("Quantity")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasDefaultValue(1);
+
+                    b.Property<int>("Size")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("CartId", "ProductId", "Size")
+                        .IsUnique();
+
+                    b.ToTable("CartItems");
+                });
+
             modelBuilder.Entity("Vevada.Data.Entities.ClientDetails", b =>
                 {
                     b.Property<int>("UserId")
@@ -171,6 +228,27 @@ namespace Vevada.Data.Migrations
                     b.HasKey("UserId");
 
                     b.ToTable("ClientDetails");
+                });
+
+            modelBuilder.Entity("Vevada.Data.Entities.FavoriteItem", b =>
+                {
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTimeOffset?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("UserId", "ProductId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("FavoriteItems");
                 });
 
             modelBuilder.Entity("Vevada.Data.Entities.ImageAsset", b =>
@@ -202,6 +280,80 @@ namespace Vevada.Data.Migrations
                         .IsUnique();
 
                     b.ToTable("ImageAssets");
+                });
+
+            modelBuilder.Entity("Vevada.Data.Entities.Order", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("AssignedManufacturerId")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("CancellationRequested")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTimeOffset?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AssignedManufacturerId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("Vevada.Data.Entities.OrderItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("OrderId")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid?>("ProductId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("ProductName")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("character varying(150)");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Size")
+                        .HasColumnType("integer");
+
+                    b.Property<decimal>("UnitPrice")
+                        .HasColumnType("numeric(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("OrderItems");
                 });
 
             modelBuilder.Entity("Vevada.Data.Entities.Product", b =>
@@ -267,46 +419,6 @@ namespace Vevada.Data.Migrations
                     b.HasIndex("ImageAssetId");
 
                     b.ToTable("ProductGalleryImages");
-                });
-
-            modelBuilder.Entity("Vevada.Data.Entities.ProductReview", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Comment")
-                        .HasMaxLength(1000)
-                        .HasColumnType("character varying(1000)");
-
-                    b.Property<DateTimeOffset>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid>("ProductId")
-                        .HasColumnType("uuid");
-
-                    b.Property<int>("Rating")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTimeOffset?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.HasIndex("ProductId", "UserId")
-                        .IsUnique();
-
-                    b.ToTable("ProductReviews", t =>
-                        {
-                            t.HasCheckConstraint("CK_ProductReview_Rating", "\"Rating\" >= 1 AND \"Rating\" <= 5");
-                        });
                 });
 
             modelBuilder.Entity("Vevada.Data.Entities.ProductSeries", b =>
@@ -505,6 +617,36 @@ namespace Vevada.Data.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Vevada.Data.Entities.Cart", b =>
+                {
+                    b.HasOne("Vevada.Data.Entities.User", "User")
+                        .WithOne()
+                        .HasForeignKey("Vevada.Data.Entities.Cart", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Vevada.Data.Entities.CartItem", b =>
+                {
+                    b.HasOne("Vevada.Data.Entities.Cart", "Cart")
+                        .WithMany("Items")
+                        .HasForeignKey("CartId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Vevada.Data.Entities.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Cart");
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("Vevada.Data.Entities.ClientDetails", b =>
                 {
                     b.HasOne("Vevada.Data.Entities.User", "User")
@@ -514,6 +656,61 @@ namespace Vevada.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Vevada.Data.Entities.FavoriteItem", b =>
+                {
+                    b.HasOne("Vevada.Data.Entities.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Vevada.Data.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Vevada.Data.Entities.Order", b =>
+                {
+                    b.HasOne("Vevada.Data.Entities.User", "AssignedManufacturer")
+                        .WithMany()
+                        .HasForeignKey("AssignedManufacturerId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("Vevada.Data.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("AssignedManufacturer");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Vevada.Data.Entities.OrderItem", b =>
+                {
+                    b.HasOne("Vevada.Data.Entities.Order", "Order")
+                        .WithMany("Items")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Vevada.Data.Entities.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("Order");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("Vevada.Data.Entities.Product", b =>
@@ -554,30 +751,19 @@ namespace Vevada.Data.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("Vevada.Data.Entities.ProductReview", b =>
+            modelBuilder.Entity("Vevada.Data.Entities.Cart", b =>
                 {
-                    b.HasOne("Vevada.Data.Entities.Product", "Product")
-                        .WithMany("Reviews")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Items");
+                });
 
-                    b.HasOne("Vevada.Data.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Product");
-
-                    b.Navigation("User");
+            modelBuilder.Entity("Vevada.Data.Entities.Order", b =>
+                {
+                    b.Navigation("Items");
                 });
 
             modelBuilder.Entity("Vevada.Data.Entities.Product", b =>
                 {
                     b.Navigation("GalleryImages");
-
-                    b.Navigation("Reviews");
                 });
 
             modelBuilder.Entity("Vevada.Data.Entities.ProductSeries", b =>
