@@ -1,0 +1,19 @@
+<div class="horizontal-product-card">
+  <div class="card-image-wrapper">
+    <img [src]="imageUrl" alt="Фото товара" class="card-image" />
+  </div>
+
+  <div class="card-info">
+    <h3 class="card-title text-body-1-regular">{{ name }}</h3>
+
+    <div class="card-subtitle-slot text-body-2-regular">
+      <ng-content select="[subtitle]"></ng-content>
+    </div>
+
+    <div class="card-price text-body-1-medium">{{ price }} грн</div>
+  </div>
+
+  <div class="card-actions">
+    <ng-content select="[actions]"></ng-content>
+  </div>
+</div>
