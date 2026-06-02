@@ -1,0 +1,19 @@
+<div class="summary-card">
+  <div class="summary-info-row">
+    <span class="summary-label text-subtitle-2-semi-bold">Підсумок:</span>
+    <span class="summary-value text-body-1-medium">
+      {{ totalPrice }}
+      @if (isBrowser) {
+        <mat-icon svgIcon="icon-hryvnia" class="currency-icon"></mat-icon>
+      }
+    </span>
+  </div>
+
+  <div class="summary-actions">
+    <app-main-button
+      label="Замовити"
+      [disabled]="isSubmitting || totalPrice <= 0"
+      (btnClick)="checkout.emit()"
+    ></app-main-button>
+  </div>
+</div>

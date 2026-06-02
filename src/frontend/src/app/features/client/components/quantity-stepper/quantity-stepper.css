@@ -1,0 +1,52 @@
+:host {
+  display: inline-block;
+}
+
+.stepper-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid var(--grey-200);
+  border-radius: 30px;
+  width: 90px;
+  height: 32px;
+  background-color: var(--white);
+  overflow: hidden;
+}
+
+.stepper-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 32px;
+  padding: 0;
+  color: var(--grey-400);
+  transition: color 0.2s ease;
+  position: relative;
+}
+
+.stepper-btn mat-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+}
+
+.stepper-btn:hover:not(:disabled) {
+  color: var(--grey-600);
+}
+
+.stepper-btn:disabled {
+  color: var(--grey-200);
+  cursor: not-allowed;
+}
+
+.stepper-value {
+  color: var(--grey-600);
+  user-select: none;
+  min-width: 20px;
+  text-align: center;
+}

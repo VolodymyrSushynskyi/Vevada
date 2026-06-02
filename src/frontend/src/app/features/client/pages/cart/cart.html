@@ -1,0 +1,51 @@
+<div class="page-background">
+  <div class="cart-container">
+    <div class="cart-main-column">
+      <div class="cart-card">
+        <h2 class="cart-title text-h4-semi-bold">
+          Мій кошик
+          <span class="cart-count text-subtitle-2-semi-bold">({{ cartItems.length }} товарів)</span>
+        </h2>
+
+        @if (cartItems.length === 0) {
+          <div class="empty-cart-message text-body-1-medium">Ваш кошик порожній.</div>
+        } @else {
+          <div class="cart-items-list">
+            @for (item of cartItems; track item.cartItemId; let last = $last) {
+              <div class="cart-item-row">
+                <app-horizontal-product-card
+                  [name]="item.name"
+                  [price]="item.price"
+                  [imageUrl]="item.imageUrl"
+                >
+                  <div subtitle class="item-size-info">Розмір: {{ item.size }}</div>
+
+                  <div actions class="item-actions-wrapper">
+                    <app-trash-button (trash)="onRemoveItem(item.cartItemId)"></app-trash-button>
+
+                    <app-quantity-stepper
+                      [quantity]="item.quantity"
+                      (quantityChange)="onQuantityChange(item.cartItemId, $event)"
+                    ></app-quantity-stepper>
+                  </div>
+                </app-horizontal-product-card>
+              </div>
+
+              @if (!last) {
+                <mat-divider class="item-divider"></mat-divider>
+              }
+            }
+          </div>
+        }
+      </div>
+    </div>
+
+    <div class="cart-sidebar-column">
+      <app-order-summary
+        [totalPrice]="totalPrice"
+        [isSubmitting]="isSubmitting"
+        (checkout)="onCheckout()"
+      ></app-order-summary>
+    </div>
+  </div>
+</div>

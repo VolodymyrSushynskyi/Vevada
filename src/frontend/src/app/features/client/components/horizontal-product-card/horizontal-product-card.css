@@ -1,0 +1,62 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.horizontal-product-card {
+  display: flex;
+  align-items: stretch;
+  padding: 25px 0;
+  background-color: var(--white);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.card-image-wrapper {
+  flex-shrink: 0;
+  width: 90px;
+  height: 115px;
+  border-radius: 6px;
+  overflow: hidden;
+  background-color: var(--grey-100);
+}
+
+.card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.card-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  flex-grow: 1;
+  padding-left: 24px;
+}
+
+.card-title {
+  margin: 0 0 6px 0;
+  color: var(--grey-600);
+  line-height: 1.3;
+}
+
+.card-subtitle-slot {
+  font-size: 13px;
+  color: var(--grey-400);
+  margin-bottom: auto;
+}
+
+.card-price {
+  color: var(--grey-600);
+}
+
+.card-actions {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-shrink: 0;
+  padding-left: 16px;
+}
