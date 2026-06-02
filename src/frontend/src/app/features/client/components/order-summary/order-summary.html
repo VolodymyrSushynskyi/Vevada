@@ -1,9 +1,11 @@
 <div class="summary-card">
   <div class="summary-info-row">
-    <span class="summary-label">Підсумок:</span>
-    <span class="summary-value">
+    <span class="summary-label text-subtitle-2-semi-bold">Підсумок:</span>
+    <span class="summary-value text-body-1-medium">
       {{ totalPrice }}
-      <mat-icon svgIcon="icon-hryvnia" class="currency-icon"></mat-icon>
+      @if (isBrowser) {
+        <mat-icon svgIcon="icon-hryvnia" class="currency-icon"></mat-icon>
+      }
     </span>
   </div>
 

@@ -6,12 +6,12 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border: 1px solid #d9d9d9; /* Светло-серый цвет рамки */
-  border-radius: 20px; /* Округлая форма "таблетки" */
+  border: 1px solid var(--grey-200);
+  border-radius: 30px;
   width: 90px;
   height: 32px;
-  background-color: #ffffff;
-  overflow: hidden; /* Обрезаем ripple-эффект по краям */
+  background-color: var(--white);
+  overflow: hidden;
 }
 
 .stepper-btn {
@@ -24,12 +24,11 @@
   height: 100%;
   width: 32px;
   padding: 0;
-  color: #7e7e7e; /* Серый цвет иконок по умолчанию */
+  color: var(--grey-400);
   transition: color 0.2s ease;
-  position: relative; /* Необходимо для правильной работы matRipple */
+  position: relative;
 }
 
-/* Уменьшаем размер материальных иконок, чтобы они органично смотрелись в маленькой кнопке */
 .stepper-btn mat-icon {
   font-size: 18px;
   width: 18px;
@@ -37,19 +36,17 @@
 }
 
 .stepper-btn:hover:not(:disabled) {
-  color: #212121; /* При наведении иконка становится темной */
+  color: var(--grey-600);
 }
 
 .stepper-btn:disabled {
-  color: #e0e0e0;
+  color: var(--grey-200);
   cursor: not-allowed;
 }
 
 .stepper-value {
-  font-size: 14px;
-  font-weight: 500;
-  color: #212121;
-  user-select: none; /* Запрещаем выделение текста при быстрых двойных кликах */
+  color: var(--grey-600);
+  user-select: none;
   min-width: 20px;
   text-align: center;
 }

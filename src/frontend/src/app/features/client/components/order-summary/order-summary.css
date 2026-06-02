@@ -4,10 +4,10 @@
 }
 
 .summary-card {
-  background-color: #ffffff;
-  border-radius: 12px;
+  background-color: var(--white);
+  border-radius: 10px;
   padding: 24px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  box-shadow: 4px 4px 20px rgba(0, 0, 0, 0.15);
   width: 100%;
   box-sizing: border-box;
 }
@@ -17,26 +17,21 @@
   justify-content: space-between;
   align-items: center;
   padding-bottom: 16px;
-  border-bottom: 1px solid #eaeaea;
+  border-bottom: 1px solid var(--grey-200);
   margin-bottom: 24px;
 }
 
 .summary-label {
-  font-size: 16px;
-  font-weight: 500;
-  color: #212121;
+  color: var(--grey-700);
 }
 
 .summary-value {
   display: flex;
   align-items: center;
-  gap: 4px; /* Небольшой отступ между цифрами и иконкой */
-  font-size: 18px;
-  font-weight: 600;
-  color: #212121;
+  gap: 4px;
+  color: var(--grey-700);
 }
 
-/* Стилизация SVG-иконки для точного выравнивания по тексту */
 .currency-icon {
   display: inline-flex;
   align-items: center;
@@ -50,9 +45,4 @@
   display: flex;
   justify-content: center;
   width: 100%;
-}
-
-.summary-actions app-main-button {
-  width: 100%;
-  max-width: 220px;
 }
