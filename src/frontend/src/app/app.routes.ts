@@ -3,6 +3,7 @@ import { Home } from './features/client/pages/home/home';
 import { ProductDetails } from './features/client/pages/product-details/product-details';
 import { Cart } from './features/client/pages/cart/cart';
 import { Favorites } from './features/client/pages/favorites/favorites';
+import { Orders } from './features/client/pages/orders/orders';
 import { ClientAuth } from './features/auth/pages/client-auth/client-auth';
 import { AdminAuth } from './features/auth/pages/admin-auth/admin-auth';
 import { ClientLayout } from './features/client/components/client-layout/client-layout';
@@ -12,6 +13,7 @@ import { Products } from './features/product-manager/pages/products/products';
 import { EditProduct } from './features/product-manager/pages/edit-product/edit-product';
 import { AddProduct } from './features/product-manager/pages/add-product/add-product';
 import { AddUsers } from './features/super-admin/pages/add-users/add-users';
+import { ProfileLayuot } from './features/client/components/profile-layuot/profile-layuot';
 
 export const routes: Routes = [
   {
@@ -22,6 +24,14 @@ export const routes: Routes = [
       { path: 'product/:id', component: ProductDetails },
       { path: 'cart', component: Cart },
       { path: 'favorites', component: Favorites },
+      {
+        path: 'profile',
+        component: ProfileLayuot,
+        children: [
+          { path: '', redirectTo: 'orders', pathMatch: 'full' },
+          { path: 'orders', component: Orders },
+        ],
+      },
     ],
   },
   {
