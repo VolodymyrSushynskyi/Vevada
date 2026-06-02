@@ -1,0 +1,46 @@
+.status-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 16px;
+  border-radius: 20px; /* Форма пилюли, как в ваших инпутах */
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1;
+  border: 1px solid transparent; /* Подготовка под рамку */
+}
+
+/* Тема: В обробці (Светло-зеленый фон, темно-зеленый текст и рамка) */
+.theme-processing {
+  background-color: #eaf4f0; /* Замени на переменную из typography.css, если есть */
+  color: #046c4e;
+  border-color: #046c4e;
+}
+
+/* Тема: Комплектується (Например, желтоватый или синий, настроишь под Figma) */
+.theme-manufacturing {
+  background-color: #fef3c7;
+  color: #92400e;
+  border-color: #d97706;
+}
+
+/* Тема: Відправлено / Доставлено (Успешный статус) */
+.theme-success {
+  background-color: #dcfce7;
+  color: #166534;
+  border-color: #22c55e;
+}
+
+/* Тема: Скасовано (Красноватый из предыдущего макета) */
+.theme-cancelled {
+  background-color: #fce8e8;
+  color: #9b1c1c;
+  border-color: #9b1c1c;
+}
+
+/* Фолбэк на всякий случай */
+.theme-default {
+  background-color: #f3f4f6;
+  color: #374151;
+  border-color: #d1d5db;
+}
