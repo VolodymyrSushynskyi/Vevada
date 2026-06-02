@@ -8,7 +8,7 @@
     <img src="/img/gymnast.png" alt="Гімнастка у стрибку" class="hero-gymnast-img" />
   </div>
 
-  <div class="catalog-section container">
+  <div id="catalog" class="catalog-section container">
     <h2 class="section-title text-h2 text-center">Каталог</h2>
 
     <app-catalog-grid
@@ -19,15 +19,17 @@
     >
     </app-catalog-grid>
 
-    <div class="pagination-wrapper">
-      <mat-paginator
-        [length]="totalRecords"
-        [pageSize]="pageSize"
-        [pageIndex]="pageIndex"
-        [hidePageSize]="true"
-        (page)="onPageChange($event)"
-      >
-      </mat-paginator>
-    </div>
+    @if (totalRecords > pageSize) {
+      <div class="pagination-wrapper">
+        <mat-paginator
+          [length]="totalRecords"
+          [pageSize]="pageSize"
+          [pageIndex]="pageIndex"
+          [hidePageSize]="true"
+          (page)="onPageChange($event)"
+        >
+        </mat-paginator>
+      </div>
+    }
   </div>
 </section>

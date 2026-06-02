@@ -5,7 +5,11 @@
       <h1 class="page-title text-h4-bold">{{ pageTitle }}</h1>
     </div>
 
-    <app-main-button label="Зберегти" type="submit"></app-main-button>
+    <app-main-button
+      [disabled]="form.invalid || isSubmitting"
+      label="Зберегти"
+      type="submit"
+    ></app-main-button>
   </div>
 
   <div class="form-grid">

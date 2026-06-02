@@ -24,8 +24,8 @@ export class AuthService {
     return this.http.post<AuthResponse>(`${this.API_URL}/admin/login`, credentials);
   }
 
-  logout(): Observable<void> {
-    return this.http.post<void>(`${this.API_URL}/logout`, {});
+  logout(): Observable<any> {
+    return this.http.post(`${environment.apiUrl}/auth/logout`, {});
   }
 
   refreshToken(refreshToken: string) {

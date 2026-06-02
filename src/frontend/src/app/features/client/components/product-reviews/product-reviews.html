@@ -53,6 +53,10 @@
         (btnClick)="loadMoreReviews()"
       ></app-sub-button>
     }
-    <app-main-button label="Залишити відгук" (btnClick)="openAddReviewModal()"></app-main-button>
+    <app-main-button
+      [disabled]="!isUserAuthenticated"
+      label="Залишити відгук"
+      (btnClick)="openAddReviewModal()"
+    ></app-main-button>
   </div>
 </div>
