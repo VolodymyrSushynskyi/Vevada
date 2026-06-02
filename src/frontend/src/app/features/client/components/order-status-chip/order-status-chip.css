@@ -3,16 +3,13 @@
   align-items: center;
   justify-content: center;
   padding: 6px 16px;
-  border-radius: 20px; /* Форма пилюли, как в ваших инпутах */
-  font-size: 13px;
-  font-weight: 500;
+  border-radius: 25px;
   line-height: 1;
-  border: 1px solid transparent; /* Подготовка под рамку */
+  border: 1px solid transparent;
 }
 
-/* Тема: В обробці (Светло-зеленый фон, темно-зеленый текст и рамка) */
 .theme-processing {
-  background-color: #eaf4f0; /* Замени на переменную из typography.css, если есть */
+  background-color: #eaf4f0;
   color: #046c4e;
   border-color: #046c4e;
 }

@@ -3,6 +3,7 @@ import { Home } from './features/client/pages/home/home';
 import { ProductDetails } from './features/client/pages/product-details/product-details';
 import { Cart } from './features/client/pages/cart/cart';
 import { Favorites } from './features/client/pages/favorites/favorites';
+import { Orders } from './features/client/pages/orders/orders';
 import { ClientAuth } from './features/auth/pages/client-auth/client-auth';
 import { AdminAuth } from './features/auth/pages/admin-auth/admin-auth';
 import { ClientLayout } from './features/client/components/client-layout/client-layout';
@@ -22,6 +23,7 @@ export const routes: Routes = [
       { path: 'product/:id', component: ProductDetails },
       { path: 'cart', component: Cart },
       { path: 'favorites', component: Favorites },
+      { path: 'orders', component: Orders },
     ],
   },
   {

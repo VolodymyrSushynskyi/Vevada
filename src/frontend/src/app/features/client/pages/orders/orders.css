@@ -1,0 +1,27 @@
+.orders-page-wrapper {
+  max-width: 900px; /* Настрой под макет, если есть общая сетка */
+  width: 100%;
+}
+
+.page-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 32px;
+}
+
+.orders-list {
+  display: flex;
+  flex-direction: column;
+  /* Отступ между карточками задан в order-card.css (margin-bottom), 
+     но можно использовать gap здесь, если убрать margin из карточки: */
+  /* gap: 24px; */
+}
+
+.empty-state {
+  padding: 40px;
+  text-align: center;
+  color: #6b7280;
+  background-color: #f9fafb;
+  border-radius: 12px;
+}
