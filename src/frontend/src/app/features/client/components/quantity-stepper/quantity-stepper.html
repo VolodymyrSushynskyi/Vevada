@@ -1,0 +1,25 @@
+<div class="stepper-container">
+  <button
+    type="button"
+    class="stepper-btn"
+    matRipple
+    [matRippleCentered]="true"
+    (click)="decrement()"
+    [disabled]="quantity <= min"
+  >
+    <mat-icon>remove</mat-icon>
+  </button>
+
+  <span class="stepper-value">{{ quantity }}</span>
+
+  <button
+    type="button"
+    class="stepper-btn"
+    matRipple
+    [matRippleCentered]="true"
+    (click)="increment()"
+    [disabled]="quantity >= max"
+  >
+    <mat-icon>add</mat-icon>
+  </button>
+</div>

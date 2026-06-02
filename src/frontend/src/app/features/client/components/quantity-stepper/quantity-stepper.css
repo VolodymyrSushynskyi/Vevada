@@ -1,0 +1,55 @@
+:host {
+  display: inline-block;
+}
+
+.stepper-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid #d9d9d9; /* Светло-серый цвет рамки */
+  border-radius: 20px; /* Округлая форма "таблетки" */
+  width: 90px;
+  height: 32px;
+  background-color: #ffffff;
+  overflow: hidden; /* Обрезаем ripple-эффект по краям */
+}
+
+.stepper-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 32px;
+  padding: 0;
+  color: #7e7e7e; /* Серый цвет иконок по умолчанию */
+  transition: color 0.2s ease;
+  position: relative; /* Необходимо для правильной работы matRipple */
+}
+
+/* Уменьшаем размер материальных иконок, чтобы они органично смотрелись в маленькой кнопке */
+.stepper-btn mat-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+}
+
+.stepper-btn:hover:not(:disabled) {
+  color: #212121; /* При наведении иконка становится темной */
+}
+
+.stepper-btn:disabled {
+  color: #e0e0e0;
+  cursor: not-allowed;
+}
+
+.stepper-value {
+  font-size: 14px;
+  font-weight: 500;
+  color: #212121;
+  user-select: none; /* Запрещаем выделение текста при быстрых двойных кликах */
+  min-width: 20px;
+  text-align: center;
+}
