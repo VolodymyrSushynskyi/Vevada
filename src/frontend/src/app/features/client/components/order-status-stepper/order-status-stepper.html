@@ -1,0 +1,16 @@
+<div class="stepper-container" [class.is-cancelled]="isCancelled">
+  <div class="stepper-track">
+    @for (step of steps; track step.id; let last = $last) {
+      <div class="step-item">
+        <div class="step-circle" [class.active]="step.id <= activeStepIndex"></div>
+        <div class="step-label" [class.active]="step.id <= activeStepIndex">
+          {{ step.label }}
+        </div>
+      </div>
+
+      @if (!last) {
+        <div class="step-line" [class.active]="step.id < activeStepIndex"></div>
+      }
+    }
+  </div>
+</div>
