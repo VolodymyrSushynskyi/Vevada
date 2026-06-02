@@ -13,6 +13,7 @@ import { Products } from './features/product-manager/pages/products/products';
 import { EditProduct } from './features/product-manager/pages/edit-product/edit-product';
 import { AddProduct } from './features/product-manager/pages/add-product/add-product';
 import { AddUsers } from './features/super-admin/pages/add-users/add-users';
+import { ProfileLayuot } from './features/client/components/profile-layuot/profile-layuot';
 
 export const routes: Routes = [
   {
@@ -23,7 +24,14 @@ export const routes: Routes = [
       { path: 'product/:id', component: ProductDetails },
       { path: 'cart', component: Cart },
       { path: 'favorites', component: Favorites },
-      { path: 'orders', component: Orders },
+      {
+        path: 'profile',
+        component: ProfileLayuot,
+        children: [
+          { path: '', redirectTo: 'orders', pathMatch: 'full' },
+          { path: 'orders', component: Orders },
+        ],
+      },
     ],
   },
   {
