@@ -19,6 +19,7 @@
   border-radius: 6px;
   overflow: hidden;
   background-color: var(--grey-100);
+  box-shadow: 4px 4px 20px rgba(0, 0, 0, 0.1);
 }
 
 .card-image {

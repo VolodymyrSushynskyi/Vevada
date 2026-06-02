@@ -1,0 +1,44 @@
+<div class="page-background">
+  <div class="favorites-container">
+    <div class="favorites-card">
+      <h2 class="favorites-title text-h4-semi-bold">
+        Обране
+        <span class="favorites-count text-subtitle-2-semi-bold"
+          >({{ favoriteItems.length }} товарів)</span
+        >
+      </h2>
+
+      @if (favoriteItems.length === 0) {
+        <div class="empty-favorites-message text-body-1-medium">Список обраного порожній.</div>
+      } @else {
+        <div class="favorites-list">
+          @for (item of favoriteItems; track item.productId; let last = $last) {
+            <div class="favorite-item-row">
+              <app-horizontal-product-card
+                [name]="item.name"
+                [price]="item.price"
+                [imageUrl]="item.imageUrl"
+              >
+                <div actions class="item-actions-wrapper">
+                  <app-ui-icon-button
+                    icon="icon-cart"
+                    (btnClick)="onAddToCart(item.productId)"
+                  ></app-ui-icon-button>
+
+                  <app-favorite-button
+                    [isFavorite]="true"
+                    (toggle)="onRemoveFromFavorites(item.productId)"
+                  ></app-favorite-button>
+                </div>
+              </app-horizontal-product-card>
+            </div>
+
+            @if (!last) {
+              <mat-divider class="item-divider"></mat-divider>
+            }
+          }
+        </div>
+      }
+    </div>
+  </div>
+</div>
