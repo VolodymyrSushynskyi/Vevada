@@ -1,0 +1,25 @@
+.reviews-page-wrapper {
+  max-width: 900px;
+  width: 100%;
+  margin: 0 auto;
+  margin-bottom: 48px;
+}
+
+.page-title {
+  color: var(--green-200);
+  margin-bottom: 32px;
+}
+
+.reviews-list {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.empty-state {
+  padding: 40px;
+  text-align: center;
+  color: var(--grey-500);
+  background-color: var(--white);
+  border-radius: 12px;
+}

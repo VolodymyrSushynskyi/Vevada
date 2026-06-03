@@ -16,7 +16,7 @@ export class Orders {
   mockOrders: OrderSummaryDto[] = [
     {
       id: 'guid-1',
-      orderNumber: '10096',
+      orderNumber: '10128',
       createdAt: new Date('2026-08-28T10:00:00'),
       totalAmount: 9139,
       itemsCount: 3,
@@ -26,7 +26,7 @@ export class Orders {
     },
     {
       id: 'guid-2',
-      orderNumber: '10094',
+      orderNumber: '10103',
       createdAt: new Date('2026-08-20T09:15:00'),
       totalAmount: 2198,
       itemsCount: 2,
