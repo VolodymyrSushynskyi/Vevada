@@ -1,0 +1,29 @@
+<aside class="sidebar-container">
+  <div class="user-info">
+    <h2 class="user-name text-h4-bold">{{ user.name }}</h2>
+    <p class="user-email text-body-2-regular">{{ user.email }}</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <nav class="nav-menu text-subtitle-2-semi-bold">
+    <a routerLink="/profile/orders" routerLinkActive="active-link" class="nav-item">
+      Поточні замовлення
+    </a>
+    <a routerLink="/profile/history" routerLinkActive="active-link" class="nav-item">
+      Історія замовлень
+    </a>
+    <a routerLink="/profile/reviews" routerLinkActive="active-link" class="nav-item">
+      Мої коментарі
+    </a>
+  </nav>
+
+  <app-sub-button
+    class="logout-btn"
+    label="Вихід"
+    icon="icon-sign-out"
+    iconPosition="left"
+    (btnClick)="onLogout()"
+  >
+  </app-sub-button>
+</aside>

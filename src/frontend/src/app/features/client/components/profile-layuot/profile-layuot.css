@@ -1,0 +1,16 @@
+.profile-page-wrapper {
+  min-height: calc(100vh - 66px);
+}
+
+.profile-container {
+  display: flex;
+  align-items: flex-start;
+}
+
+.profile-content {
+  flex: 1;
+  min-width: 0;
+  padding-top: 24px;
+  padding-right: 32px;
+  padding-left: 32px;
+}

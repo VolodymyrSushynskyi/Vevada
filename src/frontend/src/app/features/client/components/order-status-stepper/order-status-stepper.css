@@ -1,0 +1,63 @@
+.stepper-container {
+  width: 100%;
+  padding: 10px 0;
+}
+
+.stepper-track {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.step-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 80px;
+  position: relative;
+  z-index: 2;
+}
+
+.step-circle {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background-color: var(--grey-200);
+  margin-bottom: 8px;
+  transition: background-color 0.3s ease;
+}
+
+.step-circle.active {
+  background-color: var(--green-100);
+}
+
+.step-label {
+  font-size: 11px;
+  color: var(--grey-400);
+  text-align: center;
+  line-height: 1.2;
+  transition: color 0.3s ease;
+}
+
+.step-label.active {
+  color: var(--grey-600);
+}
+
+.step-line {
+  flex-grow: 1;
+  height: 2px;
+  background-color: var(--green-200);
+  margin-top: 7px;
+  position: relative;
+  z-index: 1;
+  transition: background-color 0.3s ease;
+}
+
+.step-line.active {
+  background-color: var(--green-100);
+}
+
+.stepper-container.is-cancelled .step-circle.active,
+.stepper-container.is-cancelled .step-line.active {
+  background-color: var(--grey-100);
+}
