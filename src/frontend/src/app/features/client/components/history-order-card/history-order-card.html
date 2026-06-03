@@ -1,0 +1,29 @@
+<div class="history-card">
+  <div class="card-header">
+    <div class="header-info">
+      <h3 class="order-number text-subtitle-2-bold">№{{ order.orderNumber }}</h3>
+      <p class="order-date text-body-2-regular">{{ order.createdAt | date: 'dd.MM.yyyy' }}</p>
+    </div>
+    <div class="header-status">
+      <app-order-status-chip [status]="order.status"></app-order-status-chip>
+    </div>
+  </div>
+
+  <div class="card-body">
+    <div class="image-wrapper">
+      <img [src]="order.mainImageUrl" alt="Купальник" />
+    </div>
+
+    <div class="details-wrapper">
+      <p class="items-count text-body-2-regular">{{ order.itemsCount }} товари</p>
+      <div class="total-block">
+        <span class="total-label text-small-regular">Сумма</span>
+        <span class="total-value text-subtitle-2-bold">{{ order.totalAmount }} грн</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-actions">
+    <app-main-button label="Деталі замовлення" (btnClick)="onViewDetails()"> </app-main-button>
+  </div>
+</div>
