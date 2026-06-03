@@ -4,6 +4,7 @@ import { ProductDetails } from './features/client/pages/product-details/product-
 import { Cart } from './features/client/pages/cart/cart';
 import { Favorites } from './features/client/pages/favorites/favorites';
 import { Orders } from './features/client/pages/orders/orders';
+import { History } from './features/client/pages/history/history';
 import { ClientAuth } from './features/auth/pages/client-auth/client-auth';
 import { AdminAuth } from './features/auth/pages/admin-auth/admin-auth';
 import { ClientLayout } from './features/client/components/client-layout/client-layout';
@@ -30,6 +31,7 @@ export const routes: Routes = [
         children: [
           { path: '', redirectTo: 'orders', pathMatch: 'full' },
           { path: 'orders', component: Orders },
+          { path: 'history', component: History },
         ],
       },
     ],
