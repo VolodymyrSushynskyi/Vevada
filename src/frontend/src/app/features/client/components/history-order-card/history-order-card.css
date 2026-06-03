@@ -8,11 +8,10 @@
   background-color: var(--white);
   border-radius: 12px;
   padding: 24px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  box-shadow: 4px 4px 20px rgba(0, 0, 0, 0.15);
   gap: 24px;
 }
 
-/* Шапка */
 .card-header {
   display: flex;
   justify-content: space-between;
@@ -26,7 +25,7 @@
 }
 
 .order-number {
-  color: var(--grey-800);
+  color: var(--grey-700);
   margin: 0;
 }
 
@@ -35,7 +34,6 @@
   margin: 0;
 }
 
-/* Тело */
 .card-body {
   display: flex;
   align-items: center;
@@ -54,6 +52,7 @@
   object-fit: contain;
   border-radius: 8px;
   background-color: transparent;
+  box-shadow: 4px 4px 20px rgba(0, 0, 0, 0.15);
 }
 
 .details-wrapper {
@@ -78,15 +77,13 @@
 }
 
 .total-value {
-  color: var(--grey-800);
+  color: var(--grey-600);
 }
 
-/* Кнопка */
 .card-actions {
   width: 100%;
 }
 
-/* Заставляем кнопку растянуться на 100% ширины */
 .card-actions ::ng-deep app-main-button button,
 .card-actions ::ng-deep ui-button button {
   width: 100%;

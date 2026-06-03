@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { DatePipe, CurrencyPipe } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { OrderSummaryDto } from '../../../../core/models/order.models';
 import { OrderStatusChip } from '../order-status-chip/order-status-chip';
 import { MainButton } from '../../../../shared/components/main-button/main-button';
@@ -7,7 +7,7 @@ import { MainButton } from '../../../../shared/components/main-button/main-butto
 @Component({
   selector: 'app-history-order-card',
   standalone: true,
-  imports: [DatePipe, CurrencyPipe, OrderStatusChip, MainButton],
+  imports: [DatePipe, OrderStatusChip, MainButton],
   templateUrl: './history-order-card.html',
   styleUrl: './history-order-card.css',
 })
