@@ -7,14 +7,15 @@
   background-color: var(--white);
   border-radius: 12px;
   padding: 24px;
-  box-shadow: 4px 4px 20px rgba(0, 0, 0, 0.05);
-  gap: 24px;
+  box-shadow: 4px 4px 20px rgba(0, 0, 0, 0.15);
+  gap: 50px;
 }
 
 .image-wrapper {
   width: 100px;
   height: 120px;
   flex-shrink: 0;
+  align-self: center;
 }
 
 .image-wrapper img {
@@ -23,13 +24,13 @@
   object-fit: contain;
   border-radius: 8px;
   background-color: transparent;
+  box-shadow: 4px 4px 20px rgba(0, 0, 0, 0.15);
 }
 
 .content-wrapper {
   display: flex;
   flex-direction: column;
   flex-grow: 1;
-  /* Важно: не дает тексту вытолкнуть контейнер за пределы экрана */
   min-width: 0;
 }
 
@@ -42,32 +43,38 @@
 
 .product-name {
   margin: 0;
-  color: var(--grey-800);
+  color: var(--grey-600);
 }
 
 .review-date {
-  color: var(--grey-500);
+  color: var(--grey-400);
 }
 
 .rating-wrapper {
   margin-bottom: 16px;
 }
 
+.text-and-actions-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 40px;
+  margin-top: auto;
+}
+
 .review-text-wrapper {
-  margin-bottom: 24px;
+  flex: 1;
+  min-width: 0;
 }
 
 .review-text {
   margin: 0;
   color: var(--grey-700);
-  /* Защита от длинных строк вроде ffffffffff из макета */
   word-break: break-word;
   overflow-wrap: break-word;
   white-space: pre-wrap;
 }
 
 .card-actions {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: auto; /* Прижимаем кнопку к низу карточки */
+  flex-shrink: 0;
 }

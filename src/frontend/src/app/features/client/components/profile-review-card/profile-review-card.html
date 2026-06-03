@@ -15,13 +15,14 @@
       <app-star-rating [rating]="review.rating" size="24px"></app-star-rating>
     </div>
 
-    <div class="review-text-wrapper">
-      <p class="review-text text-body-2-regular">{{ review.text }}</p>
-    </div>
+    <div class="text-and-actions-row">
+      <div class="review-text-wrapper">
+        <p class="review-text text-body-2-regular">{{ review.text }}</p>
+      </div>
 
-    <div class="card-actions">
-      <!-- Кнопка удаления -->
-      <app-sub-button label="Видалити коментар" (btnClick)="onDelete()"></app-sub-button>
+      <div class="card-actions">
+        <app-sub-button label="Видалити коментар" (btnClick)="onDelete()"></app-sub-button>
+      </div>
     </div>
   </div>
 </div>
