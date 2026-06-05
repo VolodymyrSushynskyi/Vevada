@@ -19,6 +19,8 @@ import { ProfileLayuot } from './features/client/components/profile-layuot/profi
 import { ManufacturerLayout } from './features/manufacturer/components/manufacturer-layout/manufacturer-layout';
 import { ManufacturerOrders } from './features/manufacturer/pages/manufacturer-orders/manufacturer-orders';
 
+import { roleGuard } from './core/guards/role.guard';
+
 export const routes: Routes = [
   {
     path: '',
@@ -31,6 +33,8 @@ export const routes: Routes = [
       {
         path: 'profile',
         component: ProfileLayuot,
+        canActivate: [roleGuard],
+        data: { roles: ['Client'] },
         children: [
           { path: '', redirectTo: 'orders', pathMatch: 'full' },
           { path: 'orders', component: Orders },
@@ -43,6 +47,8 @@ export const routes: Routes = [
   {
     path: 'product-manager',
     component: ProductManagerLayout,
+    canActivate: [roleGuard],
+    data: { roles: ['ProductManager'] },
     children: [
       { path: '', redirectTo: 'products', pathMatch: 'full' },
       { path: 'products', component: Products },
@@ -53,6 +59,8 @@ export const routes: Routes = [
   {
     path: 'manufacturer',
     component: ManufacturerLayout,
+    canActivate: [roleGuard],
+    data: { roles: ['Manufacturer'] },
     children: [
       { path: '', redirectTo: 'orders', pathMatch: 'full' },
       { path: 'orders', component: ManufacturerOrders },
@@ -61,6 +69,8 @@ export const routes: Routes = [
   {
     path: 'super-admin',
     component: SuperAdminLayout,
+    canActivate: [roleGuard],
+    data: { roles: ['SuperAdmin'] },
     children: [
       { path: '', redirectTo: 'add-users', pathMatch: 'full' },
       { path: 'add-users', component: AddUsers },
