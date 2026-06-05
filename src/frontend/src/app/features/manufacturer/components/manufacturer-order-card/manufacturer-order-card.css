@@ -1,0 +1,44 @@
+.card-container {
+  background-color: #ffffff;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.card-header,
+.card-body,
+.card-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.order-number {
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+.text-muted {
+  color: #666666;
+  font-size: 14px;
+}
+
+/* Стилизация выпадающего списка под макет */
+.status-dropdown {
+  width: 140px;
+}
+
+/* Убираем лишние отступы у Angular Material */
+::ng-deep .status-dropdown .mat-mdc-text-field-wrapper {
+  padding: 0 12px;
+}
+::ng-deep .status-dropdown .mat-mdc-form-field-subscript-wrapper {
+  display: none; /* Убираем место под ошибки */
+}
+
+.card-actions {
+  gap: 16px;
+}
