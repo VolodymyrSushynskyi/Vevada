@@ -28,7 +28,7 @@ export class ManufacturerOrders implements OnInit {
     {
       id: 'guid-1',
       orderNumber: '10128',
-      createdAt: new Date('2026-08-28T10:00:00'),
+      createdAt: new Date('2026-05-28T10:00:00'),
       totalAmount: 9139,
       itemsCount: 3,
       mainImageUrl: '/img/pink-leotard1.jpg',
@@ -38,7 +38,7 @@ export class ManufacturerOrders implements OnInit {
     {
       id: 'guid-mock-5',
       orderNumber: '10127',
-      createdAt: new Date('2026-08-28T09:50:00').toISOString(),
+      createdAt: new Date('2026-04-24T09:50:00').toISOString(),
       totalAmount: 1800,
       itemsCount: 1,
       mainImageUrl: '/img/purple-rhinestone-leo.jpg',
@@ -48,7 +48,7 @@ export class ManufacturerOrders implements OnInit {
     {
       id: 'guid-mock-4',
       orderNumber: '10126',
-      createdAt: new Date('2026-08-28T08:20:00').toISOString(),
+      createdAt: new Date('2026-04-19T08:20:00').toISOString(),
       totalAmount: 4100,
       itemsCount: 2,
       mainImageUrl: '/img/emerald-dream-leotard.jpg',
@@ -58,7 +58,7 @@ export class ManufacturerOrders implements OnInit {
     {
       id: 'guid-mock-3',
       orderNumber: '10125',
-      createdAt: new Date('2026-08-27T16:45:00').toISOString(),
+      createdAt: new Date('2026-04-17T16:45:00').toISOString(),
       totalAmount: 8900,
       itemsCount: 4,
       mainImageUrl: '/img/training-kit-basics.jpg',
@@ -68,7 +68,7 @@ export class ManufacturerOrders implements OnInit {
     {
       id: 'guid-mock-2',
       orderNumber: '10124',
-      createdAt: new Date('2026-08-27T11:05:00').toISOString(),
+      createdAt: new Date('2026-04-11T11:05:00').toISOString(),
       totalAmount: 3200,
       itemsCount: 1,
       mainImageUrl: '/img/firebird-leotard.jpg',
@@ -78,7 +78,7 @@ export class ManufacturerOrders implements OnInit {
     {
       id: 'guid-mock-1',
       orderNumber: '10123',
-      createdAt: new Date('2026-08-26T14:30:00').toISOString(),
+      createdAt: new Date('2026-04-11T14:30:00').toISOString(),
       totalAmount: 5400,
       itemsCount: 2,
       mainImageUrl: '/img/blue-ocean-leotard.jpg',
@@ -88,7 +88,7 @@ export class ManufacturerOrders implements OnInit {
     {
       id: 'guid-mock-0',
       orderNumber: '10122',
-      createdAt: new Date('2026-08-26T09:15:00').toISOString(),
+      createdAt: new Date('2026-04-09T09:15:00').toISOString(),
       totalAmount: 2500,
       itemsCount: 1,
       mainImageUrl: '/img/black-swan-leotard.jpg',

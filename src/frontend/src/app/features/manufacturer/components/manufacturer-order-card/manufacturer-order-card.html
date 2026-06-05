@@ -1,12 +1,13 @@
-<p>manufacturer-order-card works!</p>
 <div class="card-container">
   <div class="card-header">
-    <span class="order-number">Замовлення {{ order.orderNumber }}</span>
-    <span class="text-muted">{{ order.createdAt | date: 'dd.MM.yyyy о HH:mm' }}</span>
+    <span class="order-number text-subtitle-2-bold">Замовлення №{{ order.orderNumber }}</span>
+    <span class="text-muted text-body-2-regular">{{
+      order.createdAt | date: 'dd.MM.yyyy о HH:mm'
+    }}</span>
   </div>
 
   <div class="card-body">
-    <span class="text-muted">Товарів: {{ order.itemsCount }}</span>
+    <span class="text-muted text-body-1-regular">Товарів: {{ order.itemsCount }}</span>
 
     <mat-form-field appearance="outline" class="status-dropdown">
       <mat-select [value]="order.status" (selectionChange)="onStatusSelect($event.value)">
@@ -23,7 +24,7 @@
 
     @if (order.clientCancellationRequested) {
       <app-main-button label="Скасувати" (btnClick)="cancel.emit(order.id)"> </app-main-button>
-    } @else {
+    } @else if (order.status < OrderStatus.Manufacturing) {
       <app-main-button label="Відмовитись" (btnClick)="refuse.emit(order.id)"> </app-main-button>
     }
   </div>
