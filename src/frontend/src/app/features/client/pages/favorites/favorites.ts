@@ -26,13 +26,15 @@ export class Favorites {
       productId: 'prod-1',
       name: 'Костюм з діагональними смужками',
       price: 1099,
-      imageUrl: '/img/pink-leotard2.jpg',
+      imageUrl:
+        'https://api.vevada.uk/content/images/07208ac1-0e48-4de0-ab3e-1edd2a683f3a-thumb.webp',
     },
     {
       productId: 'prod-2',
       name: 'Костюм зі смужками з боку',
       price: 3020,
-      imageUrl: '/img/snake-leotard.jpg',
+      imageUrl:
+        'https://api.vevada.uk/content/images/358b8141-66af-42ba-aaf5-2d4270cd0feb-thumb.webp',
     },
   ];
 

@@ -42,7 +42,8 @@ export class Cart {
       size: '160',
       price: 3020,
       quantity: 2,
-      imageUrl: '/img/pink-leotard1.jpg',
+      imageUrl:
+        'https://api.vevada.uk/content/images/358b8141-66af-42ba-aaf5-2d4270cd0feb-thumb.webp',
     },
     {
       cartItemId: 'cart-item-2',
@@ -51,7 +52,8 @@ export class Cart {
       size: '152',
       price: 1099,
       quantity: 1,
-      imageUrl: '/img/pink-leotard2.jpg',
+      imageUrl:
+        'https://api.vevada.uk/content/images/07208ac1-0e48-4de0-ab3e-1edd2a683f3a-thumb.webp',
     },
     {
       cartItemId: 'cart-item-3',
@@ -60,7 +62,8 @@ export class Cart {
       size: '134',
       price: 2000,
       quantity: 1,
-      imageUrl: '/img/blue-leotard.jpg',
+      imageUrl:
+        'https://api.vevada.uk/content/images/b405ee3a-6e5e-43d5-8f0c-cff481a2f0e8-thumb.webp',
     },
   ];
 

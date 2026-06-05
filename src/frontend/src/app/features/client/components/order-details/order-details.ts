@@ -1,6 +1,5 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef, MatDialogModule } from '@angular/material/dialog';
-import { CurrencyPipe } from '@angular/common';
 import { CloseButton } from '../../../../shared/components/close-button/close-button'; //
 import { HorizontalProductCard } from '../horizontal-product-card/horizontal-product-card';
 import { OrderItemDto } from '../../../../core/models/order.models';
