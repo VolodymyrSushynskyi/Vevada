@@ -1,0 +1,26 @@
+<aside class="sidebar-container">
+  <div class="logo-section">
+    <app-brand-logo-with-text
+      theme="dark"
+      textSize="64px"
+      iconSize="84px"
+    ></app-brand-logo-with-text>
+  </div>
+
+  <mat-nav-list class="nav-menu">
+    <a mat-list-item routerLink="/manufacturer/orders" routerLinkActive="active-link">
+      <span class="nav-text text-body-1-regular">Замовлення</span>
+    </a>
+    <a mat-list-item routerLink="/product-manager/products" routerLinkActive="active-link">
+      <span class="nav-text text-body-1-regular">Мої замовлення</span>
+    </a>
+    <a mat-list-item routerLink="/product-manager/products" routerLinkActive="active-link">
+      <span class="nav-text text-body-1-regular">Архів моїх замовлень</span>
+    </a>
+  </mat-nav-list>
+
+  <div class="logout-section">
+    <app-sub-button label="Вихід" icon="icon-sign-out" iconPosition="left" (btnClick)="onLogout()">
+    </app-sub-button>
+  </div>
+</aside>
