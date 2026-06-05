@@ -51,24 +51,13 @@
   color: var(--grey-700);
 }
 
-.mat-column-actions {
-  width: 1%;
-  white-space: nowrap;
-}
-
-.text-muted {
-  color: var(--grey-500);
-}
-
 .actions-cell {
   text-align: right;
 }
 
-.buttons-wrapper {
-  display: flex;
-  gap: 16px;
-  justify-content: flex-end;
-  align-items: center;
+.mat-column-actions {
+  width: 1%;
+  white-space: nowrap;
 }
 
 .orders-paginator {

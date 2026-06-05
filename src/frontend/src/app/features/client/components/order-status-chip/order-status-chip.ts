@@ -22,7 +22,7 @@ export class OrderStatusChip {
       case OrderStatus.Shipped:
         return 'Відправлено';
       case OrderStatus.Completed:
-        return 'Доставлено';
+        return 'Виконано';
       case OrderStatus.Cancelled:
         return 'Скасовано';
       default:

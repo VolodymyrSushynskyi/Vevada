@@ -19,6 +19,7 @@ import { ProfileLayuot } from './features/client/components/profile-layuot/profi
 import { ManufacturerLayout } from './features/manufacturer/components/manufacturer-layout/manufacturer-layout';
 import { ManufacturerOrders } from './features/manufacturer/pages/manufacturer-orders/manufacturer-orders';
 import { ManufacturerMyOrders } from './features/manufacturer/pages/manufacturer-my-orders/manufacturer-my-orders';
+import { ManufacturerHistoryPage } from './features/manufacturer/pages/manufacturer-history-page/manufacturer-history-page';
 
 import { roleGuard } from './core/guards/role.guard';
 
@@ -66,6 +67,7 @@ export const routes: Routes = [
       { path: '', redirectTo: 'orders', pathMatch: 'full' },
       { path: 'orders', component: ManufacturerOrders },
       { path: 'my-orders', component: ManufacturerMyOrders },
+      { path: 'history', component: ManufacturerHistoryPage },
     ],
   },
   {
