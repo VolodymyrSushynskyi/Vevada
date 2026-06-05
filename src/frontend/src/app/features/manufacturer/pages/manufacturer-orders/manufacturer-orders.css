@@ -1,0 +1,83 @@
+/* Контейнер страницы */
+.orders-page-container {
+  padding: 10px 40px;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.page-title {
+  margin-bottom: 35px;
+  color: var(--grey-700);
+}
+
+.table-card {
+  background-color: var(--white);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 4px 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.orders-table {
+  width: 100%;
+  background: transparent;
+}
+
+::ng-deep .orders-table .mat-mdc-header-row {
+  background-color: var(--grey-50);
+  height: 56px;
+}
+
+::ng-deep .orders-table .mat-mdc-header-cell {
+  color: var(--grey-600);
+  border-bottom: 1px solid var(--grey-300);
+  padding: 0 24px;
+  text-align: center;
+}
+
+::ng-deep .orders-table .mat-mdc-row {
+  height: 75px;
+}
+
+::ng-deep .orders-table .mat-mdc-cell {
+  border-bottom: 1px solid var(--grey-200);
+  padding: 0 24px;
+  text-align: center;
+}
+
+::ng-deep .orders-table .mat-mdc-row:last-child .mat-mdc-cell {
+  border-bottom: none;
+}
+
+.order-number-cell {
+  color: var(--grey-700);
+}
+
+.mat-column-actions {
+  width: 1%;
+  white-space: nowrap;
+}
+
+.text-muted {
+  color: var(--grey-500);
+}
+
+.actions-cell {
+  text-align: right;
+}
+
+.buttons-wrapper {
+  display: flex;
+  gap: 16px;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.orders-paginator {
+  border-top: 1px solid var(--grey-200);
+  background-color: transparent;
+}
+
+::ng-deep .orders-paginator .mat-mdc-paginator-container {
+  min-height: 56px;
+  padding: 0 24px;
+}
