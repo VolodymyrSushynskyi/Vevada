@@ -1,0 +1,16 @@
+<div class="page-container">
+  <h1 class="page-title text-h4-bold">Мої замовлення</h1>
+
+  <div class="orders-grid">
+    @for (order of myOrders; track order.id) {
+      <app-manufacturer-order-card
+        [order]="order"
+        (viewDetails)="onViewDetails($event)"
+        (statusChange)="onStatusChange($event)"
+        (refuse)="onRefuseOrder($event)"
+        (cancel)="onCancelOrder($event)"
+      >
+      </app-manufacturer-order-card>
+    }
+  </div>
+</div>

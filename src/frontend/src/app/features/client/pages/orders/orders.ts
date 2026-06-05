@@ -17,7 +17,7 @@ export class Orders {
     {
       id: 'guid-1',
       orderNumber: '10128',
-      createdAt: new Date('2026-08-28T10:00:00'),
+      createdAt: new Date('2026-05-28T10:00:00'),
       totalAmount: 9139,
       itemsCount: 3,
       mainImageUrl: '/img/pink-leotard1.jpg',
@@ -27,7 +27,7 @@ export class Orders {
     {
       id: 'guid-2',
       orderNumber: '10103',
-      createdAt: new Date('2026-08-20T09:15:00'),
+      createdAt: new Date('2026-03-20T09:15:00'),
       totalAmount: 2198,
       itemsCount: 2,
       mainImageUrl: '/img/pink-leotard2.jpg',

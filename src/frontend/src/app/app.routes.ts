@@ -18,6 +18,7 @@ import { AddUsers } from './features/super-admin/pages/add-users/add-users';
 import { ProfileLayuot } from './features/client/components/profile-layuot/profile-layuot';
 import { ManufacturerLayout } from './features/manufacturer/components/manufacturer-layout/manufacturer-layout';
 import { ManufacturerOrders } from './features/manufacturer/pages/manufacturer-orders/manufacturer-orders';
+import { ManufacturerMyOrders } from './features/manufacturer/pages/manufacturer-my-orders/manufacturer-my-orders';
 
 import { roleGuard } from './core/guards/role.guard';
 
@@ -64,6 +65,7 @@ export const routes: Routes = [
     children: [
       { path: '', redirectTo: 'orders', pathMatch: 'full' },
       { path: 'orders', component: ManufacturerOrders },
+      { path: 'my-orders', component: ManufacturerMyOrders },
     ],
   },
   {
