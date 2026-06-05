@@ -1,0 +1,31 @@
+<div class="card-container">
+  <div class="card-header">
+    <span class="order-number text-subtitle-2-bold">Замовлення №{{ order.orderNumber }}</span>
+    <span class="text-muted text-body-2-regular">{{
+      order.createdAt | date: 'dd.MM.yyyy о HH:mm'
+    }}</span>
+  </div>
+
+  <div class="card-body">
+    <span class="text-muted text-body-1-regular">Товарів: {{ order.itemsCount }}</span>
+
+    <mat-form-field appearance="outline" class="status-dropdown">
+      <mat-select [value]="order.status" (selectionChange)="onStatusSelect($event.value)">
+        @for (status of availableStatuses; track status.id) {
+          <mat-option [value]="status.id">{{ status.name }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div class="card-actions">
+    <app-sub-button label="Подивитись деталі" (btnClick)="viewDetails.emit(order.orderNumber)">
+    </app-sub-button>
+
+    @if (order.clientCancellationRequested) {
+      <app-main-button label="Скасувати" (btnClick)="cancel.emit(order.id)"> </app-main-button>
+    } @else if (order.status < OrderStatus.Manufacturing) {
+      <app-main-button label="Відмовитись" (btnClick)="refuse.emit(order.id)"> </app-main-button>
+    }
+  </div>
+</div>
