@@ -1,85 +1,99 @@
-import { Component, inject } from '@angular/core';
-import { OrderCard } from '../../components/order-card/order-card';
-import { OrderSummaryDto } from '../../../../core/models/order.models';
-import { OrderStatus } from '../../../../core/constants/order-status';
+import {
+  Component,
+  OnInit,
+  inject,
+  DestroyRef,
+  ChangeDetectorRef,
+  PLATFORM_ID,
+} from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+
+import { OrderCard } from '../../components/order-card/order-card';
 import { OrderDetails } from '../../components/order-details/order-details';
+import { OrderDto } from '../../../../core/models/order.models';
+import { OrdersService } from '../../../../core/services/client/orders.service';
+import { ToastService } from '../../../../core/services/common/toast.service';
 
 @Component({
   selector: 'app-orders',
   standalone: true,
-  imports: [OrderCard],
+  imports: [CommonModule, OrderCard, MatProgressSpinnerModule],
   templateUrl: './orders.html',
   styleUrl: './orders.css',
 })
-export class Orders {
-  mockOrders: OrderSummaryDto[] = [
-    {
-      id: 'guid-1',
-      orderNumber: '10128',
-      createdAt: new Date('2026-05-28T10:00:00'),
-      totalAmount: 9139,
-      itemsCount: 4,
-      mainImageUrl: '/img/pink-leotard1.jpg',
-      status: OrderStatus.Cancelled,
-      statusMessage: 'Ваше замовлення скасовано',
-    },
-    {
-      id: 'guid-2',
-      orderNumber: '10103',
-      createdAt: new Date('2026-03-20T09:15:00'),
-      totalAmount: 2198,
-      itemsCount: 2,
-      mainImageUrl: '/img/pink-leotard2.jpg',
-      status: OrderStatus.Manufacturing,
-      statusMessage: 'Ваше замовлення комплектується',
-    },
-  ];
-
+export class Orders implements OnInit {
+  private ordersService = inject(OrdersService);
+  private toastService = inject(ToastService);
   private dialog = inject(MatDialog);
+  private destroyRef = inject(DestroyRef);
+  private cdr = inject(ChangeDetectorRef);
+  private platformId = inject(PLATFORM_ID);
 
-  handleCancelOrder(orderId: string) {
-    console.log('Отменяем заказ:', orderId);
+  activeOrders: OrderDto[] = [];
+  isLoading = true;
+
+  ngOnInit(): void {
+    this.loadOrders();
   }
 
-  handleViewDetails(orderId: string) {
-    const order = this.mockOrders.find((o) => o.id === orderId);
+  loadOrders(): void {
+    if (!isPlatformBrowser(this.platformId)) return;
+
+    this.ordersService
+      .getActiveOrders()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (orders) => {
+          this.activeOrders = orders;
+          this.isLoading = false;
+          this.cdr.markForCheck();
+        },
+        error: (err) => {
+          console.error(err);
+          this.toastService.showError('Помилка завантаження замовлень');
+          this.isLoading = false;
+          this.cdr.markForCheck();
+        },
+      });
+  }
+
+  handleCancelOrder(orderId: number): void {
+    const order = this.activeOrders.find((o) => o.orderId === orderId);
     if (!order) return;
 
-    const mockItems = [
-      {
-        id: '1',
-        productName: 'Костюм зі смужками з боку',
-        sizeLabel: '160',
-        price: 3020,
-        quantity: 2,
-        mainImageUrl: '/img/pink-leotard1.jpg',
-      },
-      {
-        id: '2',
-        productName: 'Костюм з діагональними смужками',
-        sizeLabel: '152',
-        price: 1099,
-        quantity: 1,
-        mainImageUrl: '/img/pink-leotard2.jpg',
-      },
-      {
-        id: '3',
-        productName: 'Костюм з горизонтальними смужками',
-        sizeLabel: '134',
-        price: 2000,
-        quantity: 1,
-        mainImageUrl: '/img/blue-leotard.jpg',
-      },
-    ];
+    order.cancellationRequested = true;
+    this.cdr.markForCheck();
+
+    this.ordersService
+      .requestCancellation(orderId)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: () => {
+          this.toastService.showSuccess('Запит на скасування відправлено');
+        },
+        error: () => {
+          // Відкат у разі помилки
+          order.cancellationRequested = false;
+          this.toastService.showError('Не вдалося відправити запит');
+          this.cdr.markForCheck();
+        },
+      });
+  }
+
+  handleViewDetails(orderId: number): void {
+    const order = this.activeOrders.find((o) => o.orderId === orderId);
+    if (!order) return;
 
     this.dialog.open(OrderDetails, {
       width: '600px',
       maxWidth: '95vw',
       panelClass: 'custom-dialog-container',
       data: {
-        orderNumber: order.orderNumber,
-        items: mockItems,
+        orderNumber: order.orderId.toString(),
+        items: order.items,
       },
     });
   }
