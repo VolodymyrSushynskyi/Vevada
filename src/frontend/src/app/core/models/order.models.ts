@@ -1,21 +1,19 @@
 import { OrderStatus } from '../constants/order-status';
 
-export interface OrderSummaryDto {
-  id: string;
-  orderNumber: string;
-  createdAt: Date | string;
-  totalAmount: number;
-  itemsCount: number;
-  mainImageUrl: string;
-  status: OrderStatus;
-  statusMessage: string;
+export interface OrderItemDto {
+  productName: string;
+  size: string;
+  unitPrice: number;
+  quantity: number;
+  imageId: string;
 }
 
-export interface OrderItemDto {
-  id: string;
-  productName: string;
-  sizeLabel: string;
-  price: number;
-  quantity: number;
-  mainImageUrl: string;
+export interface OrderDto {
+  orderId: number;
+  createdAt: string;
+  status: string;
+  totalAmount: number;
+  totalItems: number;
+  cancellationRequested: boolean;
+  items: OrderItemDto[];
 }
