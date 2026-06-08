@@ -9,15 +9,15 @@
 
   <div class="dialog-content">
     <div class="items-list">
-      @for (item of data.items; track item.id; let last = $last) {
+      @for (item of data.items; track $index; let last = $last) {
         <app-horizontal-product-card
           [name]="item.productName"
-          [imageUrl]="item.mainImageUrl"
-          [price]="item.price"
+          [imageUrl]="item.imageId | imageUrl: 'thumb'"
+          [price]="item.unitPrice"
         >
           <ng-container subtitle>
             <div class="subtitle-wrapper">
-              <p class="subtitle-text text-body-2-regular">Розмір: {{ item.sizeLabel }}</p>
+              <p class="subtitle-text text-body-2-regular">Розмір: {{ item.size }}</p>
               <p class="subtitle-text text-body-2-regular">Кількість: {{ item.quantity }}</p>
             </div>
           </ng-container>

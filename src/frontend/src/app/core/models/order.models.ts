@@ -11,7 +11,7 @@ export interface OrderItemDto {
 export interface OrderDto {
   orderId: number;
   createdAt: string;
-  status: string;
+  status: OrderStatus;
   totalAmount: number;
   totalItems: number;
   cancellationRequested: boolean;

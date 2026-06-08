@@ -2,12 +2,23 @@ import { Component, ChangeDetectionStrategy, ChangeDetectorRef, OnInit } from '@
 import { CommonModule } from '@angular/common';
 import { PageEvent, MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
-import { OrderSummaryDto } from '../../../../core/models/order.models';
+//import { OrderSummaryDto } from '../../../../core/models/order.models';
 import { OrderStatus } from '../../../../core/constants/order-status';
 import { SubButton } from '../../../../shared/components/sub-button/sub-button';
 import { MainButton } from '../../../../shared/components/main-button/main-button';
 import { MatDialogModule, MatDialog } from '@angular/material/dialog';
 import { OrderDetails } from '../../../client/components/order-details/order-details';
+
+export interface OrderSummaryDto {
+  id: string;
+  orderNumber: string;
+  createdAt: string | Date;
+  totalAmount: number;
+  itemsCount: number;
+  mainImageUrl: string;
+  status: OrderStatus;
+  statusMessage: string;
+}
 
 @Component({
   selector: 'app-manufacturer-orders',

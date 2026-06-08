@@ -1,12 +1,12 @@
 <div class="order-card">
   <div class="order-info">
     <div class="image-wrapper">
-      <img [src]="order.mainImageUrl" alt="Купальник" />
-      <span class="items-count">{{ order.itemsCount }} товари</span>
+      <img [src]="firstImageId | imageUrl: 'thumb'" alt="Купальник" />
+      <span class="items-count">{{ order.totalItems }} товари</span>
     </div>
 
     <div class="details-wrapper">
-      <h3 class="order-number text-subtitle-2-bold">№{{ order.orderNumber }}</h3>
+      <h3 class="order-number text-subtitle-2-bold">№{{ order.orderId }}</h3>
       <p class="order-date text-body-2-regular">{{ order.createdAt | date: 'dd.MM.yyyy' }}</p>
 
       <div class="order-total text-body-2-regular">
@@ -26,13 +26,16 @@
     <div class="actions-row">
       <div class="status-message-block">
         <app-order-status-chip [status]="order.status"></app-order-status-chip>
-        <p class="status-message text-body-2-regular">{{ order.statusMessage }}</p>
+
+        @if (order.cancellationRequested) {
+          <p class="status-message cancellation-pending text-body-2-regular">Очікує скасування</p>
+        }
       </div>
 
       <div class="buttons-block">
         <app-main-button label="Деталі замовлення" (btnClick)="onViewDetails()"> </app-main-button>
 
-        @if (canCancel) {
+        @if (canCancel && !order.cancellationRequested) {
           <app-sub-button label="Скасувати замовлення" (btnClick)="onCancelOrder()">
           </app-sub-button>
         }
