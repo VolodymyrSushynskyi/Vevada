@@ -19,10 +19,10 @@ export class Orders {
       orderNumber: '10128',
       createdAt: new Date('2026-05-28T10:00:00'),
       totalAmount: 9139,
-      itemsCount: 3,
+      itemsCount: 4,
       mainImageUrl: '/img/pink-leotard1.jpg',
-      status: OrderStatus.Pending,
-      statusMessage: 'Ваше замовлення чекає підтвердження',
+      status: OrderStatus.Cancelled,
+      statusMessage: 'Ваше замовлення скасовано',
     },
     {
       id: 'guid-2',
@@ -31,8 +31,8 @@ export class Orders {
       totalAmount: 2198,
       itemsCount: 2,
       mainImageUrl: '/img/pink-leotard2.jpg',
-      status: OrderStatus.Cancelled,
-      statusMessage: 'Ваше замовлення скасовано',
+      status: OrderStatus.Manufacturing,
+      statusMessage: 'Ваше замовлення комплектується',
     },
   ];
 

@@ -16,6 +16,7 @@
       <div class="info-column">
         <app-product-info
           [product]="product"
+          [isFavorite]="isFavorite"
           (addToCart)="onAddToCart()"
           (toggleFavorite)="onToggleFavorite()"
           (openSizeGuide)="onOpenSizeGuide()"

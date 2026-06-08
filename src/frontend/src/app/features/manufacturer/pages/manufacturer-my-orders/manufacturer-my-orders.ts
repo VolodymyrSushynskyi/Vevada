@@ -23,7 +23,7 @@ export class ManufacturerMyOrders {
       orderNumber: '1028',
       createdAt: new Date('2026-05-28T10:00:00').toISOString(),
       totalAmount: 3000,
-      itemsCount: 3,
+      itemsCount: 4,
       mainImageUrl: '',
       status: OrderStatus.Accepted,
       statusMessage: '',

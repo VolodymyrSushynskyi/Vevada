@@ -13,11 +13,11 @@ export class Reviews {
   mockReviews: ProfileReviewDto[] = [
     {
       id: 'r1',
-      productName: 'Леопардовий костюм',
-      mainImageUrl: '/img/leopard-leotard.jpg',
-      rating: 4,
-      text: 'Непоганий костюм. Якість непогана',
-      createdAt: new Date('2026-05-28T10:00:00'),
+      productName: 'Костюм із смужками з боку',
+      mainImageUrl: '/img/pink-leotard1.jpg',
+      rating: 3,
+      text: 'Костюм не поганий, але не підійшов розмір',
+      createdAt: new Date('2026-06-06T10:00:00'),
     },
     {
       id: 'r2',

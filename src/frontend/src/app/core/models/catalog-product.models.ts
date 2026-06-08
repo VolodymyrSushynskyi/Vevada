@@ -6,6 +6,7 @@ export interface CatalogProductDto {
   name: string;
   price: number;
   mainImageId: string;
+  isFavorite?: boolean;
 }
 
 export interface ProductVariationDto {
