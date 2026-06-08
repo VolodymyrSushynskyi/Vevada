@@ -6,7 +6,10 @@ import {
   PLATFORM_ID,
   ChangeDetectorRef,
 } from '@angular/core';
+import { Router } from '@angular/router';
 import { isPlatformBrowser } from '@angular/common';
+import { of } from 'rxjs';
+import { switchMap, map, catchError } from 'rxjs/operators';
 import { CommonModule } from '@angular/common';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
@@ -17,6 +20,9 @@ import { CatalogGrid } from '../../components/catalog-grid/catalog-grid';
 import { CatalogService } from '../../../../core/services/client/catalog.service';
 import { CatalogProductDto } from '../../../../core/models/catalog-product.models';
 import { ToastService } from '../../../../core/services/common/toast.service';
+
+import { FavoritesService } from '../../../../core/services/client/favorites.service';
+import { SessionService } from '../../../../core/services/auth/session.service';
 
 @Component({
   selector: 'app-home',
@@ -32,6 +38,9 @@ export class Home implements OnInit {
   private toastService = inject(ToastService);
   private platformId = inject(PLATFORM_ID);
   private dialog = inject(MatDialog);
+  private favoritesService = inject(FavoritesService);
+  private sessionService = inject(SessionService);
+  private router = inject(Router);
 
   products: CatalogProductDto[] = [];
   isLoading = true;
@@ -54,12 +63,36 @@ export class Home implements OnInit {
 
     this.catalogService
       .getCatalog(apiPageNumber, this.pageSize)
-      .pipe(takeUntilDestroyed(this.destroyRef))
+      .pipe(
+        switchMap((catalogResponse) => {
+          if (this.sessionService.isAuthenticated()) {
+            return this.favoritesService.getFavorites().pipe(
+              map((favorites) => ({ catalogResponse, favorites })),
+              // Добавляем перехват ошибки конкретно для избранного!
+              catchError((err) => {
+                console.warn(
+                  'Не вдалося завантажити обране (можливо, ендпоінт ще не готовий)',
+                  err,
+                );
+                // Возвращаем пустой массив избранного, чтобы каталог загрузился
+                return of({ catalogResponse, favorites: [] });
+              }),
+            );
+          }
+          return of({ catalogResponse, favorites: [] });
+        }),
+        takeUntilDestroyed(this.destroyRef),
+      )
       .subscribe({
-        next: (response) => {
-          this.products = response.items;
-          this.totalRecords = response.totalCount;
+        next: ({ catalogResponse, favorites }) => {
+          const favoriteIds = new Set(favorites.map((f) => f.productId));
 
+          this.products = catalogResponse.items.map((product) => ({
+            ...product,
+            isFavorite: favoriteIds.has(product.id),
+          }));
+
+          this.totalRecords = catalogResponse.totalCount;
           this.isLoading = false;
           this.cdr.markForCheck();
         },
@@ -93,6 +126,23 @@ export class Home implements OnInit {
   }
 
   handleToggleFavorite(product: CatalogProductDto): void {
-    console.log('Отправка запроса на добавление в избранное:', product.name);
+    if (!this.sessionService.isAuthenticated()) {
+      this.router.navigate(['/login']);
+      return;
+    }
+
+    product.isFavorite = !product.isFavorite;
+    this.cdr.markForCheck();
+
+    this.favoritesService
+      .toggleFavorite(product.id)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        error: (err) => {
+          product.isFavorite = !product.isFavorite;
+          this.toastService.showError('Помилка при оновленні обраного');
+          this.cdr.markForCheck();
+        },
+      });
   }
 }

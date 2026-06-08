@@ -8,7 +8,7 @@
 
     <app-favorite-button
       class="favorite-btn"
-      [isFavorite]="false"
+      [isFavorite]="!!product.isFavorite"
       (toggle)="onFavoriteClick($event)"
     >
     </app-favorite-button>
