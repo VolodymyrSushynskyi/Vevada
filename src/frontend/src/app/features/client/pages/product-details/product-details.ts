@@ -6,6 +6,8 @@ import {
   PLATFORM_ID,
   ChangeDetectorRef,
 } from '@angular/core';
+import { Router } from '@angular/router';
+import { of, forkJoin } from 'rxjs';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -20,6 +22,9 @@ import { ToastService } from '../../../../core/services/common/toast.service';
 import { ProductGallery } from '../../components/product-gallery/product-gallery';
 import { SizeGuideDialog } from '../../components/size-guide/size-guide';
 import { ProductReviews } from '../../components/product-reviews/product-reviews';
+
+import { FavoritesService } from '../../../../core/services/client/favorites.service';
+import { SessionService } from '../../../../core/services/auth/session.service';
 
 @Component({
   selector: 'app-product-details',
@@ -36,9 +41,13 @@ export class ProductDetails implements OnInit {
   private cdr = inject(ChangeDetectorRef);
   private dialog = inject(MatDialog);
   private toastService = inject(ToastService);
+  private favoritesService = inject(FavoritesService);
+  private sessionService = inject(SessionService);
+  private router = inject(Router);
 
   product: ProductDetailsDto | null = null;
   isLoading = true;
+  isFavorite = false;
 
   ngOnInit(): void {
     this.route.paramMap.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((params) => {
@@ -54,14 +63,22 @@ export class ProductDetails implements OnInit {
 
     this.isLoading = true;
     this.product = null;
+    this.isFavorite = false;
     this.cdr.markForCheck();
 
-    this.catalogService
-      .getProductById(id)
+    const detailsReq = this.catalogService.getProductById(id);
+    const favReq = this.sessionService.isAuthenticated()
+      ? this.favoritesService.getFavorites()
+      : of([]);
+
+    forkJoin({ productRes: detailsReq, favRes: favReq })
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
-        next: (response) => {
-          this.product = (response as any).data || response;
+        next: ({ productRes, favRes }) => {
+          this.product = (productRes as any).data || productRes;
+
+          this.isFavorite = favRes.some((f) => f.productId === id);
+
           this.isLoading = false;
           this.cdr.markForCheck();
         },
@@ -91,7 +108,26 @@ export class ProductDetails implements OnInit {
   }
 
   onToggleFavorite(): void {
-    console.log('Додано в обране:', this.product?.name);
+    if (!this.product) return;
+
+    if (!this.sessionService.isAuthenticated()) {
+      this.router.navigate(['/login']);
+      return;
+    }
+
+    this.isFavorite = !this.isFavorite;
+    this.cdr.markForCheck();
+
+    this.favoritesService
+      .toggleFavorite(this.product.id)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        error: () => {
+          this.isFavorite = !this.isFavorite;
+          this.toastService.showError('Помилка при оновленні обраного');
+          this.cdr.markForCheck();
+        },
+      });
   }
 
   onOpenSizeGuide(): void {

@@ -8,16 +8,20 @@
         >
       </h2>
 
-      @if (favoriteItems.length === 0) {
+      @if (isLoading) {
+        <div class="loader-overlay" style="display: flex; justify-content: center; padding: 40px 0">
+          <mat-spinner diameter="48"></mat-spinner>
+        </div>
+      } @else if (favoriteItems.length === 0) {
         <div class="empty-favorites-message text-body-1-medium">Список обраного порожній.</div>
       } @else {
         <div class="favorites-list">
           @for (item of favoriteItems; track item.productId; let last = $last) {
             <div class="favorite-item-row">
               <app-horizontal-product-card
-                [name]="item.name"
+                [name]="item.productName"
                 [price]="item.price"
-                [imageUrl]="item.imageUrl"
+                [imageUrl]="item.mainImageId | imageUrl: 'thumb'"
               >
                 <div actions class="item-actions-wrapper">
                   <app-ui-icon-button

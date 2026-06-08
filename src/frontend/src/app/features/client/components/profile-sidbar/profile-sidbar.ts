@@ -11,8 +11,8 @@ import { SubButton } from '../../../../shared/components/sub-button/sub-button';
 })
 export class ProfileSidbar {
   user = {
-    name: 'Ганна Олексієнко',
-    email: 'hanna_oleksienko@gmail.com',
+    name: 'Hanna Oleksiienko',
+    email: 'hanna_oleksiienko@gmail.com',
   };
 
   onLogout() {
