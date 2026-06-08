@@ -9,6 +9,7 @@ import {
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatDialog } from '@angular/material/dialog';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { HorizontalProductCard } from '../../components/horizontal-product-card/horizontal-product-card';
@@ -18,6 +19,8 @@ import { FavoritesService } from '../../../../core/services/client/favorites.ser
 import { ToastService } from '../../../../core/services/common/toast.service';
 import { FavoriteItemDto } from '../../../../core/models/favorite-item.models';
 import { ImageUrlPipe } from '../../../../core/pipes/image-url.pipe';
+import { SizeSelector } from '../../components/size-selector/size-selector';
+import { CartService } from '../../../../core/services/client/cart.service';
 
 @Component({
   selector: 'app-favorites',
@@ -40,6 +43,8 @@ export class Favorites implements OnInit {
   private destroyRef = inject(DestroyRef);
   private cdr = inject(ChangeDetectorRef);
   private platformId = inject(PLATFORM_ID);
+  private dialog = inject(MatDialog);
+  private cartService = inject(CartService);
 
   favoriteItems: FavoriteItemDto[] = [];
   isLoading = true;
@@ -93,6 +98,30 @@ export class Favorites implements OnInit {
   }
 
   onAddToCart(productId: string): void {
-    console.log(`Додано в кошик товар з ID: ${productId}`);
+    const dialogRef = this.dialog.open(SizeSelector, {
+      width: '400px',
+      data: { productId: productId },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.cartService
+          .addItem({
+            productId: result.productId,
+            size: result.size,
+            quantity: 1,
+          })
+          .pipe(takeUntilDestroyed(this.destroyRef))
+          .subscribe({
+            next: () => {
+              this.toastService.showSuccess('Товар додано до кошика!');
+            },
+            error: (err) => {
+              console.error(err);
+              this.toastService.showError('Помилка при додаванні в кошик');
+            },
+          });
+      }
+    });
   }
 }

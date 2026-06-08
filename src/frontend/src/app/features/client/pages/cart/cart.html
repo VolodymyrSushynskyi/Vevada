@@ -7,16 +7,24 @@
           <span class="cart-count text-subtitle-2-semi-bold">({{ cartItems.length }} товарів)</span>
         </h2>
 
-        @if (cartItems.length === 0) {
+        @if (isLoading) {
+          <div
+            class="loader-overlay"
+            style="display: flex; justify-content: center; padding: 40px 0"
+          >
+            <mat-spinner diameter="48"></mat-spinner>
+          </div>
+        } @else if (cartItems.length === 0) {
           <div class="empty-cart-message text-body-1-medium">Ваш кошик порожній.</div>
         } @else {
           <div class="cart-items-list">
             @for (item of cartItems; track item.cartItemId; let last = $last) {
               <div class="cart-item-row">
                 <app-horizontal-product-card
-                  [name]="item.name"
-                  [price]="item.price"
-                  [imageUrl]="item.imageUrl"
+                  [productId]="item.productId"
+                  [name]="item.productName"
+                  [price]="item.unitPrice"
+                  [imageUrl]="item.imageId | imageUrl: 'thumb'"
                 >
                   <div subtitle class="item-size-info">Розмір: {{ item.size }}</div>
 

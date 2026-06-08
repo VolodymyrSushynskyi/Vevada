@@ -16,6 +16,7 @@ import { MatDialog } from '@angular/material/dialog';
 
 import { CatalogService } from '../../../../core/services/client/catalog.service';
 import { ProductDetailsDto } from '../../../../core/models/catalog-product.models';
+import { CatalogProductDto } from '../../../../core/models/catalog-product.models';
 import { ProductInfo } from '../../components/product-info/product-info';
 import { SizeSelector } from '../../components/size-selector/size-selector';
 import { ToastService } from '../../../../core/services/common/toast.service';
@@ -25,6 +26,7 @@ import { ProductReviews } from '../../components/product-reviews/product-reviews
 
 import { FavoritesService } from '../../../../core/services/client/favorites.service';
 import { SessionService } from '../../../../core/services/auth/session.service';
+import { CartService } from '../../../../core/services/client/cart.service';
 
 @Component({
   selector: 'app-product-details',
@@ -37,6 +39,7 @@ export class ProductDetails implements OnInit {
   private platformId = inject(PLATFORM_ID);
   private route = inject(ActivatedRoute);
   private catalogService = inject(CatalogService);
+  private cartService = inject(CartService);
   private destroyRef = inject(DestroyRef);
   private cdr = inject(ChangeDetectorRef);
   private dialog = inject(MatDialog);
@@ -91,22 +94,6 @@ export class ProductDetails implements OnInit {
       });
   }
 
-  onAddToCart(): void {
-    if (!this.product) return;
-
-    const dialogRef = this.dialog.open(SizeSelector, {
-      width: '400px',
-      data: { productId: this.product.id },
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        console.log(`Товар ${result.productId} розмір ${result.size} додано в кошик!`);
-        this.toastService.showSuccess('Товар додано до кошика!');
-      }
-    });
-  }
-
   onToggleFavorite(): void {
     if (!this.product) return;
 
@@ -136,6 +123,36 @@ export class ProductDetails implements OnInit {
       maxHeight: '95vh',
       maxWidth: '95vw',
       autoFocus: false,
+    });
+  }
+
+  handleAddToCart(): void {
+    if (!this.product) return;
+
+    const dialogRef = this.dialog.open(SizeSelector, {
+      width: '400px',
+      data: { productId: this.product.id },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.cartService
+          .addItem({
+            productId: result.productId,
+            size: result.size,
+            quantity: 1,
+          })
+          .pipe(takeUntilDestroyed(this.destroyRef))
+          .subscribe({
+            next: () => {
+              this.toastService.showSuccess('Товар додано до кошика!');
+            },
+            error: (err) => {
+              console.error(err);
+              this.toastService.showError('Помилка при додаванні в кошик');
+            },
+          });
+      }
     });
   }
 }
