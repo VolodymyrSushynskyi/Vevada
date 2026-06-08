@@ -19,6 +19,7 @@
           @for (item of favoriteItems; track item.productId; let last = $last) {
             <div class="favorite-item-row">
               <app-horizontal-product-card
+                [productId]="item.productId"
                 [name]="item.productName"
                 [price]="item.price"
                 [imageUrl]="item.mainImageId | imageUrl: 'thumb'"

@@ -23,6 +23,7 @@ import { ToastService } from '../../../../core/services/common/toast.service';
 
 import { FavoritesService } from '../../../../core/services/client/favorites.service';
 import { SessionService } from '../../../../core/services/auth/session.service';
+import { CartService } from '../../../../core/services/client/cart.service';
 
 @Component({
   selector: 'app-home',
@@ -33,6 +34,7 @@ import { SessionService } from '../../../../core/services/auth/session.service';
 })
 export class Home implements OnInit {
   private catalogService = inject(CatalogService);
+  private cartService = inject(CartService);
   private destroyRef = inject(DestroyRef);
   private cdr = inject(ChangeDetectorRef);
   private toastService = inject(ToastService);
@@ -119,8 +121,22 @@ export class Home implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        console.log(`Товар ${result.productId} з розміром ${result.size} відправлено в кошик!`);
-        this.toastService.showSuccess('Товар додано до кошика!');
+        this.cartService
+          .addItem({
+            productId: result.productId,
+            size: result.size,
+            quantity: 1,
+          })
+          .pipe(takeUntilDestroyed(this.destroyRef))
+          .subscribe({
+            next: () => {
+              this.toastService.showSuccess('Товар додано до кошика!');
+            },
+            error: (err) => {
+              console.error(err);
+              this.toastService.showError('Помилка при додаванні в кошик');
+            },
+          });
       }
     });
   }

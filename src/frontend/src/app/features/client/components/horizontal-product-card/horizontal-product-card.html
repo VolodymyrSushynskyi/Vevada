@@ -4,7 +4,13 @@
   </div>
 
   <div class="card-info">
-    <h3 class="card-title text-body-1-regular">{{ name }}</h3>
+    <h3 class="card-title text-body-1-regular">
+      @if (productId) {
+        <a [routerLink]="['/product', productId]" class="product-link">{{ name }}</a>
+      } @else {
+        {{ name }}
+      }
+    </h3>
 
     <div class="card-subtitle-slot text-body-2-regular">
       <ng-content select="[subtitle]"></ng-content>

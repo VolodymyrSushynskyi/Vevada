@@ -1,21 +1,24 @@
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {
+  Component,
+  OnInit,
+  inject,
+  DestroyRef,
+  PLATFORM_ID,
+  ChangeDetectorRef,
+} from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { HorizontalProductCard } from '../../components/horizontal-product-card/horizontal-product-card';
 import { QuantityStepper } from '../../components/quantity-stepper/quantity-stepper';
 import { OrderSummary } from '../../components/order-summary/order-summary';
 import { TrashButton } from '../../../../shared/components/trash-button/trash-button';
-
-export interface CartItemDto {
-  cartItemId: string;
-  productId: string;
-  name: string;
-  size: string;
-  price: number;
-  quantity: number;
-  imageUrl: string;
-}
+import { CartService } from '../../../../core/services/client/cart.service';
+import { CartItemDto } from '../../../../core/models/cart.models';
+import { ToastService } from '../../../../core/services/common/toast.service';
+import { ImageUrlPipe } from '../../../../core/pipes/image-url.pipe';
 
 @Component({
   selector: 'app-cart',
@@ -23,79 +26,99 @@ export interface CartItemDto {
   imports: [
     CommonModule,
     MatDividerModule,
+    MatProgressSpinnerModule,
     HorizontalProductCard,
     QuantityStepper,
     OrderSummary,
     TrashButton,
+    ImageUrlPipe,
   ],
   templateUrl: './cart.html',
   styleUrl: './cart.css',
 })
-export class Cart {
+export class Cart implements OnInit {
+  private cartService = inject(CartService);
+  private toastService = inject(ToastService);
+  private destroyRef = inject(DestroyRef);
+  private cdr = inject(ChangeDetectorRef);
+  private platformId = inject(PLATFORM_ID);
+
+  cartId: number | null = null;
+  cartItems: CartItemDto[] = [];
+  isLoading = true;
   isSubmitting = false;
 
-  cartItems: CartItemDto[] = [
-    {
-      cartItemId: 'cart-item-1',
-      productId: 'prod-1',
-      name: 'Костюм зі смужками з боку',
-      size: '160',
-      price: 3020,
-      quantity: 2,
-      imageUrl:
-        'https://api.vevada.uk/content/images/358b8141-66af-42ba-aaf5-2d4270cd0feb-thumb.webp',
-    },
-    {
-      cartItemId: 'cart-item-2',
-      productId: 'prod-1',
-      name: 'Костюм з діагональними смужками',
-      size: '152',
-      price: 1099,
-      quantity: 1,
-      imageUrl:
-        'https://api.vevada.uk/content/images/07208ac1-0e48-4de0-ab3e-1edd2a683f3a-thumb.webp',
-    },
-    {
-      cartItemId: 'cart-item-3',
-      productId: 'prod-2',
-      name: 'Костюм з горизонтальними смужками',
-      size: '134',
-      price: 2000,
-      quantity: 1,
-      imageUrl:
-        'https://api.vevada.uk/content/images/b405ee3a-6e5e-43d5-8f0c-cff481a2f0e8-thumb.webp',
-    },
-  ];
+  ngOnInit(): void {
+    this.loadCart();
+  }
 
-  // Динамический подсчет общей суммы
+  loadCart(): void {
+    if (!isPlatformBrowser(this.platformId)) return;
+
+    this.cartService
+      .getCart()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (cart) => {
+          this.cartId = cart.cartId;
+          this.cartItems = cart.items;
+          this.isLoading = false;
+          this.cdr.markForCheck();
+        },
+        error: (err) => {
+          console.error(err);
+          this.toastService.showError('Помилка при завантаженні кошика');
+          this.isLoading = false;
+          this.cdr.markForCheck();
+        },
+      });
+  }
+
   get totalPrice(): number {
-    return this.cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
+    return this.cartItems.reduce((acc, item) => acc + item.unitPrice * item.quantity, 0);
   }
 
-  // Обновление количества товара
-  onQuantityChange(cartItemId: string, newQuantity: number): void {
+  onQuantityChange(cartItemId: number, newQuantity: number): void {
     const item = this.cartItems.find((i) => i.cartItemId === cartItemId);
-    if (item) {
-      item.quantity = newQuantity;
-      // В будущем здесь будет вызов API: this.cartService.updateQuantity(...)
-    }
+    if (!item) return;
+
+    const previousQuantity = item.quantity;
+
+    item.quantity = newQuantity;
+    this.cdr.markForCheck();
+
+    this.cartService
+      .updateQuantity(cartItemId, newQuantity)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        error: () => {
+          item.quantity = previousQuantity;
+          this.toastService.showError('Не вдалося оновити кількість');
+          this.cdr.markForCheck();
+        },
+      });
   }
 
-  // Удаление товара из корзины
-  onRemoveItem(cartItemId: string): void {
+  onRemoveItem(cartItemId: number): void {
+    const previousItems = [...this.cartItems];
+
     this.cartItems = this.cartItems.filter((item) => item.cartItemId !== cartItemId);
-    // В будущем здесь будет вызов API: this.cartService.removeItem(...)
+    this.cdr.markForCheck();
+
+    this.cartService
+      .removeItem(cartItemId)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        error: () => {
+          this.cartItems = previousItems;
+          this.toastService.showError('Не вдалося видалити товар');
+          this.cdr.markForCheck();
+        },
+      });
   }
 
-  // Оформление заказа
   onCheckout(): void {
     this.isSubmitting = true;
-    console.log('Оформлення замовлення...', this.cartItems);
-
-    // Имитация задержки сервера
-    setTimeout(() => {
-      this.isSubmitting = false;
-      alert('Перехід до сторінки оплати/оформлення');
-    }, 1500);
+    console.log('Перехід до оформлення...', this.cartId);
   }
 }
