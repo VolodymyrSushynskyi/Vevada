@@ -30,7 +30,7 @@ export class ManufacturerOrders implements OnInit {
       orderNumber: '10128',
       createdAt: new Date('2026-05-28T10:00:00'),
       totalAmount: 9139,
-      itemsCount: 3,
+      itemsCount: 4,
       mainImageUrl: '/img/pink-leotard1.jpg',
       status: OrderStatus.Pending,
       statusMessage: 'Ваше замовлення чекає підтвердження',

@@ -32,7 +32,7 @@ export class Favorites {
     {
       productId: 'prod-2',
       name: 'Костюм зі смужками з боку',
-      price: 3020,
+      price: 1200,
       imageUrl:
         'https://api.vevada.uk/content/images/358b8141-66af-42ba-aaf5-2d4270cd0feb-thumb.webp',
     },
