@@ -21,6 +21,7 @@
             @for (item of cartItems; track item.cartItemId; let last = $last) {
               <div class="cart-item-row">
                 <app-horizontal-product-card
+                  [productId]="item.productId"
                   [name]="item.productName"
                   [price]="item.unitPrice"
                   [imageUrl]="item.imageId | imageUrl: 'thumb'"

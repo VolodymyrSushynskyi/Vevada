@@ -43,6 +43,11 @@
   line-height: 1.3;
 }
 
+.product-link {
+  text-decoration: none;
+  color: inherit;
+}
+
 .card-subtitle-slot {
   font-size: 13px;
   color: var(--grey-400);
