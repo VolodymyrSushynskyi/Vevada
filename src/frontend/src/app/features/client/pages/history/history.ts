@@ -1,110 +1,90 @@
-import { Component, inject } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  inject,
+  DestroyRef,
+  ChangeDetectorRef,
+  PLATFORM_ID,
+} from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+
 import { HistoryOrderCard } from '../../components/history-order-card/history-order-card';
 import { SubButton } from '../../../../shared/components/sub-button/sub-button';
 import { OrderDetails } from '../../components/order-details/order-details';
-import { OrderSummaryDto } from '../../../../core/models/order.models';
-import { OrderStatus } from '../../../../core/constants/order-status';
+import { OrderDto } from '../../../../core/models/order.models';
+import { OrdersService } from '../../../../core/services/client/orders.service';
+import { ToastService } from '../../../../core/services/common/toast.service';
 
 @Component({
   selector: 'app-history',
   standalone: true,
-  imports: [HistoryOrderCard, SubButton],
+  imports: [CommonModule, HistoryOrderCard, SubButton, MatProgressSpinnerModule],
   templateUrl: './history.html',
   styleUrl: './history.css',
 })
-export class History {
+export class History implements OnInit {
+  private ordersService = inject(OrdersService);
+  private toastService = inject(ToastService);
   private dialog = inject(MatDialog);
+  private destroyRef = inject(DestroyRef);
+  private cdr = inject(ChangeDetectorRef);
+  private platformId = inject(PLATFORM_ID);
 
+  historyOrders: OrderDto[] = [];
   visibleCount = 4;
+  isLoading = true;
 
-  mockHistoryOrders: OrderSummaryDto[] = [
-    {
-      id: 'h1',
-      orderNumber: '10096',
-      createdAt: '2026-08-28',
-      totalAmount: 1200,
-      itemsCount: 1,
-      mainImageUrl: '/img/pink-leotard1.jpg',
-      status: OrderStatus.Cancelled,
-      statusMessage: 'Скасовано',
-    },
-    {
-      id: 'h2',
-      orderNumber: '10095',
-      createdAt: '2026-08-25',
-      totalAmount: 56083,
-      itemsCount: 6,
-      mainImageUrl: '/img/pink-leotard2.jpg',
-      status: OrderStatus.Completed,
-      statusMessage: 'Доставлено',
-    },
-    {
-      id: 'h3',
-      orderNumber: '10094',
-      createdAt: '2026-03-02',
-      totalAmount: 2400,
-      itemsCount: 1,
-      mainImageUrl: '/img/leopard-leotard.jpg',
-      status: OrderStatus.Completed,
-      statusMessage: 'Доставлено',
-    },
-    {
-      id: 'h4',
-      orderNumber: '10093',
-      createdAt: '2026-02-27',
-      totalAmount: 2000,
-      itemsCount: 1,
-      mainImageUrl: '/img/blue-leotard.jpg',
-      status: OrderStatus.Completed,
-      statusMessage: 'Доставлено',
-    },
-    {
-      id: 'h5',
-      orderNumber: '10092',
-      createdAt: '2026-02-16',
-      totalAmount: 1099,
-      itemsCount: 1,
-      mainImageUrl: '/img/pink-leotard2.jpg',
-      status: OrderStatus.Completed,
-      statusMessage: 'Доставлено',
-    },
-  ];
+  ngOnInit(): void {
+    this.loadHistory();
+  }
+
+  loadHistory(): void {
+    if (!isPlatformBrowser(this.platformId)) return;
+
+    this.ordersService
+      .getOrderHistory()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (orders) => {
+          this.historyOrders = orders;
+          this.isLoading = false;
+          this.cdr.markForCheck();
+        },
+        error: (err) => {
+          console.error(err);
+          this.toastService.showError('Помилка завантаження історії');
+          this.isLoading = false;
+          this.cdr.markForCheck();
+        },
+      });
+  }
 
   get displayedOrders() {
-    return this.mockHistoryOrders.slice(0, this.visibleCount);
+    return this.historyOrders.slice(0, this.visibleCount);
   }
 
   get hasMoreOrders(): boolean {
-    return this.mockHistoryOrders.length > this.visibleCount;
+    return this.historyOrders.length > this.visibleCount;
   }
 
-  loadMore() {
+  loadMore(): void {
     this.visibleCount += 4;
   }
 
-  handleViewDetails(orderId: string) {
-    const order = this.mockHistoryOrders.find((o) => o.id === orderId);
+  handleViewDetails(orderId: number): void {
+    const order = this.historyOrders.find((o) => o.orderId === orderId);
     if (!order) return;
-
-    const mockItems = [
-      {
-        id: '1',
-        productName: 'Костюм із смужками з боку',
-        sizeLabel: '98',
-        price: 1200,
-        quantity: 1,
-        mainImageUrl: '/img/pink-leotard1.jpg',
-      },
-    ];
 
     this.dialog.open(OrderDetails, {
       width: '600px',
       maxWidth: '95vw',
       panelClass: 'custom-dialog-container',
       data: {
-        orderNumber: order.orderNumber,
-        items: mockItems,
+        orderNumber: order.orderId.toString(),
+        items: order.items,
       },
     });
   }
