@@ -1,8 +1,14 @@
+export interface AddCartItemDto {
+  productId: string;
+  size: string;
+  quantity: number;
+}
+
 export interface CartItemDto {
   cartItemId: number;
   productId: string;
   productName: string;
-  size: string | number;
+  size: string;
   unitPrice: number;
   quantity: number;
   imageId: string;
