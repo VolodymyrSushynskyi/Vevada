@@ -1,18 +1,24 @@
 <div class="history-page-wrapper">
   <h1 class="page-title text-h3-bold">Історія замовлень</h1>
 
-  <div class="history-grid">
-    @for (order of displayedOrders; track order.id) {
-      <app-history-order-card [order]="order" (viewDetails)="handleViewDetails($event)">
-      </app-history-order-card>
-    } @empty {
-      <div class="empty-state">У вас поки немає історії замовлень.</div>
-    }
-  </div>
-
-  @if (hasMoreOrders) {
-    <div class="load-more-container">
-      <app-sub-button label="Показати більше" (btnClick)="loadMore()"> </app-sub-button>
+  @if (isLoading) {
+    <div class="loader-overlay" style="display: flex; justify-content: center; padding: 40px 0">
+      <mat-spinner diameter="48"></mat-spinner>
     </div>
+  } @else {
+    <div class="history-grid">
+      @for (order of displayedOrders; track order.orderId) {
+        <app-history-order-card [order]="order" (viewDetails)="handleViewDetails($event)">
+        </app-history-order-card>
+      } @empty {
+        <div class="empty-state">У вас поки немає історії замовлень.</div>
+      }
+    </div>
+
+    @if (hasMoreOrders) {
+      <div class="load-more-container">
+        <app-sub-button label="Показати більше" (btnClick)="loadMore()"></app-sub-button>
+      </div>
+    }
   }
 </div>

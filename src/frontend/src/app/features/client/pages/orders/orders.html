@@ -2,17 +2,23 @@
   <h1 class="page-title text-h4-bold">Мої замовлення</h1>
 
   <div class="orders-list">
-    @for (order of mockOrders; track order.id) {
-      <app-order-card
-        [order]="order"
-        (viewDetails)="handleViewDetails($event)"
-        (cancelOrder)="handleCancelOrder($event)"
-      >
-      </app-order-card>
-    } @empty {
-      <div class="empty-state">
-        <p>У вас поки немає замовлень.</p>
+    @if (isLoading) {
+      <div class="loader-overlay" style="display: flex; justify-content: center; padding: 40px 0">
+        <mat-spinner diameter="48"></mat-spinner>
       </div>
+    } @else {
+      @for (order of activeOrders; track order.orderId) {
+        <app-order-card
+          [order]="order"
+          (viewDetails)="handleViewDetails($event)"
+          (cancelOrder)="handleCancelOrder($event)"
+        >
+        </app-order-card>
+      } @empty {
+        <div class="empty-state">
+          <p>У вас поки немає замовлень.</p>
+        </div>
+      }
     }
   </div>
 </div>

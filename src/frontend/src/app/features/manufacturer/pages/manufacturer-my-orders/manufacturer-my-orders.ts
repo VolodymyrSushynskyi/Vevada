@@ -1,11 +1,22 @@
 import { Component, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { OrderSummaryDto } from '../../../../core/models/order.models';
+//import { OrderSummaryDto } from '../../../../core/models/order.models';
 import { OrderStatus } from '../../../../core/constants/order-status';
 import { ManufacturerOrderCard } from '../../components/manufacturer-order-card/manufacturer-order-card';
 import { ConfirmDialog } from '../../../../shared/components/confirm-dialog/confirm-dialog';
 import { OrderDetails } from '../../../client/components/order-details/order-details';
+
+export interface OrderSummaryDto {
+  id: string;
+  orderNumber: string;
+  createdAt: string | Date;
+  totalAmount: number;
+  itemsCount: number;
+  mainImageUrl: string;
+  status: OrderStatus;
+  statusMessage: string;
+}
 
 @Component({
   selector: 'app-manufacturer-my-orders',

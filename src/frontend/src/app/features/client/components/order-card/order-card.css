@@ -105,6 +105,10 @@
   margin: 0;
 }
 
+.cancellation-pending {
+  color: var(--red);
+}
+
 .buttons-block {
   display: flex;
   flex-direction: column;

@@ -11,11 +11,22 @@ import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 
 // Импорты моделей и компонентов
-import { OrderSummaryDto } from '../../../../core/models/order.models';
+//import { OrderSummaryDto } from '../../../../core/models/order.models';
 import { OrderStatus } from '../../../../core/constants/order-status';
 import { OrderStatusChip } from '../../../client/components/order-status-chip/order-status-chip';
 import { SubButton } from '../../../../shared/components/sub-button/sub-button';
 import { OrderDetails } from '../../../client/components/order-details/order-details';
+
+export interface OrderSummaryDto {
+  id: string;
+  orderNumber: string;
+  createdAt: string | Date;
+  totalAmount: number;
+  itemsCount: number;
+  mainImageUrl: string;
+  status: OrderStatus;
+  statusMessage: string;
+}
 
 @Component({
   selector: 'app-manufacturer-history-page',

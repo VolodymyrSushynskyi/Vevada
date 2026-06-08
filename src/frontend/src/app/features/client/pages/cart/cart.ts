@@ -7,6 +7,8 @@ import {
   ChangeDetectorRef,
 } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { Router } from '@angular/router';
+import { OrdersService } from '../../../../core/services/client/orders.service';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -41,6 +43,8 @@ export class Cart implements OnInit {
   private toastService = inject(ToastService);
   private destroyRef = inject(DestroyRef);
   private cdr = inject(ChangeDetectorRef);
+  private ordersService = inject(OrdersService);
+  private router = inject(Router);
   private platformId = inject(PLATFORM_ID);
 
   cartId: number | null = null;
@@ -119,6 +123,22 @@ export class Cart implements OnInit {
 
   onCheckout(): void {
     this.isSubmitting = true;
-    console.log('Перехід до оформлення...', this.cartId);
+    this.cdr.markForCheck();
+
+    this.ordersService
+      .placeOrder()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: () => {
+          this.toastService.showSuccess('Замовлення успішно оформлено!');
+          this.router.navigate(['/profile/orders']);
+        },
+        error: (err) => {
+          console.error(err);
+          this.toastService.showError('Помилка при оформленні замовлення');
+          this.isSubmitting = false;
+          this.cdr.markForCheck();
+        },
+      });
   }
 }
