@@ -71,4 +71,27 @@ public class ProductReviewsController : BaseApiController
 
         return HandleResult(result);
     }
+
+    [HttpGet]
+    [Authorize(Roles = "Client")]
+    public async Task<IActionResult> GetMyReviews(
+        [FromQuery] int page = 1,
+        [FromQuery] int pageSize = PagedResponse<object>.DefaultPageSize,
+        CancellationToken cancellationToken = default)
+    {
+        var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+        if (!int.TryParse(userIdClaim, out var userId))
+        {
+            return Unauthorized(new { error = "Invalid user." });
+        }
+
+        page = page < 1 ? 1 : page;
+        pageSize = pageSize < 1 ? 1 : pageSize > PagedResponse<object>.MaxPageSize ? PagedResponse<object>.MaxPageSize : pageSize;
+
+        var query = new GetUserReviewsQuery(userId, page, pageSize);
+        var result = await Mediator.Send(query, cancellationToken);
+
+        return HandleResult(result);
+    }
 }
