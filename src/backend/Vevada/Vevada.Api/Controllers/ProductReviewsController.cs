@@ -72,7 +72,7 @@ public class ProductReviewsController : BaseApiController
         return HandleResult(result);
     }
 
-    [HttpGet]
+    [HttpGet("my-reviews")]
     [Authorize(Roles = "Client")]
     public async Task<IActionResult> GetMyReviews(
         [FromQuery] int page = 1,
